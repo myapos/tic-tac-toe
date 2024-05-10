@@ -1,23 +1,23 @@
-<script setup lang="ts"></script>
+<template>
+  <div class="tic-tac-toe-container">
+    <tic-tac-toe :N="3" :M="3"></tic-tac-toe>
+  </div>
+</template>
 
-<template></template>
+<script lang="ts">
+import TicTacToe from './components/TicTacToe.vue'
+
+export default {
+  name: 'App',
+  components: {
+    TicTacToe
+  }
+}
+</script>
 
 <style scoped>
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.tic-tac-toe-container {
+  margin: 0 auto;
+  width: 100%;
 }
 </style>

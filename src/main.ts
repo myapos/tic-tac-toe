@@ -2,5 +2,10 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
+import CustomButton from './components/ui/CustomButton.vue'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.component('CustomButton', CustomButton)
+
+app.mount('#app')
