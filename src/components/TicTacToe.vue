@@ -1,8 +1,14 @@
 <template>
   <div v-if="hasValidDimensionProps" class="tic-tac-toe-wrapper">
-    <get-feedback :feedback="feedback"></get-feedback>
+    <get-feedback :feedback="feedback" :M="M"></get-feedback>
     <display-grid :grid="grid" :isXTurn="isXTurn" @click-cell="handleClickCell"></display-grid>
-    <reset-game :onReset="handleReset"></reset-game>
+    <app-controls>
+      <div class="row">
+        <reset-game :onReset="handleReset"></reset-game>
+        <custom-button @click="toggleDetails">Show game details</custom-button>
+      </div>
+      <div class="info" v-show="showDetails">Looking for {{ M }} consecutive values</div>
+    </app-controls>
   </div>
   <div v-else>Not valid N,M parameters</div>
 </template>
@@ -11,6 +17,7 @@
 import GetFeedback from './Feedback.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import ResetGame from './ResetGame.vue'
+import AppControls from './AppControls.vue'
 
 import checkRow from './checkUtils/checkRow'
 import checkColumns from './checkUtils/checkColumns'
@@ -32,7 +39,7 @@ export default {
     N: { type: Number, required: true },
     M: { type: Number, required: true }
   },
-  components: { GetFeedback, ResetGame, DisplayGrid },
+  components: { GetFeedback, ResetGame, DisplayGrid, AppControls },
   data() {
     const hasValidDimensionProps =
       this.N >= 0 &&
@@ -50,17 +57,20 @@ export default {
       hasValidDimensionProps,
       X,
       O,
-      isXTurn: true
+      isXTurn: true,
+      showDetails: false
     }
   },
   computed: {},
   methods: {
+    toggleDetails() {
+      this.showDetails = !this.showDetails
+    },
     setIsXTurn() {
       this.isXTurn = this.counter % 2 === 0
     },
     handleClickCell({ rowIdx, colIdx }: { rowIdx: number; colIdx: number }) {
       // check if the cell contains already content
-
       const cellHasContent = this.grid[rowIdx][colIdx].length > 0
 
       if (this.feedback.includes('win') || this.feedback.includes('draw') || cellHasContent) {
@@ -163,6 +173,7 @@ export default {
     handleReset() {
       this.setCounter(0)
       this.setGrid(createInitialGrid(this.N))
+      this.setIsXTurn()
       this.setFeedback("It is X's turn!")
       this.pos = []
     }
@@ -188,5 +199,17 @@ export default {
   gap: 2rem;
   justify-content: center;
   align-items: center;
+}
+
+.info {
+  font-size: 0.8rem;
+  color: lightgrey;
+  padding: 5px;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
 }
 </style>

@@ -19,8 +19,8 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
     }
   }
 
-  // reset starting positions
-  ;(i = startRowIdx), (j = startColIdx), (countValues = 0)
+  // reset starting positions from the next column
+  ;(i = startRowIdx), (j = startColIdx + 1)
 
   //search right
   while (j < grid.length && grid[i][j] === lookingFor) {

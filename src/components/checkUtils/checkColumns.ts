@@ -19,10 +19,10 @@ const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: ch
     }
   }
 
-  // reset startung positions
-  ;(i = startRowIdx), (j = startColIdx), (countValues = 0)
+  // reset starting positions
+  ;(i = startRowIdx + 1), (j = startColIdx)
 
-  //search down
+  //search down from the next row
   while (i < grid.length && grid[i][j] === lookingFor) {
     countValues++
     i++

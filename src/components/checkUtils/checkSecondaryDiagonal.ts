@@ -1,6 +1,6 @@
 import type { checkI } from './types'
 
-const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }:checkI) => {
+const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
     j = startColIdx
   let countValues = 0
@@ -20,10 +20,10 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
     }
   }
 
-  // reset startung positions
-  ;(i = startRowIdx), (j = startColIdx), (countValues = 0)
+  // reset starting positions
+  ;(i = startRowIdx + 1), (j = startColIdx - 1)
 
-  //search down
+  //search down from the next cell in secondary diagonal
   while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
     countValues++
     i++

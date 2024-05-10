@@ -20,8 +20,8 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
     }
   }
 
-  // reset startung positions
-  ;(i = startRowIdx), (j = startColIdx), (countValues = 0)
+  // reset starting positions from the next cell in primary diagonal
+  ;(i = startRowIdx + 1), (j = startColIdx + 1)
 
   //search down
   while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
