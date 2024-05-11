@@ -1,5 +1,5 @@
 <template>
-  <div>{{ feedback }}</div>
+  <div data-testid="feedback">{{ feedback }}</div>
 </template>
 
 <script lang="ts">

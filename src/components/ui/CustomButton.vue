@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick"><slot></slot></button>
+  <button @click="onClick" :data-testid="dataTestId"><slot></slot></button>
 </template>
 <script lang="ts">
 export default {
@@ -8,6 +8,10 @@ export default {
     onClick: {
       type: Function as PropType<(event: MouseEvent) => void>,
       required: true
+    },
+    dataTestId: {
+      type: String,
+      default: 'custom-button'
     }
   }
 }
