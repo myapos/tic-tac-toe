@@ -21,6 +21,9 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
   --border: 1px solid var(--vt-c-white);
+
+  --highlight-color: green;
+  --border-color: gray;
 }
 
 /* semantic color variables for this project */

@@ -3,15 +3,19 @@ import type { checkI } from './types'
 const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
     j = startColIdx
-  let countValues = 0
+  let countValuesUp = 0
+  let countValuesDown = 0
 
   //search up
   while (i >= 0 && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesUp++
     i--
   }
 
-  if (countValues === target) {
+  if (countValuesUp === target) {
+    for (let c = 0; c < target; c++) {
+      grid[startRowIdx - c][startColIdx] = `${lookingFor} - W`
+    }
     // winner
     return {
       winner: lookingFor,
@@ -24,11 +28,17 @@ const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: ch
 
   //search down from the next row
   while (i < grid.length && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesDown++
     i++
   }
 
-  if (countValues === target) {
+  if (countValuesUp + countValuesDown === target) {
+    for (let c = 0; c < target; c++) {
+      const winCellRowIdx = startRowIdx - countValuesUp + c + 1
+
+      grid[winCellRowIdx][startColIdx] = `${lookingFor} - W`
+    }
+
     // winner
     return {
       winner: lookingFor,

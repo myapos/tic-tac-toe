@@ -3,16 +3,21 @@ import type { checkI } from './types'
 const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
     j = startColIdx
-  let countValues = 0
+  let countValuesUp = 0
+  let countValuesDown = 0
 
   //search up
   while (i >= 0 && j < grid.length && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesUp++
     i--
     j++
   }
 
-  if (countValues === target) {
+  if (countValuesUp === target) {
+    for (let c = 0; c < target; c++) {
+      grid[startRowIdx - c][startColIdx + c] = `${lookingFor} - W`
+    }
+
     // winner
     return {
       winner: lookingFor,
@@ -25,12 +30,19 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
 
   //search down from the next cell in secondary diagonal
   while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesDown++
     i++
     j--
   }
 
-  if (countValues === target) {
+  if (countValuesUp + countValuesDown === target) {
+    for (let c = 0; c < target; c++) {
+      const winCellRowIdx = startRowIdx - countValuesUp + c + 1
+      const winCellColIdx = startColIdx + countValuesUp - c - 1
+
+      grid[winCellRowIdx][winCellColIdx] = `${lookingFor} - W`
+    }
+
     // winner
     return {
       winner: lookingFor,

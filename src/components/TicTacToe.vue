@@ -7,10 +7,11 @@
         <reset-game :onReset="handleReset"></reset-game>
         <custom-button @click="toggleDetails">Show game details</custom-button>
       </div>
-      <div class="info" v-show="showDetails">Looking for {{ M }} consecutive values</div>
+      <div class="gameDetails" v-show="showDetails">Looking for {{ M }} consecutive values</div>
     </app-controls>
   </div>
   <div v-else>Not valid N,M parameters</div>
+  <div>{{ gameResult }}</div>
 </template>
 
 <script lang="ts">
@@ -58,7 +59,8 @@ export default {
       X,
       O,
       isXTurn: true,
-      showDetails: false
+      showDetails: false,
+      gameResult: {}
     }
   },
   computed: {},
@@ -101,6 +103,12 @@ export default {
 
       if (rowResult.won) {
         this.setFeedback(`Player ${rowResult.winner} wins!`)
+        this.setGameResult({
+          rowIdx,
+          colIdx,
+          winner: rowResult.winner,
+          type: 'row'
+        })
         return
       }
 
@@ -115,6 +123,12 @@ export default {
 
       if (colResult.won) {
         this.setFeedback(`Player ${colResult.winner} wins!`)
+        this.setGameResult({
+          rowIdx,
+          colIdx,
+          winner: colResult.winner,
+          type: 'col'
+        })
         return
       }
 
@@ -129,6 +143,12 @@ export default {
 
       if (primaryDiagonalResult.won) {
         this.setFeedback(`Player ${primaryDiagonalResult.winner} wins!`)
+        this.setGameResult({
+          rowIdx,
+          colIdx,
+          winner: primaryDiagonalResult.winner,
+          type: 'primary'
+        })
         return
       }
 
@@ -143,6 +163,12 @@ export default {
 
       if (secondaryDiagonalResult.won) {
         this.setFeedback(`Player ${secondaryDiagonalResult.winner} wins!`)
+        this.setGameResult({
+          rowIdx,
+          colIdx,
+          winner: secondaryDiagonalResult.winner,
+          type: 'secondary'
+        })
         return
       }
       this.setGrid(newGrid)
@@ -176,6 +202,10 @@ export default {
       this.setIsXTurn()
       this.setFeedback("It is X's turn!")
       this.pos = []
+      this.gameResult = {}
+    },
+    setGameResult(result) {
+      this.gameResult = result
     }
   },
   watch: {
@@ -201,9 +231,9 @@ export default {
   align-items: center;
 }
 
-.info {
+.gameDetails {
   font-size: 0.8rem;
-  color: lightgrey;
+  color: var(--vt-c-text-dark-2);
   padding: 5px;
   text-align: center;
 }

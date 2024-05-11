@@ -1,0 +1,128 @@
+<template>
+  <div
+    v-for="(mark, colIdx) in row"
+    :key="colIdx"
+    :class="buildClassNames({ rowIdx, colIdx, length: grid.length })"
+    @click="onClick({ rowIdx, colIdx })"
+  >
+    {{ mark || '' }}
+  </div>
+</template>
+<script lang="ts">
+interface buildClassNamesI {
+  rowIdx: number
+  colIdx: number
+  length: number
+}
+
+export default {
+  name: 'GridCell',
+  emits: ['click-cell'],
+  data() {
+    return {
+      winningRange: {
+        startRow: 1,
+        endRow: 3,
+        startWinCol: 1,
+        endWinCol: 3,
+        mode: 'primary'
+      }
+    }
+  },
+  props: {
+    row: {
+      type: Array<String>,
+      required: true
+    },
+    grid: {
+      type: Array<Array<String>>,
+      required: true
+    },
+    rowIdx: {
+      type: Number,
+      required: true
+    },
+    onClick: {
+      type: Function,
+      required: true
+    }
+  },
+  computed: {},
+  methods: {
+    isWinningCell({ rowIdx, colIdx }: buildClassNamesI): boolean {
+      return this.grid[rowIdx][colIdx].includes('W')
+    },
+    buildClassNames({ rowIdx, colIdx, length }: buildClassNamesI): string {
+      let classes = 'grid-cell'
+      const isFirstRow = rowIdx === 0
+      const isLastRow = rowIdx === length - 1
+      const isFirstCol = colIdx === 0
+      const isLastCol = colIdx === length - 1
+
+      if (this.isWinningCell({ rowIdx, colIdx, length })) {
+        return classes.concat(' grid-cell-winning')
+      }
+
+      if (isFirstRow && isFirstCol) {
+        return classes.concat(' first-row first-col')
+      }
+
+      if (isFirstRow && isLastCol) {
+        return classes.concat(' first-row last-col')
+      }
+
+      if (isLastRow && isFirstCol) {
+        return classes.concat(' last-row first-col')
+      }
+
+      if (isLastRow && isLastCol) {
+        return classes.concat(' last-row last-col')
+      }
+
+      if (isFirstRow) {
+        return classes.concat(' first-row')
+      }
+
+      if (isLastRow) {
+        return classes.concat(' last-row')
+      }
+
+      if (isFirstCol) {
+        return classes.concat(' first-col')
+      }
+
+      if (isLastCol) {
+        return classes.concat(' last-col')
+      }
+
+      return classes
+    }
+  }
+}
+</script>
+<style scoped>
+.grid-cell {
+  text-align: center;
+  border-bottom: var(--border);
+  border-right: var(--border);
+  font-size: 1.3rem;
+  padding: 2rem;
+}
+
+.grid-cell:hover {
+  background-color: var(--vt-c-text-light-1);
+  cursor: pointer;
+}
+
+.grid-cell.last-row {
+  border-bottom: 0px;
+}
+
+.grid-cell.last-col {
+  border-right: 0px;
+}
+
+.grid-cell-winning {
+  background-color: var(--vt-c-text-light-1);
+}
+</style>

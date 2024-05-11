@@ -3,15 +3,20 @@ import type { checkI } from './types'
 const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
     j = startColIdx
-  let countValues = 0
+  let countValuesLeft = 0
+  let countValuesRight = 0
 
   //search left
   while (j >= 0 && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesLeft++
     j--
   }
 
-  if (countValues === target) {
+  if (countValuesLeft === target) {
+    // mark winning cells with special value
+    for (let c = startColIdx; c >= startColIdx - target + 1; c--) {
+      grid[i][c] = `${lookingFor} - W`
+    }
     // winner
     return {
       winner: lookingFor,
@@ -24,11 +29,18 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
 
   //search right
   while (j < grid.length && grid[i][j] === lookingFor) {
-    countValues++
+    countValuesRight++
     j++
   }
 
-  if (countValues === target) {
+  if (countValuesLeft + countValuesRight === target) {
+    for (
+      let c = startColIdx - (countValuesLeft - 1);
+      c <= startColIdx + target - countValuesLeft;
+      c++
+    ) {
+      grid[i][c] = `${lookingFor} - W`
+    }
     // winner
     return {
       winner: lookingFor,
