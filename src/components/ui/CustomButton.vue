@@ -18,15 +18,14 @@ button {
   height: 50px;
   display: block;
   background: none;
-  border: 1px solid grey;
-  outline: 1px;
-  color: lightgrey;
+  border: 1px solid var(--vt-c-indigo);
+  color: var(--color-background-soft);
   border-radius: 5px;
 }
 
 button:hover {
   cursor: pointer;
   filter: brightness(150%);
-  border-color: green;
+  border-color: var(--vt-c-divider-dark-2);
 }
 </style>

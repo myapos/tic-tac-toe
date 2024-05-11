@@ -3,16 +3,20 @@ import type { checkI } from './types'
 const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
     j = startColIdx
-  let countValues = 0
+  let countValuesUp = 0
+  let countValuesDown = 0
 
   //search up
-  while (i >= 0 && j >= 0 && grid[i][j] === lookingFor) {
-    countValues++
+  while (i >= 0 && j >= 0 && grid[i][j][0] === lookingFor) {
+    countValuesUp++
     i--
     j--
   }
 
-  if (countValues === target) {
+  if (countValuesUp === target) {
+    for (let c = 0; c < target; c++) {
+      grid[startRowIdx - c][startColIdx - c][1] = 'W'
+    }
     // winner
     return {
       winner: lookingFor,
@@ -24,13 +28,19 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
   ;(i = startRowIdx + 1), (j = startColIdx + 1)
 
   //search down
-  while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
-    countValues++
+  while (i < grid.length && j < grid.length && grid[i][j][0] === lookingFor) {
+    countValuesDown++
     i++
     j++
   }
 
-  if (countValues === target) {
+  if (countValuesUp + countValuesDown === target) {
+    for (let c = 0; c < target; c++) {
+      const winCellRowIdx = startRowIdx - countValuesUp + c + 1
+      const winCellColIdx = startColIdx - countValuesUp + c + 1
+
+      grid[winCellRowIdx][winCellColIdx][1] = 'W'
+    }
     // winner
     return {
       winner: lookingFor,
