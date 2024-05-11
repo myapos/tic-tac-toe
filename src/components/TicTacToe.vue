@@ -11,7 +11,6 @@
     </app-controls>
   </div>
   <div v-else>Not valid N,M parameters</div>
-  <div>{{ gameResult }}</div>
 </template>
 
 <script lang="ts">
@@ -26,12 +25,16 @@ import checkPrimaryDiagonal from './checkUtils/checkPrimaryDiagonal'
 import checkSecondaryDiagonal from './checkUtils/checkSecondaryDiagonal'
 import isDraw from './checkUtils/isDraw'
 
-const O = 'O'
-const X = 'X'
+import type { gridT } from './types'
+
+import { O } from '../constants'
+import { X } from '../constants'
 const initialCellValue = ''
 
-const createInitialGrid = (N: number) => {
-  return Array.from({ length: N }, () => Array.from({ length: N }, () => initialCellValue))
+const createInitialGrid = (N: number): gridT => {
+  return Array.from({ length: N }, () =>
+    Array.from({ length: N }, () => [initialCellValue, initialCellValue])
+  )
 }
 
 export default {
@@ -59,8 +62,7 @@ export default {
       X,
       O,
       isXTurn: true,
-      showDetails: false,
-      gameResult: {}
+      showDetails: false
     }
   },
   computed: {},
@@ -73,7 +75,7 @@ export default {
     },
     handleClickCell({ rowIdx, colIdx }: { rowIdx: number; colIdx: number }) {
       // check if the cell contains already content
-      const cellHasContent = this.grid[rowIdx][colIdx].length > 0
+      const cellHasContent = this.grid[rowIdx][colIdx][0].length > 0
 
       if (this.feedback.includes('win') || this.feedback.includes('draw') || cellHasContent) {
         // don't do anything if the game ended
@@ -84,13 +86,12 @@ export default {
       const newCounter = this.counter + 1
 
       const currentTurn = this.isXTurn ? X : O
-      if (this.grid[rowIdx][colIdx] === initialCellValue) {
-        this.grid[rowIdx][colIdx] = currentTurn
+      if (this.grid[rowIdx][colIdx][0] === initialCellValue) {
+        this.grid[rowIdx][colIdx][0] = currentTurn
       }
 
       const lookingFor = this.isXTurn ? X : O
 
-      //   const wasXTurn = !this.isXTurn
       //   check winner on new Grid for
       //   1. rows
       const rowResult = checkRow({
@@ -103,12 +104,6 @@ export default {
 
       if (rowResult.won) {
         this.setFeedback(`Player ${rowResult.winner} wins!`)
-        this.setGameResult({
-          rowIdx,
-          colIdx,
-          winner: rowResult.winner,
-          type: 'row'
-        })
         return
       }
 
@@ -123,12 +118,6 @@ export default {
 
       if (colResult.won) {
         this.setFeedback(`Player ${colResult.winner} wins!`)
-        this.setGameResult({
-          rowIdx,
-          colIdx,
-          winner: colResult.winner,
-          type: 'col'
-        })
         return
       }
 
@@ -143,12 +132,6 @@ export default {
 
       if (primaryDiagonalResult.won) {
         this.setFeedback(`Player ${primaryDiagonalResult.winner} wins!`)
-        this.setGameResult({
-          rowIdx,
-          colIdx,
-          winner: primaryDiagonalResult.winner,
-          type: 'primary'
-        })
         return
       }
 
@@ -163,12 +146,6 @@ export default {
 
       if (secondaryDiagonalResult.won) {
         this.setFeedback(`Player ${secondaryDiagonalResult.winner} wins!`)
-        this.setGameResult({
-          rowIdx,
-          colIdx,
-          winner: secondaryDiagonalResult.winner,
-          type: 'secondary'
-        })
         return
       }
       this.setGrid(newGrid)
@@ -193,7 +170,7 @@ export default {
     setFeedback(feedback: string) {
       this.feedback = feedback
     },
-    setGrid(grid: Array<Array<string>>) {
+    setGrid(grid: gridT) {
       this.grid = grid
     },
     handleReset() {
@@ -202,10 +179,6 @@ export default {
       this.setIsXTurn()
       this.setFeedback("It is X's turn!")
       this.pos = []
-      this.gameResult = {}
-    },
-    setGameResult(result) {
-      this.gameResult = result
     }
   },
   watch: {

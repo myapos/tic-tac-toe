@@ -7,12 +7,13 @@
 </template>
 
 <script lang="ts">
+import type { gridT } from './types'
 import GridCell from './ui/GridCell.vue'
 
 export default {
   props: {
     grid: {
-      type: Array<Array<string>>,
+      type: Array as () => gridT,
       required: true
     }
   },
@@ -28,7 +29,7 @@ export default {
     }
   },
   methods: {
-    handleClickCell(args) {
+    handleClickCell(args: { rowIdx: number; colIdx: number }) {
       this.$emit('click-cell', args)
     }
   }

@@ -7,7 +7,7 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
   let countValuesDown = 0
 
   //search up
-  while (i >= 0 && j >= 0 && grid[i][j] === lookingFor) {
+  while (i >= 0 && j >= 0 && grid[i][j][0] === lookingFor) {
     countValuesUp++
     i--
     j--
@@ -15,7 +15,7 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
 
   if (countValuesUp === target) {
     for (let c = 0; c < target; c++) {
-      grid[startRowIdx - c][startColIdx - c] = `${lookingFor} - W`
+      grid[startRowIdx - c][startColIdx - c][1] = 'W'
     }
     // winner
     return {
@@ -28,7 +28,7 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
   ;(i = startRowIdx + 1), (j = startColIdx + 1)
 
   //search down
-  while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
+  while (i < grid.length && j < grid.length && grid[i][j][0] === lookingFor) {
     countValuesDown++
     i++
     j++
@@ -39,7 +39,7 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
       const winCellRowIdx = startRowIdx - countValuesUp + c + 1
       const winCellColIdx = startColIdx - countValuesUp + c + 1
 
-      grid[winCellRowIdx][winCellColIdx] = `${lookingFor} - W`
+      grid[winCellRowIdx][winCellColIdx][1] = 'W'
     }
     // winner
     return {

@@ -1,4 +1,5 @@
 import type { checkI } from './types'
+import { W } from '../../constants'
 
 const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
@@ -7,7 +8,7 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
   let countValuesDown = 0
 
   //search up
-  while (i >= 0 && j < grid.length && grid[i][j] === lookingFor) {
+  while (i >= 0 && j < grid.length && grid[i][j][0] === lookingFor) {
     countValuesUp++
     i--
     j++
@@ -15,7 +16,7 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
 
   if (countValuesUp === target) {
     for (let c = 0; c < target; c++) {
-      grid[startRowIdx - c][startColIdx + c] = `${lookingFor} - W`
+      grid[startRowIdx - c][startColIdx + c][1] = W
     }
 
     // winner
@@ -29,7 +30,7 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
   ;(i = startRowIdx + 1), (j = startColIdx - 1)
 
   //search down from the next cell in secondary diagonal
-  while (i < grid.length && j < grid.length && grid[i][j] === lookingFor) {
+  while (i < grid.length && j >= 0 && grid[i][j][0] === lookingFor) {
     countValuesDown++
     i++
     j--
@@ -40,7 +41,7 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
       const winCellRowIdx = startRowIdx - countValuesUp + c + 1
       const winCellColIdx = startColIdx + countValuesUp - c - 1
 
-      grid[winCellRowIdx][winCellColIdx] = `${lookingFor} - W`
+      grid[winCellRowIdx][winCellColIdx][1] = W
     }
 
     // winner

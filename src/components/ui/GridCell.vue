@@ -5,10 +5,13 @@
     :class="buildClassNames({ rowIdx, colIdx, length: grid.length })"
     @click="onClick({ rowIdx, colIdx })"
   >
-    {{ mark || '' }}
+    {{ mark[0] || '' }}
   </div>
 </template>
 <script lang="ts">
+import type { rowT, gridT } from '../types'
+import { W } from '../../constants'
+
 interface buildClassNamesI {
   rowIdx: number
   colIdx: number
@@ -31,11 +34,11 @@ export default {
   },
   props: {
     row: {
-      type: Array<String>,
+      type: Array as () => rowT,
       required: true
     },
     grid: {
-      type: Array<Array<String>>,
+      type: Array as () => gridT,
       required: true
     },
     rowIdx: {
@@ -50,7 +53,7 @@ export default {
   computed: {},
   methods: {
     isWinningCell({ rowIdx, colIdx }: buildClassNamesI): boolean {
-      return this.grid[rowIdx][colIdx].includes('W')
+      return this.grid[rowIdx][colIdx][1].includes(W)
     },
     buildClassNames({ rowIdx, colIdx, length }: buildClassNamesI): string {
       let classes = 'grid-cell'

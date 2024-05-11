@@ -1,4 +1,4 @@
-export type gridT = Array<Array<string>>
+import type { gridT } from '../types'
 
 export interface checkI {
   grid: gridT

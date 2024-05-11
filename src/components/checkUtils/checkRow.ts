@@ -1,4 +1,5 @@
 import type { checkI } from './types'
+import { W } from '../../constants'
 
 const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,
@@ -7,7 +8,7 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
   let countValuesRight = 0
 
   //search left
-  while (j >= 0 && grid[i][j] === lookingFor) {
+  while (j >= 0 && grid[i][j][0] === lookingFor) {
     countValuesLeft++
     j--
   }
@@ -15,7 +16,7 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
   if (countValuesLeft === target) {
     // mark winning cells with special value
     for (let c = startColIdx; c >= startColIdx - target + 1; c--) {
-      grid[i][c] = `${lookingFor} - W`
+      grid[i][c][1] = W
     }
     // winner
     return {
@@ -28,7 +29,7 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
   ;(i = startRowIdx), (j = startColIdx + 1)
 
   //search right
-  while (j < grid.length && grid[i][j] === lookingFor) {
+  while (j < grid.length && grid[i][j][0] === lookingFor) {
     countValuesRight++
     j++
   }
@@ -39,7 +40,7 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
       c <= startColIdx + target - countValuesLeft;
       c++
     ) {
-      grid[i][c] = `${lookingFor} - W`
+      grid[i][c][1] = W
     }
     // winner
     return {
