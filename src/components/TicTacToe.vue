@@ -7,9 +7,11 @@
         <reset-game :onReset="handleReset"></reset-game>
         <custom-button @click="toggleDetails">Show game details</custom-button>
       </div>
-      <div class="gameDetails" v-show="showDetails">
-        Looking for {{ M }} consecutive values in same row, column, primary or secondary diagonal
-      </div>
+      <transition name="game-details">
+        <div class="gameDetails" v-show="showDetails">
+          Looking for {{ M }} consecutive values in same row, column, primary or secondary diagonal
+        </div>
+      </transition>
     </app-controls>
   </div>
   <div v-else>Not valid N,M parameters</div>
@@ -217,5 +219,14 @@ export default {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+.game-details-enter-active,
+.game-details-leave-active {
+  transition: opacity 1s ease;
+}
+
+.game-details-enter-from,
+.game-details-leave-to {
+  opacity: 0;
 }
 </style>
