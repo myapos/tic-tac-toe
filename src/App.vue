@@ -1,6 +1,6 @@
 <template>
   <div class="tic-tac-toe-container">
-    <tic-tac-toe :N="4" :M="3"></tic-tac-toe>
+    <tic-tac-toe :N="3" :M="3"></tic-tac-toe>
   </div>
 </template>
 

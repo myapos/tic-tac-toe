@@ -7,7 +7,9 @@
         <reset-game :onReset="handleReset"></reset-game>
         <custom-button @click="toggleDetails">Show game details</custom-button>
       </div>
-      <div class="gameDetails" v-show="showDetails">Looking for {{ M }} consecutive values</div>
+      <div class="gameDetails" v-show="showDetails">
+        Looking for {{ M }} consecutive values in same row, column, primary or secondary diagonal
+      </div>
     </app-controls>
   </div>
   <div v-else>Not valid N,M parameters</div>
@@ -213,6 +215,7 @@ export default {
 
 .row {
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 </style>
