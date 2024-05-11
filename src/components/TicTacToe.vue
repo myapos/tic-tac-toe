@@ -1,14 +1,16 @@
 <template>
-  <div v-if="hasValidDimensionProps" class="tic-tac-toe-wrapper">
+  <div v-if="hasValidDimensionProps" class="tic-tac-toe-wrapper" data-testid="tic-tac-toe-wrapper">
     <get-feedback :feedback="feedback" :M="M"></get-feedback>
     <display-grid :grid="grid" :isXTurn="isXTurn" @click-cell="handleClickCell"></display-grid>
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
-        <custom-button @click="toggleDetails">Show game details</custom-button>
+        <custom-button @click="toggleDetails" dataTestId="toggle-details-btn"
+          >Show game details</custom-button
+        >
       </div>
       <transition name="game-details">
-        <div class="gameDetails" v-show="showDetails">
+        <div class="gameDetails" v-show="showDetails" data-testid="details">
           Looking for {{ M }} consecutive values in same row, column, primary or secondary diagonal
         </div>
       </transition>

@@ -4,6 +4,7 @@
     :key="colIdx"
     :class="buildClassNames({ rowIdx, colIdx, length: grid.length })"
     @click="onClick({ rowIdx, colIdx })"
+    :data-testid="`cell-${rowIdx}-${colIdx}`"
   >
     {{ mark[0] || '' }}
   </div>

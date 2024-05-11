@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-container" :style="containerStyles">
+  <div class="grid-container" :style="containerStyles" data-testid="tic-tac-toe-grid">
     <template v-for="(row, rowIdx) in grid" :key="rowIdx">
       <grid-cell :row="row" :grid="grid" :rowIdx="rowIdx" :onClick="handleClickCell"></grid-cell>
     </template>

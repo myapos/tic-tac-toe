@@ -1,5 +1,5 @@
 <template>
-  <div class="controls"><slot></slot></div>
+  <div class="controls" data-testid="controls"><slot></slot></div>
 </template>
 <script lang="ts">
 export default {
