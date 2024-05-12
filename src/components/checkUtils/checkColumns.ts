@@ -1,56 +1,66 @@
-import type { checkI } from './types'
 import { W } from '@/constants'
+import type { checkI } from './types'
 
+const markWinningCellsUp = (
+  startRowIdx: checkI['startRowIdx'],
+  startColIdx: checkI['startColIdx'],
+  target: number,
+  grid: checkI['grid']
+): void => {
+  for (let c = 0; c < target; c++) {
+    const winCellRowIdx = startRowIdx - c
+    const winCellColIdx = 1
+    grid[winCellRowIdx][startColIdx][winCellColIdx] = W
+  }
+}
+
+const markWinningCellsDown = (
+  startRowIdx: checkI['startRowIdx'],
+  startColIdx: checkI['startColIdx'],
+  target: number,
+  countValuesUp: number,
+  grid: checkI['grid']
+) => {
+  for (let c = 0; c < target; c++) {
+    const winCellRowIdx = startRowIdx - countValuesUp + c + 1
+    const winCellColIdx = 1
+
+    grid[winCellRowIdx][startColIdx][winCellColIdx] = W
+  }
+}
 const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
-  let i = startRowIdx,
-    j = startColIdx
+  let currentRow = startRowIdx,
+    currentColumn = startColIdx
   let countValuesUp = 0
   let countValuesDown = 0
 
-  //search up
-  while (i >= 0 && grid[i][j][0] === lookingFor) {
+  // Search up
+  while (currentRow >= 0 && grid[currentRow][currentColumn][0] === lookingFor) {
     countValuesUp++
-    i--
+    currentRow--
   }
 
   if (countValuesUp === target) {
-    for (let c = 0; c < target; c++) {
-      grid[startRowIdx - c][startColIdx][1] = W
-    }
-    // winner
-    return {
-      winner: lookingFor,
-      won: true
-    }
+    markWinningCellsUp(startRowIdx, startColIdx, target, grid)
+    return { winner: lookingFor, won: true }
   }
 
-  // reset starting positions
-  ;(i = startRowIdx + 1), (j = startColIdx)
+  // Reset starting positions
+  currentRow = startRowIdx + 1
+  currentColumn = startColIdx
 
-  //search down from the next row
-  while (i < grid.length && grid[i][j][0] === lookingFor) {
+  // Search down from the next row
+  while (currentRow < grid.length && grid[currentRow][currentColumn][0] === lookingFor) {
     countValuesDown++
-    i++
+    currentRow++
   }
 
   if (countValuesUp + countValuesDown === target) {
-    for (let c = 0; c < target; c++) {
-      const winCellRowIdx = startRowIdx - countValuesUp + c + 1
-
-      grid[winCellRowIdx][startColIdx][1] = W
-    }
-
-    // winner
-    return {
-      winner: lookingFor,
-      won: true
-    }
+    markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
+    return { winner: lookingFor, won: true }
   }
 
-  return {
-    winner: '',
-    won: false
-  }
+  return { winner: '', won: false }
 }
 
 export default checkColumns
