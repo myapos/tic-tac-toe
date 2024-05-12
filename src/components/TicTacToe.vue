@@ -33,6 +33,10 @@
             <span class="highlight-text">N >= M</span>.
             <a href="/?N=4&M=4">Try it!</a>
           </p>
+          <p>
+            The code is available
+            <a href="https://github.com/myapos/tic-tac-toe/tree/master" target="_blank">here</a>
+          </p>
         </div>
       </transition>
     </app-controls>
