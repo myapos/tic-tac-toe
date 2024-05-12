@@ -195,7 +195,7 @@ test.describe('search a 4x3 grid', () => {
   })
 
   test.describe('check row', () => {
-    test.only('should win in first row starting from left to right', async ({ page }) => {
+    test('should win in first row starting from left to right', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-1').click()
       await expect(page.getByTestId('feedback')).toHaveText("It is O's turn!")
