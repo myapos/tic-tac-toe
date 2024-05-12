@@ -2,6 +2,8 @@
   <button @click="onClick" :data-testid="dataTestId"><slot></slot></button>
 </template>
 <script lang="ts">
+import type { PropType } from 'vue'
+
 export default {
   name: 'CustomButton',
   props: {

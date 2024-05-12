@@ -16,7 +16,7 @@
       </transition>
     </app-controls>
   </div>
-  <div v-else>Not valid N,M parameters</div>
+  <div v-else data-testid="not-valid-params">Not valid N,M parameters</div>
 </template>
 
 <script lang="ts">
