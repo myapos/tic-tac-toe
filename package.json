@@ -11,7 +11,10 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "clean:install": "rm -rf node_modules && npm cache clean --force && npm install",
+    "e2e:ui": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test"
   },
   "dependencies": {
     "vue": "^3.4.21"
