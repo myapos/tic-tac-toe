@@ -12,6 +12,7 @@ Traditionally, tic-tac-toe uses a 3 x 3 grid. In this problem, an advanced versi
 
 You can change these parameters by adding to the URL parameters `?N=4&M=3` where `N >= M`.<a href="https://tic-tac-toe-snowy-sigma.vercel.app/?N=4&M=4/" target="_blank">Try it!</a>.
 <a href="https://google.com" target="_blank">Link Text</a>
+<a href="https://example.com" target="_blank">Open Link in New Tab</a>
 
 ## Recommended IDE Setup
 
