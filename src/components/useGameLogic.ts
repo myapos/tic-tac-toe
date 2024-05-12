@@ -87,6 +87,15 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const toggleDetails = () => {
     showDetails.value = !showDetails.value
   }
+  const hasValidDimensionProps = () => {
+    return (
+      props.N >= 0 &&
+      props.M >= 0 &&
+      typeof props.N === 'number' &&
+      typeof props.M === 'number' &&
+      props.N >= props.M
+    )
+  }
 
   return {
     counter,
@@ -100,6 +109,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setIsXTurn,
     setPos,
     toggleDetails,
-    showDetails
+    showDetails,
+    hasValidDimensionProps
   }
 }

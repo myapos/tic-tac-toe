@@ -35,16 +35,6 @@ const props = defineProps({
   M: { type: Number, required: true }
 })
 
-const hasValidDimensionProps = () => {
-  return (
-    props.N >= 0 &&
-    props.M >= 0 &&
-    typeof props.N === 'number' &&
-    typeof props.M === 'number' &&
-    props.N >= props.M
-  )
-}
-
 const {
   feedback,
   grid,
@@ -53,7 +43,8 @@ const {
   isXTurn,
   setFeedback,
   toggleDetails,
-  showDetails
+  showDetails,
+  hasValidDimensionProps
 } = useGameLogic(props)
 
 watch(isXTurn, (newVal, oldVal) => {
