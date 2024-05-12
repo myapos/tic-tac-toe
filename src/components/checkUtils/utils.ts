@@ -1,5 +1,16 @@
 import { X, W } from '@/constants'
+import type { gridT, rowT } from '@/components/types'
 
+interface createInitialGridI {
+  N: number
+  winIndex: number
+  start: number
+  end: number
+  mode: string
+  hasWinningMarks: boolean
+  lookingFor: string
+  emptyString: string
+}
 /**
  * It will create a 2D array with marks and symbols in various subranges that represents
  * user's selection. This utility function is used by testing to check winning  results
@@ -13,11 +24,11 @@ const createInitialGrid = ({
   hasWinningMarks,
   lookingFor = X,
   emptyString = ''
-}) => {
-  const grid = []
+}: createInitialGridI): gridT => {
+  const grid: gridT = []
 
   for (let i = 0; i < N; i++) {
-    const row = []
+    const row: rowT = []
 
     for (let j = 0; j < N; j++) {
       let isWinningCell = false
