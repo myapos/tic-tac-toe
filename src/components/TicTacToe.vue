@@ -20,6 +20,7 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import GetFeedback from './Feedback.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import ResetGame from './ResetGame.vue'
@@ -33,8 +34,8 @@ import isDraw from './checkUtils/isDraw'
 
 import type { gridT } from './types'
 
-import { O } from '../constants'
-import { X } from '../constants'
+import { O } from '@/constants'
+import { X } from '@/constants'
 const initialCellValue = ''
 
 const createInitialGrid = (N: number): gridT => {
@@ -43,7 +44,7 @@ const createInitialGrid = (N: number): gridT => {
   )
 }
 
-export default {
+export default defineComponent({
   name: 'TicTacToe',
   props: {
     N: { type: Number, required: true },
@@ -198,7 +199,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

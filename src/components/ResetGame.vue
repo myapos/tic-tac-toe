@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     onReset: {
       type: Function,
@@ -11,5 +12,5 @@ export default {
     }
   },
   name: 'ResetGame'
-}
+})
 </script>

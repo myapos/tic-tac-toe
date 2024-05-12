@@ -1,5 +1,5 @@
 import type { checkI } from './types'
-import { W } from '../../constants'
+import { W } from '@/constants'
 
 const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
   let i = startRowIdx,

@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
+
 import TicTacToe from './components/TicTacToe.vue'
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
     TicTacToe
@@ -30,7 +32,7 @@ export default {
       M: parseInt(MValue)
     }
   }
-}
+})
 </script>
 
 <style scoped>

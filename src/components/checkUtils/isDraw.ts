@@ -1,4 +1,4 @@
-import type { gridT } from './types'
+import type { gridT } from '@/components/types.ts'
 
 const isDraw = ({ grid, counter }: { grid: gridT; counter: number }) => {
   if (counter === grid.length * grid.length) {

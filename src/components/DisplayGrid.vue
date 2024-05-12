@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import type { gridT } from './types'
 import GridCell from './ui/GridCell.vue'
 
-export default {
+export default defineComponent({
   props: {
     grid: {
       type: Array as () => gridT,
@@ -33,7 +34,7 @@ export default {
       this.$emit('click-cell', args)
     }
   }
-}
+})
 </script>
 
 <style scoped>

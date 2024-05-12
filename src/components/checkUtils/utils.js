@@ -1,4 +1,4 @@
-import { X, W } from '../../constants'
+import { X, W } from '@/constants'
 
 /**
  * It will create a 2D array with marks and symbols in various subranges that represents
