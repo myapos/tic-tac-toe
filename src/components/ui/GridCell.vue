@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import type { rowT, gridT } from '../types'
-import { W } from '../../constants'
+import { W } from '@/constants'
 
 interface buildClassNamesI {
   rowIdx: number
