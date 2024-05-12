@@ -35,7 +35,7 @@
           </p>
           <p>
             The code is available
-            <a href="https://github.com/myapos/tic-tac-toe/tree/master" target="_blank">here</a>
+            <a href="https://github.com/myapos/tic-tac-toe/tree/master" target="_blank">here</a>.
           </p>
         </div>
       </transition>
