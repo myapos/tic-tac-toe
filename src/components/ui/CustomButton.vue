@@ -3,8 +3,9 @@
 </template>
 <script lang="ts">
 import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'CustomButton',
   props: {
     onClick: {
@@ -16,7 +17,7 @@ export default {
       default: 'custom-button'
     }
   }
-}
+})
 </script>
 <style scoped>
 button {

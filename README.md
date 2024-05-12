@@ -53,3 +53,7 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+### NodeJS version
+
+node > 18+

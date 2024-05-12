@@ -10,8 +10,9 @@
   </div>
 </template>
 <script lang="ts">
-import type { rowT, gridT } from '../types'
 import { W } from '@/constants'
+import { defineComponent } from 'vue'
+import type { rowT, gridT } from '../types'
 
 interface buildClassNamesI {
   rowIdx: number
@@ -19,7 +20,7 @@ interface buildClassNamesI {
   length: number
 }
 
-export default {
+export default defineComponent({
   name: 'GridCell',
   emits: ['click-cell'],
   data() {
@@ -51,7 +52,6 @@ export default {
       required: true
     }
   },
-  computed: {},
   methods: {
     isWinningCell({ rowIdx, colIdx }: buildClassNamesI): boolean {
       return this.grid[rowIdx][colIdx][1].includes(W)
@@ -102,7 +102,7 @@ export default {
       return classes
     }
   }
-}
+})
 </script>
 <style scoped>
 .grid-cell {
