@@ -1,4 +1,4 @@
-import type { gridT } from '../types'
+import type { gridT } from '@/components/types.ts'
 
 export interface checkI {
   grid: gridT
