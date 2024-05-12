@@ -10,10 +10,7 @@ Tic-tac-toe is a game for two players who take turns making space in a three-by-
 
 Traditionally, tic-tac-toe uses a 3 x 3 grid. In this problem, an advanced version of a tic-tac-toe game is built where the grid has N x N cells on the board and needs M marks in a horizontal, vertical, or diagonal row to win. The following diagram shows an example game where N = {{ N }} and M = {{ M }}.
 
-You can change these parameters by adding to the URL parameters `?N=4&M=3` where `N >= M`.<a href="https://tic-tac-toe-snowy-sigma.vercel.app/?N=4&M=4/" target="_blank">Try it!</a>.
-<a href="https://google.com" target="_blank">Link Text</a>
-<a href="https://example.com" target="_blank">Open Link in New Tab</a>
-[Open Link in New Tab](https://example.com){:onclick="window.open(this.href, '_blank'); return false;"}
+You can change these parameters by adding to the URL parameters `?N=4&M=3` where `N >= M`.[Try it!](https://tic-tac-toe-snowy-sigma.vercel.app/?N=4&M=4/)
 
 
 ## Recommended IDE Setup
