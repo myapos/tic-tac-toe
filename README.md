@@ -4,7 +4,7 @@ This tic-tac-toe version was built with Vue 3 in Vite.
 
 ### Game Details - Instructions
 
-**Note:** This is an advanced version of Tic-tac-toe. This assignment was published in [Greatfrontend](https://www.greatfrontend.com/) platform.
+**Note:** This is an advanced version of [Tic-tac-toe](https://tic-tac-toe-snowy-sigma.vercel.app). This assignment was published in [Greatfrontend](https://www.greatfrontend.com/) platform.
 
 Tic-tac-toe is a game for two players who take turns making space in a three-by-three grid with X or O. The player who succeeds in playing three of their marks in a horizontal, vertical, or diagonal row is the winner. Source: [Wikipedia](https://en.wikipedia.org/wiki/Tic-tac-toe)
 
