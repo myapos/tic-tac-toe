@@ -27,7 +27,7 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
       - name: Run unit tests with Vitest and exit
-        run: npm run vitest --run
+        run: npm run test:unit:exit
       - uses: actions/upload-artifact@v4
         if: always()
         with:
