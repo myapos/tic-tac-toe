@@ -1,7 +1,7 @@
-import checkColumns from './checkColumns.ts'
-import checkPrimaryDiagonal from './checkPrimaryDiagonal.ts'
-import checkSecondaryDiagonal from './checkSecondaryDiagonal.ts'
-import isDraw from './isDraw.ts'
-import checkRow from './checkRow.ts'
+import checkColumns from './checkColumns'
+import checkPrimaryDiagonal from './checkPrimaryDiagonal'
+import checkSecondaryDiagonal from './checkSecondaryDiagonal'
+import isDraw from './isDraw'
+import checkRow from './checkRow'
 
 export { checkRow, checkColumns, checkPrimaryDiagonal, checkSecondaryDiagonal, isDraw }

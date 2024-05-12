@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { O } from '@/constants'
 import { X } from '@/constants'
+import type { gridT } from '@/components/types'
 
 import { checkWinner } from './utils/gameLogic'
 import isDraw from './utils/checkUtils/isDraw'
