@@ -10,11 +10,5 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ],
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "./src/typings/*.d.ts" // Include TypeScript declaration files
   ]
 }

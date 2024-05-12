@@ -52,7 +52,6 @@ export default defineComponent({
       required: true
     }
   },
-  computed: {},
   methods: {
     isWinningCell({ rowIdx, colIdx }: buildClassNamesI): boolean {
       return this.grid[rowIdx][colIdx][1].includes(W)
