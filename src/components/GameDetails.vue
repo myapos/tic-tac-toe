@@ -1,8 +1,8 @@
 <template>
   <div class="gameDetails" v-show="showDetails" data-testid="details">
     <p>
-      <strong>Note</strong>: This is an advanced version of Tic-tac-toe. This assignment was
-      published in
+      <strong>Note</strong>: This is an advanced version of Tic-tac-toe. The description of this
+      assignment was published in
       <a href="https://www.greatfrontend.com/" target="_blank"> Greatfrontend </a>platform.
     </p>
     <p>
@@ -13,9 +13,8 @@
     </p>
     <p>
       Traditionally, tic-tac-toe uses a 3 x 3 grid. In this problem, an advanced version of a
-      tic-tac-toe game is built where the grid has N x N cells on the board and needs M marks in a
-      horizontal, vertical, or diagonal row to win. The following diagram shows an example game
-      where N = {{ N }} and M = {{ M }}.
+      tic-tac-toe game is built where the grid has {{ N }} x {{ N }} cells on the board and needs
+      {{ M }} marks in a horizontal, vertical, or diagonal row to win.
     </p>
     <p>
       You can change these parameters by adding to the url parameters
