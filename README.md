@@ -1,6 +1,16 @@
 # tic-tac-toe
 
-This template should help get you started developing with Vue 3 in Vite.
+This tic-tac-toe version was built with Vue 3 in Vite.
+
+### Game Details - Instructions
+
+**Note:** This is an advanced version of Tic-tac-toe. This assignment was published in [Greatfrontend](https://www.greatfrontend.com/) platform.
+
+Tic-tac-toe is a game for two players who take turns making space in a three-by-three grid with X or O. The player who succeeds in playing three of their marks in a horizontal, vertical, or diagonal row is the winner. Source: [Wikipedia](https://en.wikipedia.org/wiki/Tic-tac-toe)
+
+Traditionally, tic-tac-toe uses a 3 x 3 grid. In this problem, an advanced version of a tic-tac-toe game is built where the grid has N x N cells on the board and needs M marks in a horizontal, vertical, or diagonal row to win. The following diagram shows an example game where N = {{ N }} and M = {{ M }}.
+
+You can change these parameters by adding to the URL parameters `?N=4&M=3` where `N >= M`. [Try it!](https://vercel.com/mirwn-apostolakis-projects/tic-tac-toe/?N=4&M=4)
 
 ## Recommended IDE Setup
 
