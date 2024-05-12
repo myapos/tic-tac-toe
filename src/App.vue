@@ -22,8 +22,8 @@ export default {
     // Get the search params from the URL object
     const searchParams = url.searchParams
 
-    const NValue: string = searchParams.get('N') || '0'
-    const MValue: string = searchParams.get('M') || '0'
+    const NValue: string = searchParams.get('N') || '3'
+    const MValue: string = searchParams.get('M') || '3'
 
     return {
       N: parseInt(NValue),
