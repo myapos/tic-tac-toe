@@ -40,14 +40,13 @@ button:hover {
   border-color: var(--vt-c-divider-dark-2);
 }
 
-button:disabled {
-  cursor: default;
-  background-color: var(--vt-c-divider-dark-1);
-}
-
 button:disabled:hover {
-  cursor: default;
+  cursor: not-allowed;
   background-color: var(--vt-c-divider-dark-1);
   filter: brightness(100%);
+}
+button[disabled] {
+  border: 1px solid black;
+  background-color: var(--vt-c-divider-dark-1);
 }
 </style>
