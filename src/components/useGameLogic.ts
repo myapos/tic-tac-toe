@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { O } from '@/constants'
 import { X } from '@/constants'
 import type { gridT } from '@/components/types'
@@ -15,12 +15,16 @@ const createInitialGrid = (N: number): gridT => {
 }
 
 export const useGameLogic = (props: { N: number; M: number }) => {
+  const totalCells = props.N * props.M
   const grid = ref(createInitialGrid(props.N))
   const feedback = ref("It is X's turn!")
   const pos = ref<Array<number | undefined>>([])
   const counter = ref(0)
   const isXTurn = ref(true)
   const showDetails = ref(false)
+  const gameStarted = ref(false)
+  const gameEnded = ref(false)
+  const filledCells = ref(0)
 
   const setPos = (posArray: Array<number>) => {
     pos.value = posArray
@@ -42,11 +46,30 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     counter.value = counterVal
   }
 
+  const setGameStarted = (filledCells: number) => {
+    gameStarted.value = filledCells > 0
+  }
+
+  const setGameEnded = (filledCells: number) => {
+    gameEnded.value = filledCells === totalCells
+  }
+
+  const setFilledCells = () => {
+    filledCells.value = grid.value.reduce((accRow, row) => {
+      return (
+        accRow +
+        row.reduce((accCell, cell) => {
+          return accCell + (cell[0] === '' ? 0 : 1)
+        }, 0)
+      )
+    }, 0)
+  }
+
   const handleClickCell = ({ rowIdx, colIdx }: { rowIdx: number; colIdx: number }) => {
     // Check if the cell contains already content
     const cellHasContent = grid.value[rowIdx][colIdx][0].length > 0
 
-    if (feedback.value.includes('win') || feedback.value.includes('draw') || cellHasContent) {
+    if (gameEnded.value || cellHasContent) {
       // Don't do anything if the game ended
       return
     }
@@ -62,6 +85,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, isXTurn.value)
     if (winnerMessage) {
       setFeedback(winnerMessage)
+      setGameEnded(totalCells)
       return
     }
 
@@ -72,17 +96,44 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid, counter: newCounter })) {
       setFeedback('It is a draw. No one wins.')
+      setGameEnded(totalCells)
       return
     }
 
     setIsXTurn()
   }
+
+  watch(
+    () => grid.value,
+    () => {
+      setFilledCells()
+
+      if (filledCells.value > 0) {
+        setGameStarted(filledCells.value)
+      }
+
+      if (filledCells.value === props.N * props.M) {
+        setGameEnded(filledCells.value)
+      }
+    },
+    {
+      deep: true
+    }
+  )
+
+  watch(isXTurn, (newVal, oldVal) => {
+    setFeedback(oldVal ? "It is O's turn!" : "It is X's turn!")
+  })
+
   const handleReset = () => {
     setCounter(0)
     setGrid(createInitialGrid(props.N))
     setIsXTurn()
     setFeedback("It is X's turn!")
     pos.value = []
+    filledCells.value = 0
+    setGameStarted(0)
+    setGameEnded(0)
   }
 
   const toggleDetails = () => {
@@ -111,6 +162,8 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setPos,
     toggleDetails,
     showDetails,
-    hasValidDimensionProps
+    hasValidDimensionProps,
+    gameStarted,
+    gameEnded
   }
 }

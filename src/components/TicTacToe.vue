@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
 import GetFeedback from './Feedback.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import ResetGame from './ResetGame.vue'
@@ -32,6 +31,7 @@ import GameDetails from './GameDetails.vue'
 import ShowGameDetails from './ShowGameDetails.vue'
 import LoadDefaultGrid from './LoadDefaultGrid.vue'
 import { useGameLogic } from './useGameLogic'
+import { usePreventRouteLeave } from './usePreventRouteLeave'
 
 const gridDimensions = defineProps({
   N: { type: Number, required: true },
@@ -44,15 +44,14 @@ const {
   handleClickCell,
   handleReset,
   isXTurn,
-  setFeedback,
   toggleDetails,
   showDetails,
-  hasValidDimensionProps
+  hasValidDimensionProps,
+  gameEnded,
+  gameStarted
 } = useGameLogic(gridDimensions)
 
-watch(isXTurn, (newVal, oldVal) => {
-  setFeedback(oldVal ? "It is O's turn!" : "It is X's turn!")
-})
+usePreventRouteLeave({ gameEnded, gameStarted })
 </script>
 
 <style scoped>
