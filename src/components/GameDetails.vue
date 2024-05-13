@@ -23,7 +23,7 @@
     <p>
       You can change these parameters by adding to the url parameters
       <span class="highlight-text">?N=4&M=3</span> where <span class="highlight-text">N >= M</span>.
-      <router-link to="/?N=4&M=4">Try it!</router-link>
+      <router-link to="/reset-params?N=4&M=4">Try it!</router-link>
     </p>
     <p>
       The code is available
