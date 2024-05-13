@@ -9,16 +9,17 @@
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
-        <custom-button @click="toggleDetails" dataTestId="toggle-details-btn"
-          >Show game details</custom-button
-        >
+        <show-game-details :toggleDetails="toggleDetails"></show-game-details>
+        <load-default-grid />
       </div>
       <transition name="game-details">
         <game-details :N="N" :M="M" :showDetails="showDetails"></game-details>
       </transition>
     </app-controls>
   </div>
-  <div v-else data-testid="not-valid-params">Not valid N,M parameters</div>
+  <div v-else data-testid="not-valid-params" class="not-valid-params">
+    Not valid N,M parameters <load-default-grid />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +29,8 @@ import DisplayGrid from './DisplayGrid.vue'
 import ResetGame from './ResetGame.vue'
 import AppControls from './AppControls.vue'
 import GameDetails from './GameDetails.vue'
+import ShowGameDetails from './ShowGameDetails.vue'
+import LoadDefaultGrid from './LoadDefaultGrid.vue'
 import { useGameLogic } from './useGameLogic'
 
 const gridDimensions = defineProps({
@@ -74,5 +77,12 @@ watch(isXTurn, (newVal, oldVal) => {
 .game-details-enter-from,
 .game-details-leave-to {
   opacity: 0;
+}
+
+.not-valid-params {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 </style>

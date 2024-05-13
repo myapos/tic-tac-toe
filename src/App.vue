@@ -1,14 +1,30 @@
 <template>
   <div class="tic-tac-toe-container">
-    <router-view />
+    <router-view :key="key" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
-  name: 'App'
+  name: 'App',
+  setup() {
+    const key = ref(0)
+    const route = useRoute()
+
+    const reloadComponent = () => {
+      key.value++
+    }
+
+    // Watch for changes in route params and reload component
+    watch(() => route.params, reloadComponent, { deep: true })
+
+    return {
+      key
+    }
+  }
 })
 </script>
 
