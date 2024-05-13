@@ -15,6 +15,7 @@
     "format": "prettier --write src/",
     "clean:install": "rm -rf node_modules && npm cache clean --force && npm install",
     "e2e:ui": "npx playwright test --ui",
+    "e2e:ui:debug": "npx playwright test --debug",
     "e2e:headless": "npx playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

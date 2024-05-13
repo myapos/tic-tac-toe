@@ -1,9 +1,15 @@
 import { test, expect } from '@playwright/test'
 
+const defaultGridUrl = 'http://localhost:5173'
+const customGridUrl = 'http://localhost:5173/?N=4&M=3'
+const customGrid3X3 = 'http://localhost:5173/?N=3&M=3'
+const gridUrl1X1 = 'http://localhost:5173/?N=1&M=1'
+const randomUrl = '/a_random_url'
+const invalidUrl = 'http://localhost:5173/?N=1&M=2'
+
 test.describe('initial load with a 1x1 grid', () => {
-  const url = 'http://localhost:5173/?N=1&M=1'
   test.beforeEach(async ({ page }) => {
-    await page.goto(url)
+    await page.goto(gridUrl1X1)
   })
   test('initial load', async ({ page }) => {
     await expect(page).toHaveTitle(/TIC TAC TOE/)
@@ -26,9 +32,8 @@ test.describe('initial load with a 1x1 grid', () => {
 })
 
 test.describe('search a 3x3 grid', () => {
-  const url = 'http://localhost:5173/?N=3&M=3'
   test.beforeEach(async ({ page }) => {
-    await page.goto(url)
+    await page.goto(customGrid3X3)
   })
 
   test.describe('check cell', () => {
@@ -189,9 +194,8 @@ test.describe('search a 3x3 grid', () => {
 })
 
 test.describe('search a 4x3 grid', () => {
-  const url = 'http://localhost:5173/?N=4&M=3'
   test.beforeEach(async ({ page }) => {
-    await page.goto(url)
+    await page.goto(customGridUrl)
   })
 
   test.describe('check row', () => {
@@ -342,12 +346,53 @@ test.describe('search a 4x3 grid', () => {
 })
 
 test.describe('invalid parameters', () => {
-  const url = 'http://localhost:5173/?N=1&M=2'
   test.beforeEach(async ({ page }) => {
-    await page.goto(url)
+    await page.goto(invalidUrl)
   })
   test('initial load', async ({ page }) => {
     await expect(page.getByTestId('not-valid-params')).toBeVisible()
     await expect(page.getByTestId('tic-tac-toe-wrapper')).not.toBeVisible()
+  })
+})
+
+test.describe('router', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(defaultGridUrl)
+  })
+
+  test('should redirect to /', async ({ page }) => {
+    await page.goto(defaultGridUrl + randomUrl)
+    await expect(page).toHaveURL(defaultGridUrl)
+  })
+})
+
+test.describe('load default grid', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(defaultGridUrl)
+  })
+
+  test('should be visible', async ({ page }) => {
+    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    await expect(loadDefaultBtn).toBeVisible()
+  })
+
+  test('should be disabled with default grid', async ({ page }) => {
+    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    await expect(loadDefaultBtn).toBeDisabled()
+  })
+
+  test('should be enabled with custom grid', async ({ page }) => {
+    await page.goto(customGridUrl)
+    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    await expect(loadDefaultBtn).not.toBeDisabled()
+  })
+
+  test('should load default grid', async ({ page }) => {
+    await page.goto(customGridUrl)
+    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    await loadDefaultBtn.click()
+    const gridCells = await page.$$('.grid-cell')
+    const numOfCells = gridCells.length
+    expect(numOfCells).toBe(9)
   })
 })
