@@ -30,7 +30,7 @@ import AppControls from './AppControls.vue'
 import GameDetails from './GameDetails.vue'
 import { useGameLogic } from './useGameLogic'
 
-const props = defineProps({
+const gridDimensions = defineProps({
   N: { type: Number, required: true },
   M: { type: Number, required: true }
 })
@@ -45,7 +45,7 @@ const {
   toggleDetails,
   showDetails,
   hasValidDimensionProps
-} = useGameLogic(props)
+} = useGameLogic(gridDimensions)
 
 watch(isXTurn, (newVal, oldVal) => {
   setFeedback(oldVal ? "It is O's turn!" : "It is X's turn!")
