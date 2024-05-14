@@ -11,6 +11,10 @@
         <reset-game :onReset="handleReset"></reset-game>
         <show-game-details :toggleDetails="toggleDetails"></show-game-details>
         <load-default-grid />
+        <single-player-mode
+          :isInSinglePlayerMode="isInSinglePlayerMode"
+          :setIsInSinglePlayerMode="setIsInSinglePlayerMode"
+        />
       </div>
       <transition name="game-details">
         <game-details :N="N" :M="M" :showDetails="showDetails"></game-details>
@@ -23,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import GetFeedback from './Feedback.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import ResetGame from './ResetGame.vue'
@@ -30,6 +35,7 @@ import AppControls from './AppControls.vue'
 import GameDetails from './GameDetails.vue'
 import ShowGameDetails from './ShowGameDetails.vue'
 import LoadDefaultGrid from './LoadDefaultGrid.vue'
+import SinglePlayerMode from './SinglePlayerMode.vue'
 import { useGameLogic } from './useGameLogic'
 import { usePreventRouteLeave } from './usePreventRouteLeave'
 
@@ -48,8 +54,17 @@ const {
   showDetails,
   hasValidDimensionProps,
   gameEnded,
-  gameStarted
+  gameStarted,
+  isInSinglePlayerMode,
+  setIsInSinglePlayerMode
 } = useGameLogic(gridDimensions)
+
+watch(
+  () => isInSinglePlayerMode.value,
+  () => {
+    console.log('isInSinglePlayerMode.value', isInSinglePlayerMode.value)
+  }
+)
 
 usePreventRouteLeave({ gameEnded, gameStarted })
 </script>

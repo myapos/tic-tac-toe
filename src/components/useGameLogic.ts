@@ -25,6 +25,11 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStarted = ref(false)
   const gameEnded = ref(false)
   const filledCells = ref(0)
+  const isInSinglePlayerMode = ref(false)
+
+  const setIsInSinglePlayerMode = (value: boolean) => {
+    isInSinglePlayerMode.value = value
+  }
 
   const setPos = (posArray: Array<number>) => {
     pos.value = posArray
@@ -164,6 +169,8 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     showDetails,
     hasValidDimensionProps,
     gameStarted,
-    gameEnded
+    gameEnded,
+    isInSinglePlayerMode,
+    setIsInSinglePlayerMode
   }
 }
