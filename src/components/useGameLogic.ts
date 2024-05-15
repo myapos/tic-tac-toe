@@ -35,6 +35,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   watch(
     () => playMode.value,
     () => {
+      handleReset()
       if (playMode.value === '1P') {
         isInSinglePlayerMode.value = true
         return
@@ -46,6 +47,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   watch(
     () => playMode.value,
     () => {
+      handleReset()
       if (playMode.value === 'Auto') {
         isInAutoPlayerMode.value = true
         return
@@ -54,6 +56,17 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
   )
 
+  watch(
+    () => playMode.value,
+    () => {
+      handleReset()
+      if (playMode.value === '2P') {
+        isInTowPlayerMode.value = true
+        return
+      }
+      isInTowPlayerMode.value = false
+    }
+  )
   watch(
     () => isInAutoPlayerMode.value,
     () => {
@@ -104,17 +117,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
         nextIteration() // Start the loop
       }
-    }
-  )
-
-  watch(
-    () => playMode.value,
-    () => {
-      if (playMode.value === '2P') {
-        isInTowPlayerMode.value = true
-        return
-      }
-      isInTowPlayerMode.value = false
     }
   )
 
