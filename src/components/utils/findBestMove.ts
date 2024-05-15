@@ -51,12 +51,12 @@ export const getBestScoreAndMove = ({
         grid[i][j][0] = initialCellValue
         setCounter(counter.value - 1)
 
-        if (!isMaximizing && score < bestScore) {
+        if (!isMaximizing && score <= bestScore) {
           bestScore = score
           move = { i, j }
         }
 
-        if (isMaximizing && score > bestScore) {
+        if (isMaximizing && score >= bestScore) {
           bestScore = score
           move = { i, j }
         }
