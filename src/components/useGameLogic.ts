@@ -134,11 +134,11 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       return isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
     }
 
-    // if (depth === MAX_DEPTH) {
-    //   console.log('reached depth ', MAX_DEPTH)
-    //   const emptyCells = findEmptyCells(grid)
-    //   return isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
-    // }
+    if (depth === MAX_DEPTH) {
+      console.log('reached depth ', MAX_DEPTH)
+      const emptyCells = findEmptyCells(grid)
+      return isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
+    }
 
     if (isMaximizing) {
       let bestScore = -Infinity
