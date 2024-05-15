@@ -19,6 +19,8 @@ interface getBestScoreAndMoveI {
   depth: number
   player: string
   isMaximizing: boolean
+  alpha: number
+  beta: number
 }
 
 export const getBestScoreAndMove = ({
@@ -29,7 +31,9 @@ export const getBestScoreAndMove = ({
   counter,
   M,
   player,
-  isMaximizing
+  isMaximizing,
+  alpha,
+  beta
 }: getBestScoreAndMoveI) => {
   let bestScore = isMaximizing ? -Infinity : Infinity
   let move
@@ -46,7 +50,9 @@ export const getBestScoreAndMove = ({
           counter,
           setCounter,
           M,
-          isXTurn
+          isXTurn,
+          alpha,
+          beta
         })
         grid[i][j][0] = initialCellValue
         setCounter(counter.value - 1)
@@ -54,13 +60,23 @@ export const getBestScoreAndMove = ({
         if (!isMaximizing && score <= bestScore) {
           bestScore = score
           move = { i, j }
+          beta = Math.max(beta, bestScore)
         }
 
         if (isMaximizing && score >= bestScore) {
           bestScore = score
           move = { i, j }
+          alpha = Math.max(alpha, bestScore)
+        }
+
+        if (beta <= alpha) {
+          break
         }
       }
+    }
+
+    if (beta <= alpha) {
+      break
     }
   }
 
@@ -82,7 +98,9 @@ export const findBestMove = ({
     counter,
     M,
     player: O,
-    isMaximizing: false
+    isMaximizing: false,
+    alpha: -Infinity,
+    beta: Infinity
   })
   return move
 }
