@@ -4,6 +4,7 @@ import type { gridT, cellCoordinatesT } from '@/components/types'
 
 import { checkWinner } from './utils/checkWinner'
 import { findBestMove } from './utils/findBestMove'
+import findEmptyCells from './utils/findEmptyCells'
 import isDraw from './utils/checkUtils/isDraw'
 
 const createInitialGrid = (N: number): gridT => {
@@ -23,10 +24,99 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const gameEnded = ref(false)
   const filledCells = ref(0)
   const isInSinglePlayerMode = ref(false)
+  const isInAutoPlayerMode = ref(false)
+  const isInTowPlayerMode = ref(false)
+  const playMode = ref('2P')
 
-  const setIsInSinglePlayerMode = (value: boolean) => {
-    isInSinglePlayerMode.value = value
+  const setPlayMode = (value: string) => {
+    playMode.value = value
   }
+
+  watch(
+    () => playMode.value,
+    () => {
+      if (playMode.value === '1P') {
+        isInSinglePlayerMode.value = true
+        return
+      }
+      isInSinglePlayerMode.value = false
+    }
+  )
+
+  watch(
+    () => playMode.value,
+    () => {
+      if (playMode.value === 'Auto') {
+        isInAutoPlayerMode.value = true
+        return
+      }
+      isInAutoPlayerMode.value = false
+    }
+  )
+
+  watch(
+    () => isInAutoPlayerMode.value,
+    () => {
+      if (isInAutoPlayerMode.value) {
+        let placedX = false
+        let emptyCells = findEmptyCells(grid.value)
+
+        // Define a function to perform the next iteration of the loop with a delay
+        const nextIteration = () => {
+          setTimeout(() => {
+            // Start auto game for two players
+            while (emptyCells !== 0) {
+              if (!placedX) {
+                const initialXi = Math.floor(Math.random() * (grid.value.length - 1))
+                const initialXj = Math.floor(Math.random() * (grid.value[0].length - 1))
+
+                grid.value[initialXi][initialXj][0] = X
+                const newCounter = counter.value + 1
+
+                setGrid(grid.value)
+                setCounter(newCounter)
+                placedX = true
+                emptyCells = findEmptyCells(grid.value)
+                break // Exit loop after placing X
+              }
+
+              if (isXTurn.value) {
+                computerSelection(structuredClone(toRaw(grid.value)), true)
+
+                emptyCells = findEmptyCells(grid.value)
+                break // Exit loop after computer's selection
+              }
+
+              if (!isXTurn.value) {
+                computerSelection(structuredClone(toRaw(grid.value)), false)
+
+                emptyCells = findEmptyCells(grid.value)
+                break // Exit loop after computer's selection
+              }
+            }
+
+            // Check if the loop should continue
+            if (emptyCells !== 0 && !gameEnded.value) {
+              nextIteration() // Call the function recursively to perform the next iteration
+            }
+          }, 500) // Delay of 1 second
+        }
+
+        nextIteration() // Start the loop
+      }
+    }
+  )
+
+  watch(
+    () => playMode.value,
+    () => {
+      if (playMode.value === '2P') {
+        isInTowPlayerMode.value = true
+        return
+      }
+      isInTowPlayerMode.value = false
+    }
+  )
 
   const setFeedback = (feedbackVal: string) => {
     feedback.value = feedbackVal
@@ -65,11 +155,11 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   }
 
   /* O is minimizing I want to be the ai, X is maximizing  */
-  const computerSelection = (gridCopy: gridT) => {
-    const move = findBestMove({ gridCopy, isXTurn, setCounter, counter, M: props.M })
+  const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
+    const move = findBestMove({ gridCopy, isXTurn, setCounter, counter, M: props.M, isMaximizing })
 
     if (move) {
-      grid.value[move.i][move.j][0] = O
+      grid.value[move.i][move.j][0] = isMaximizing ? X : O
     }
 
     const newCounter = counter.value + 1
@@ -125,7 +215,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
     if (isInSinglePlayerMode.value && !isXTurn.value) {
       // run logic to select next player's move
-      computerSelection(structuredClone(toRaw(grid.value)))
+      computerSelection(structuredClone(toRaw(grid.value)), false)
     }
   }
 
@@ -190,6 +280,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     gameStarted,
     gameEnded,
     isInSinglePlayerMode,
-    setIsInSinglePlayerMode
+    playMode,
+    setPlayMode
   }
 }

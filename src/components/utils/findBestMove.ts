@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { gridT } from '@/components/types'
-import { O, initialCellValue } from '@/constants'
+import { O, X, initialCellValue } from '@/constants'
 import { minimax } from './minimax'
 
 interface findBestMoveI {
@@ -9,6 +9,7 @@ interface findBestMoveI {
   counter: Ref<number>
   setCounter: (value: number) => void
   M: number
+  isMaximizing?: boolean
 }
 interface getBestScoreAndMoveI {
   grid: gridT
@@ -88,7 +89,8 @@ export const findBestMove = ({
   isXTurn,
   setCounter,
   counter,
-  M
+  M,
+  isMaximizing = false
 }: findBestMoveI): { i: number; j: number } | undefined => {
   const { move } = getBestScoreAndMove({
     grid: gridCopy,
@@ -97,8 +99,8 @@ export const findBestMove = ({
     setCounter,
     counter,
     M,
-    player: O,
-    isMaximizing: false,
+    player: isMaximizing ? X : O,
+    isMaximizing,
     alpha: -Infinity,
     beta: Infinity
   })
