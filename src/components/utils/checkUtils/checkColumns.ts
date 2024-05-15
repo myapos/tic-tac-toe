@@ -34,7 +34,7 @@ const checkColumns = ({
   startColIdx,
   lookingFor,
   target,
-  shouldMarkWinningCells
+  shouldMarkWinningCells = true
 }: checkI) => {
   let currentRow = startRowIdx,
     currentColumn = startColIdx

@@ -43,7 +43,8 @@ describe('checkColumn', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: false
     })
 
     expect(result).toEqual({

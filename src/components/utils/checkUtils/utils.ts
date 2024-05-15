@@ -8,8 +8,8 @@ interface createInitialGridI {
   end: number
   mode: string
   hasWinningMarks: boolean
-  lookingFor: string
-  emptyString: string
+  lookingFor?: string
+  emptyString?: string
 }
 /**
  * It will create a 2D array with marks and symbols in various subranges that represents
