@@ -28,20 +28,31 @@ const markWinningCellsDown = (
     grid[winCellRowIdx][startColIdx][winCellColIdx] = W
   }
 }
-const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
+const checkColumns = ({
+  grid,
+  startRowIdx,
+  startColIdx,
+  lookingFor,
+  target,
+  shouldMarkWinningCells
+}: checkI) => {
   let currentRow = startRowIdx,
     currentColumn = startColIdx
   let countValuesUp = 0
   let countValuesDown = 0
 
   // Search up
-  while (currentRow >= 0 && grid[currentRow][currentColumn][0] === lookingFor) {
+  while (
+    currentRow < grid.length &&
+    currentRow >= 0 &&
+    grid[currentRow][currentColumn][0] === lookingFor
+  ) {
     countValuesUp++
     currentRow--
   }
 
   if (countValuesUp === target) {
-    markWinningCellsUp(startRowIdx, startColIdx, target, grid)
+    shouldMarkWinningCells && markWinningCellsUp(startRowIdx, startColIdx, target, grid)
     return { winner: lookingFor, won: true }
   }
 
@@ -50,13 +61,18 @@ const checkColumns = ({ grid, startRowIdx, startColIdx, lookingFor, target }: ch
   currentColumn = startColIdx
 
   // Search down from the next row
-  while (currentRow < grid.length && grid[currentRow][currentColumn][0] === lookingFor) {
+  while (
+    currentRow < grid.length &&
+    currentColumn < grid[0].length &&
+    grid[currentRow][currentColumn][0] === lookingFor
+  ) {
     countValuesDown++
     currentRow++
   }
 
   if (countValuesUp + countValuesDown === target) {
-    markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
+    shouldMarkWinningCells &&
+      markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
     return { winner: lookingFor, won: true }
   }
 

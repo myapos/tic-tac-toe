@@ -26,21 +26,34 @@ const markWinningCellsDown = (
   }
 }
 
-const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
+const checkPrimaryDiagonal = ({
+  grid,
+  startRowIdx,
+  startColIdx,
+  lookingFor,
+  target,
+  shouldMarkWinningCells
+}: checkI) => {
   let i = startRowIdx,
     j = startColIdx
   let countValuesUp = 0
   let countValuesDown = 0
 
   // Search up
-  while (i >= 0 && j >= 0 && grid[i][j][0] === lookingFor) {
+  while (
+    i >= 0 &&
+    j >= 0 &&
+    i < grid.length &&
+    j < grid[0].length &&
+    grid[i][j][0] === lookingFor
+  ) {
     countValuesUp++
     i--
     j--
   }
 
   if (countValuesUp === target) {
-    markWinningCellsUp(startRowIdx, startColIdx, target, grid)
+    shouldMarkWinningCells && markWinningCellsUp(startRowIdx, startColIdx, target, grid)
     return { winner: lookingFor, won: true }
   }
 
@@ -55,7 +68,8 @@ const checkPrimaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, targ
   }
 
   if (countValuesUp + countValuesDown === target) {
-    markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
+    shouldMarkWinningCells &&
+      markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
     return { winner: lookingFor, won: true }
   }
 

@@ -28,20 +28,27 @@ const markWinningCellsRight = (
   }
 }
 
-const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
+const checkRow = ({
+  grid,
+  startRowIdx,
+  startColIdx,
+  lookingFor,
+  target,
+  shouldMarkWinningCells
+}: checkI) => {
   let i = startRowIdx,
     j = startColIdx
   let countValuesLeft = 0
   let countValuesRight = 0
 
   // Search left
-  while (j >= 0 && grid[i][j][0] === lookingFor) {
+  while (i < grid.length && j < grid[0].length && j >= 0 && grid[i][j][0] === lookingFor) {
     countValuesLeft++
     j--
   }
 
   if (countValuesLeft === target) {
-    markWinningCellsLeft(startRowIdx, startColIdx, target, grid)
+    shouldMarkWinningCells && markWinningCellsLeft(startRowIdx, startColIdx, target, grid)
     return { winner: lookingFor, won: true }
   }
 
@@ -49,13 +56,14 @@ const checkRow = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI
   ;(i = startRowIdx), (j = startColIdx + 1)
 
   // Search right
-  while (j < grid[i].length && grid[i][j][0] === lookingFor) {
+  while (i < grid.length && j < grid[0].length && grid[i][j][0] === lookingFor) {
     countValuesRight++
     j++
   }
 
   if (countValuesLeft + countValuesRight === target) {
-    markWinningCellsRight(startRowIdx, startColIdx, target, countValuesLeft, grid)
+    shouldMarkWinningCells &&
+      markWinningCellsRight(startRowIdx, startColIdx, target, countValuesLeft, grid)
     return { winner: lookingFor, won: true }
   }
 

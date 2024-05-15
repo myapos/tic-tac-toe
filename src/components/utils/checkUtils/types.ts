@@ -6,4 +6,5 @@ export interface checkI {
   startColIdx: number
   lookingFor: string
   target: number
+  shouldMarkWinningCells: boolean
 }

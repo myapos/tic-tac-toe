@@ -7,13 +7,19 @@ import checkPrimaryDiagonal from './checkUtils/checkPrimaryDiagonal'
 import checkSecondaryDiagonal from './checkUtils/checkSecondaryDiagonal'
 import isDraw from './checkUtils/isDraw'
 
+export interface checkWinnerI {
+  feedback: string
+  winner: string
+  won: boolean
+}
 export const checkWinner = (
   grid: gridT,
   rowIdx: number,
   colIdx: number,
   M: number,
-  isXTurn: boolean
-): string => {
+  isXTurn: boolean,
+  shouldMarkWinningCells: boolean
+): checkWinnerI => {
   const lookingFor = isXTurn ? X : O
 
   const rowResult = checkRow({
@@ -21,11 +27,16 @@ export const checkWinner = (
     startRowIdx: rowIdx,
     startColIdx: colIdx,
     lookingFor,
-    target: M
+    target: M,
+    shouldMarkWinningCells
   })
 
   if (rowResult.won) {
-    return `Player ${rowResult.winner} wins!`
+    return {
+      feedback: `Player ${rowResult.winner} wins!`,
+      winner: rowResult.winner,
+      won: rowResult.won
+    }
   }
 
   const colResult = checkColumns({
@@ -33,11 +44,16 @@ export const checkWinner = (
     startRowIdx: rowIdx,
     startColIdx: colIdx,
     lookingFor,
-    target: M
+    target: M,
+    shouldMarkWinningCells
   })
 
   if (colResult.won) {
-    return `Player ${colResult.winner} wins!`
+    return {
+      feedback: `Player ${colResult.winner} wins!`,
+      winner: colResult.winner,
+      won: colResult.won
+    }
   }
 
   const primaryDiagonalResult = checkPrimaryDiagonal({
@@ -45,11 +61,16 @@ export const checkWinner = (
     startRowIdx: rowIdx,
     startColIdx: colIdx,
     lookingFor,
-    target: M
+    target: M,
+    shouldMarkWinningCells
   })
 
   if (primaryDiagonalResult.won) {
-    return `Player ${primaryDiagonalResult.winner} wins!`
+    return {
+      feedback: `Player ${primaryDiagonalResult.winner} wins!`,
+      winner: primaryDiagonalResult.winner,
+      won: primaryDiagonalResult.won
+    }
   }
 
   const secondaryDiagonalResult = checkSecondaryDiagonal({
@@ -57,14 +78,23 @@ export const checkWinner = (
     startRowIdx: rowIdx,
     startColIdx: colIdx,
     lookingFor,
-    target: M
+    target: M,
+    shouldMarkWinningCells
   })
 
   if (secondaryDiagonalResult.won) {
-    return `Player ${secondaryDiagonalResult.winner} wins!`
+    return {
+      feedback: `Player ${secondaryDiagonalResult.winner} wins!`,
+      winner: secondaryDiagonalResult.winner,
+      won: secondaryDiagonalResult.won
+    }
   }
 
-  return ''
+  return {
+    feedback: '',
+    winner: '',
+    won: false
+  }
 }
 
 export const checkDraw = (grid: gridT, counter: number): boolean => {
