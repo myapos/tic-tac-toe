@@ -26,7 +26,14 @@ const markWinningCellsDown = (
   }
 }
 
-const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, target }: checkI) => {
+const checkSecondaryDiagonal = ({
+  grid,
+  startRowIdx,
+  startColIdx,
+  lookingFor,
+  target,
+  shouldMarkWinningCells
+}: checkI) => {
   let i = startRowIdx,
     j = startColIdx
   let countValuesUp = 0
@@ -40,7 +47,7 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
   }
 
   if (countValuesUp === target) {
-    markWinningCellsUp(startRowIdx, startColIdx, target, grid)
+    shouldMarkWinningCells && markWinningCellsUp(startRowIdx, startColIdx, target, grid)
     return { winner: lookingFor, won: true }
   }
 
@@ -55,7 +62,8 @@ const checkSecondaryDiagonal = ({ grid, startRowIdx, startColIdx, lookingFor, ta
   }
 
   if (countValuesUp + countValuesDown === target) {
-    markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
+    shouldMarkWinningCells &&
+      markWinningCellsDown(startRowIdx, startColIdx, target, countValuesUp, grid)
     return { winner: lookingFor, won: true }
   }
 

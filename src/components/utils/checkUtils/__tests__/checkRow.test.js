@@ -19,7 +19,14 @@ describe('checkRow', () => {
       hasWinningMarks: false
     }
     const grid = createInitialGrid(emptyGridOptions)
-    const result = checkRow({ grid, startRowIdx, startColIdx, lookingFor, target })
+    const result = checkRow({
+      grid,
+      startRowIdx,
+      startColIdx,
+      lookingFor,
+      target,
+      shouldMarkWinningCells: true
+    })
 
     expect(result).toEqual({
       winner: '',
@@ -43,7 +50,8 @@ describe('checkRow', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -68,7 +76,8 @@ describe('checkRow', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -96,7 +105,8 @@ describe('checkRow', () => {
       startRowIdx: gridOptions.winIndex,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -124,7 +134,8 @@ describe('checkRow', () => {
       startRowIdx: gridOptions.winIndex,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -152,7 +163,8 @@ describe('checkRow', () => {
       startRowIdx: gridOptions.winIndex,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({

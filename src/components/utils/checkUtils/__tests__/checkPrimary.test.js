@@ -43,7 +43,8 @@ describe('checkPrimary', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -68,7 +69,8 @@ describe('checkPrimary', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -96,7 +98,8 @@ describe('checkPrimary', () => {
       startRowIdx: gridOptions.winIndex,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({

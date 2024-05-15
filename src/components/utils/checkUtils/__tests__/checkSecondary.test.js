@@ -43,7 +43,8 @@ describe('checkSecondary', () => {
       startRowIdx,
       startColIdx,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -68,7 +69,8 @@ describe('checkSecondary', () => {
       startRowIdx,
       startColIdx: gridOptions.N - 1,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
@@ -96,7 +98,8 @@ describe('checkSecondary', () => {
       startRowIdx: 1,
       startColIdx: 2,
       lookingFor,
-      target
+      target,
+      shouldMarkWinningCells: true
     })
 
     expect(result).toEqual({
