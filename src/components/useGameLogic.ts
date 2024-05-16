@@ -1,26 +1,13 @@
 import { ref, watch, toRaw } from 'vue'
 
+import useAutoPlay from './useAutoPlay'
 import isDraw from './utils/checkUtils/isDraw'
 import { checkWinner } from './utils/checkWinner'
 import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
-import findEmptyCells from './utils/findEmptyCells'
-import getPlayMode from './utils/getPlayMode'
-import getRandomValueInRange from './utils/getRandomValueInRange'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
-import {
-  O,
-  X,
-  initialCellValue,
-  itIsXturn,
-  itIsOturn,
-  itIsDraw,
-  playModes,
-  restartingGame,
-  ROUND_DELAY,
-  RESTART_DELAY
-} from '@/constants'
+import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw, playModes } from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
@@ -40,98 +27,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const setPlayMode = (value: string) => {
     playMode.value = value
   }
-
-  const placeXInRandomCoordinates = () => {
-    const initialXi = getRandomValueInRange(grid.value.length)
-    const initialXj = getRandomValueInRange(grid.value[0].length)
-
-    grid.value[initialXi][initialXj][0] = X
-    const newCounter = counter.value + 1
-
-    setGrid(grid.value)
-    setCounter(newCounter)
-    return true
-  }
-
-  const startAutoPlay = (playMode: any) => {
-    const detectedMode = getPlayMode(playMode.value)
-    if (!detectedMode.autoPlayer) {
-      return
-    }
-    let placedX = false
-    let emptyCells = findEmptyCells(grid.value)
-
-    // Define a function to perform the next iteration of the loop with a delay
-    const nextIteration = () => {
-      setTimeout(() => {
-        // Start auto game for two players
-        while (emptyCells !== 0) {
-          const detectedMode = getPlayMode(playMode.value)
-          if (!detectedMode.autoPlayer) {
-            handleReset()
-            emptyCells = 0
-            break
-          }
-          if (!placedX) {
-            placedX = placeXInRandomCoordinates()
-            emptyCells = findEmptyCells(grid.value)
-            break // Exit loop after placing X
-          }
-
-          if (isXTurn.value) {
-            computerSelection(structuredClone(toRaw(grid.value)), true)
-
-            emptyCells = findEmptyCells(grid.value)
-            break // Exit loop after computer's selection
-          }
-
-          if (!isXTurn.value) {
-            computerSelection(structuredClone(toRaw(grid.value)), false)
-
-            emptyCells = findEmptyCells(grid.value)
-            break // Exit loop after computer's selection
-          }
-        }
-
-        // Check if the loop should continue
-        if (emptyCells !== 0 && !gameEnded.value) {
-          nextIteration() // Call the function recursively to perform the next iteration
-        }
-        if (emptyCells === 0 || gameEnded.value) {
-          setTimeout(() => {
-            setFeedback(restartingGame)
-          }, RESTART_DELAY)
-          //restart auto play mode
-          setTimeout(() => {
-            handleReset()
-            startAutoPlay(playMode)
-          }, RESTART_DELAY * 2)
-        }
-      }, ROUND_DELAY) // Delay of 1 second
-    }
-
-    nextIteration() // Start the loop
-  }
-  watch(
-    () => playMode.value,
-    () => {
-      const detectedMode = getPlayMode(playMode.value)
-      handleReset()
-      if (detectedMode.singlePlayer) {
-        isInSinglePlayerMode.value = true
-        return
-      }
-      if (detectedMode.twoPlayer) {
-        isInTwoPlayerMode.value = true
-        return
-      }
-      if (detectedMode.autoPlayer) {
-        isInAutoPlayerMode.value = true
-        startAutoPlay(playMode)
-        return
-      }
-    }
-  )
 
   const setFeedback = (feedbackVal: string) => {
     feedback.value = feedbackVal
@@ -279,6 +174,22 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       props.N >= props.M
     )
   }
+
+  useAutoPlay({
+    playMode,
+    handleReset,
+    isInSinglePlayerMode,
+    isInTwoPlayerMode,
+    isInAutoPlayerMode,
+    grid,
+    counter,
+    setGrid,
+    setCounter,
+    isXTurn,
+    computerSelection,
+    gameEnded,
+    setFeedback
+  })
 
   return {
     counter,
