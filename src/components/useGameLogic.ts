@@ -7,12 +7,12 @@ import { findBestMove } from './utils/findBestMove'
 import findEmptyCells from './utils/findEmptyCells'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
-import { O, X, initialCellValue } from '@/constants'
+import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw, playModes } from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
   const grid = ref(createEmptyGrid(props.N))
-  const feedback = ref("It is X's turn!")
+  const feedback = ref(itIsXturn)
   const counter = ref(0)
   const isXTurn = ref(true)
   const showDetails = ref(false)
@@ -22,7 +22,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
   const isInTowPlayerMode = ref(false)
-  const playMode = ref('2P')
+  const playMode = ref(playModes.TWO_PLAYER)
 
   const setPlayMode = (value: string) => {
     playMode.value = value
@@ -32,7 +32,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     () => playMode.value,
     () => {
       handleReset()
-      if (playMode.value === '1P') {
+      if (playMode.value === playModes.SINGLE_PLAYER) {
         isInSinglePlayerMode.value = true
         return
       }
@@ -44,7 +44,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     () => playMode.value,
     () => {
       handleReset()
-      if (playMode.value === 'Auto') {
+      if (playMode.value === playModes.AUTO_PLAYER) {
         isInAutoPlayerMode.value = true
         return
       }
@@ -56,7 +56,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     () => playMode.value,
     () => {
       handleReset()
-      if (playMode.value === '2P') {
+      if (playMode.value === playModes.TWO_PLAYER) {
         isInTowPlayerMode.value = true
         return
       }
@@ -172,7 +172,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
     // check draw
     if (isDraw({ grid: grid.value, counter: newCounter })) {
-      setFeedback('It is a draw. No one wins.')
+      setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
@@ -237,14 +237,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   watch(isXTurn, (newVal, oldVal) => {
     if (!gameEnded.value) {
-      setFeedback(oldVal ? "It is O's turn!" : "It is X's turn!")
+      setFeedback(oldVal ? itIsOturn : itIsXturn)
     }
   })
 
   const handleReset = () => {
     setCounter(0)
     setGrid(createEmptyGrid(props.N))
-    setFeedback("It is X's turn!")
+    setFeedback(itIsXturn)
     filledCells.value = 0
     setGameStarted(0)
     setGameEnded(0)
