@@ -1,15 +1,16 @@
 import { expect, test, describe } from 'vitest'
-import createInitialGrid from '../utils'
-import checkSecondary from '../checkSecondaryDiagonal.ts'
 import { X } from '@/constants'
+
+import createGrid from '../createGrid'
+import checkPrimary from '../checkPrimaryDiagonal'
 
 const lookingFor = X
 const startRowIdx = 0
 const startColIdx = 0
 const target = 3
 
-describe('checkSecondary', () => {
-  test('should check a secondary with false result', () => {
+describe('checkPrimary', () => {
+  test('should check a primary with false result', () => {
     const emptyGridOptions = {
       N: 4,
       winIndex: 0,
@@ -18,8 +19,8 @@ describe('checkSecondary', () => {
       mode: '',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(emptyGridOptions)
-    const result = checkSecondary({ grid, startRowIdx, startColIdx, lookingFor, target })
+    const grid = createGrid(emptyGridOptions)
+    const result = checkPrimary({ grid, startRowIdx, startColIdx, lookingFor, target })
 
     expect(result).toEqual({
       winner: '',
@@ -27,18 +28,18 @@ describe('checkSecondary', () => {
     })
   })
 
-  test('should check secondary with false as winning result', () => {
+  test('should check primary with false as winning result', () => {
     const gridOptions = {
       N: 3,
       winIndex: 0,
       start: 0,
       end: 1,
-      mode: 'secondary',
+      mode: 'primary',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
-    const result = checkSecondary({
+    const result = checkPrimary({
       grid,
       startRowIdx,
       startColIdx,
@@ -53,21 +54,21 @@ describe('checkSecondary', () => {
     })
   })
 
-  test('should check secondary with true as winning result', () => {
+  test('should check primary with true as winning result', () => {
     const gridOptions = {
       N: 3,
       winIndex: 0,
       start: 0,
       end: 2,
-      mode: 'secondary',
+      mode: 'primary',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
-    const result = checkSecondary({
+    const result = checkPrimary({
       grid,
       startRowIdx,
-      startColIdx: gridOptions.N - 1,
+      startColIdx,
       lookingFor,
       target,
       shouldMarkWinningCells: true
@@ -79,24 +80,24 @@ describe('checkSecondary', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
-  test('should check secondary with true as winning result in a subrange', () => {
+  test('should check primary with true as winning result in a subrange', () => {
     const gridOptions = {
       N: 4,
       winIndex: 0,
       start: 1,
       end: 3,
-      mode: 'secondary',
+      mode: 'primary',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
-    const result = checkSecondary({
+    const result = checkPrimary({
       grid,
-      startRowIdx: 1,
-      startColIdx: 2,
+      startRowIdx: gridOptions.winIndex,
+      startColIdx,
       lookingFor,
       target,
       shouldMarkWinningCells: true
@@ -108,6 +109,6 @@ describe('checkSecondary', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 })

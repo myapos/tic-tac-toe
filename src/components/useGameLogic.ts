@@ -6,16 +6,11 @@ import { checkWinner } from './utils/checkWinner'
 import { findBestMove } from './utils/findBestMove'
 import findEmptyCells from './utils/findEmptyCells'
 import isDraw from './utils/checkUtils/isDraw'
-
-const createInitialGrid = (N: number): gridT => {
-  return Array.from({ length: N }, () =>
-    Array.from({ length: N }, () => [initialCellValue, initialCellValue])
-  )
-}
+import createEmptyGrid from './utils/createEmptyGrid'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
-  const grid = ref(createInitialGrid(props.N))
+  const grid = ref(createEmptyGrid(props.N))
   const feedback = ref("It is X's turn!")
   const counter = ref(0)
   const isXTurn = ref(true)
@@ -247,7 +242,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   const handleReset = () => {
     setCounter(0)
-    setGrid(createInitialGrid(props.N))
+    setGrid(createEmptyGrid(props.N))
     setFeedback("It is X's turn!")
     filledCells.value = 0
     setGameStarted(0)

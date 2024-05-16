@@ -1,7 +1,8 @@
 import { expect, test, describe } from 'vitest'
-import createInitialGrid from '../utils'
-import checkRow from '../checkRow'
 import { X } from '@/constants'
+
+import createGrid from '../createGrid'
+import checkRow from '../checkRow'
 
 const lookingFor = X
 const startRowIdx = 0
@@ -18,7 +19,7 @@ describe('checkRow', () => {
       mode: '',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(emptyGridOptions)
+    const grid = createGrid(emptyGridOptions)
     const result = checkRow({
       grid,
       startRowIdx,
@@ -43,7 +44,7 @@ describe('checkRow', () => {
       mode: 'row',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkRow({
       grid,
@@ -69,7 +70,7 @@ describe('checkRow', () => {
       mode: 'row',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkRow({
       grid,
@@ -86,7 +87,7 @@ describe('checkRow', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check second row with true as winning result', () => {
@@ -98,7 +99,7 @@ describe('checkRow', () => {
       mode: 'row',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkRow({
       grid,
@@ -115,7 +116,7 @@ describe('checkRow', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check third row with true as winning result', () => {
@@ -127,7 +128,7 @@ describe('checkRow', () => {
       mode: 'row',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkRow({
       grid,
@@ -144,7 +145,7 @@ describe('checkRow', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check first row with true as winning result in a subrange', () => {
@@ -156,7 +157,7 @@ describe('checkRow', () => {
       mode: 'row',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkRow({
       grid,
@@ -173,6 +174,6 @@ describe('checkRow', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 })

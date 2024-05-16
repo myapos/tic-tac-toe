@@ -1,7 +1,8 @@
 import { expect, test, describe } from 'vitest'
-import createInitialGrid from '../utils'
-import checkColumns from '../checkColumns'
 import { X } from '@/constants'
+
+import createGrid from '../createGrid'
+import checkColumns from '../checkColumns'
 
 const lookingFor = X
 const startRowIdx = 0
@@ -18,7 +19,7 @@ describe('checkColumn', () => {
       mode: '',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(emptyGridOptions)
+    const grid = createGrid(emptyGridOptions)
     const result = checkColumns({ grid, startRowIdx, startColIdx, lookingFor, target })
 
     expect(result).toEqual({
@@ -36,7 +37,7 @@ describe('checkColumn', () => {
       mode: 'col',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkColumns({
       grid,
@@ -62,7 +63,7 @@ describe('checkColumn', () => {
       mode: 'col',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkColumns({
       grid,
@@ -78,7 +79,7 @@ describe('checkColumn', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check second column with true as winning result', () => {
@@ -90,7 +91,7 @@ describe('checkColumn', () => {
       mode: 'col',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkColumns({
       grid,
@@ -106,7 +107,7 @@ describe('checkColumn', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check third column with true as winning result', () => {
@@ -118,7 +119,7 @@ describe('checkColumn', () => {
       mode: 'col',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkColumns({
       grid,
@@ -134,7 +135,7 @@ describe('checkColumn', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 
   test('should check first column with true as winning result in a subrange', () => {
@@ -146,7 +147,7 @@ describe('checkColumn', () => {
       mode: 'col',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(gridOptions)
+    const grid = createGrid(gridOptions)
 
     const result = checkColumns({
       grid,
@@ -162,6 +163,6 @@ describe('checkColumn', () => {
     })
 
     gridOptions.hasWinningMarks = true
-    expect(grid).toEqual(createInitialGrid(gridOptions))
+    expect(grid).toEqual(createGrid(gridOptions))
   })
 })
