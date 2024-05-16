@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+
 import type { gridT } from './types'
 import GridCell from './ui/GridCell.vue'
 

@@ -1,11 +1,12 @@
 // gameLogic.ts
-import { O, X } from '@/constants'
-import type { gridT } from '@/components/types.ts'
-import checkRow from './checkUtils/checkRow'
 import checkColumns from './checkUtils/checkColumns'
 import checkPrimaryDiagonal from './checkUtils/checkPrimaryDiagonal'
+import checkRow from './checkUtils/checkRow'
 import checkSecondaryDiagonal from './checkUtils/checkSecondaryDiagonal'
 import isDraw from './checkUtils/isDraw'
+
+import type { gridT } from '@/components/types.ts'
+import { O, X } from '@/constants'
 
 export interface checkWinnerI {
   feedback: string

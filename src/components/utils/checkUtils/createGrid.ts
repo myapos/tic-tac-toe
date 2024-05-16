@@ -1,5 +1,5 @@
-import { X, W } from '@/constants'
 import type { gridT, rowT } from '@/components/types'
+import { X, W } from '@/constants'
 
 interface createGridI {
   N: number

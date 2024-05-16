@@ -10,9 +10,11 @@
   </div>
 </template>
 <script lang="ts">
-import { W } from '@/constants'
 import { defineComponent } from 'vue'
+
 import type { rowT, gridT } from '../types'
+
+import { W } from '@/constants'
 
 interface buildClassNamesI {
   rowIdx: number

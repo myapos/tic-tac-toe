@@ -24,14 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import GetFeedback from './Feedback.vue'
-import DisplayGrid from './DisplayGrid.vue'
-import ResetGame from './ResetGame.vue'
 import AppControls from './AppControls.vue'
+import DisplayGrid from './DisplayGrid.vue'
+import GetFeedback from './Feedback.vue'
 import GameDetails from './GameDetails.vue'
-import ShowGameDetails from './ShowGameDetails.vue'
 import LoadDefaultGrid from './LoadDefaultGrid.vue'
 import PlayerModes from './PlayerModes.vue'
+import ResetGame from './ResetGame.vue'
+import ShowGameDetails from './ShowGameDetails.vue'
 import { useGameLogic } from './useGameLogic'
 import { usePreventRouteLeave } from './usePreventRouteLeave'
 

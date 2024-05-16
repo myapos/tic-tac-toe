@@ -1,8 +1,9 @@
 import { expect, test, describe } from 'vitest'
-import { X } from '@/constants'
 
-import createGrid from '../createGrid'
 import checkPrimary from '../checkPrimaryDiagonal'
+import createGrid from '../createGrid'
+
+import { X } from '@/constants'
 
 const lookingFor = X
 const startRowIdx = 0

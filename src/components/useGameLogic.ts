@@ -1,12 +1,13 @@
 import { ref, watch, toRaw } from 'vue'
-import { O, X, initialCellValue } from '@/constants'
-import type { gridT, cellCoordinatesT } from '@/components/types'
 
+import isDraw from './utils/checkUtils/isDraw'
 import { checkWinner } from './utils/checkWinner'
+import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
 import findEmptyCells from './utils/findEmptyCells'
-import isDraw from './utils/checkUtils/isDraw'
-import createEmptyGrid from './utils/createEmptyGrid'
+
+import type { gridT, cellCoordinatesT } from '@/components/types'
+import { O, X, initialCellValue } from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M

@@ -1,5 +1,6 @@
-import { W } from '@/constants'
 import type { checkI } from './types'
+
+import { W } from '@/constants'
 
 const markWinningCellsUp = (
   startRowIdx: checkI['startRowIdx'],
