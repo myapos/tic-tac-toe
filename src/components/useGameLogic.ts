@@ -5,9 +5,22 @@ import { checkWinner } from './utils/checkWinner'
 import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
 import findEmptyCells from './utils/findEmptyCells'
+import getPlayMode from './utils/getPlayMode'
+import getRandomValueInRange from './utils/getRandomValueInRange'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
-import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw, playModes } from '@/constants'
+import {
+  O,
+  X,
+  initialCellValue,
+  itIsXturn,
+  itIsOturn,
+  itIsDraw,
+  playModes,
+  restartingGame,
+  ROUND_DELAY,
+  RESTART_DELAY
+} from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
@@ -21,97 +34,101 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const filledCells = ref(0)
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
-  const isInTowPlayerMode = ref(false)
+  const isInTwoPlayerMode = ref(false)
   const playMode = ref(playModes.TWO_PLAYER)
 
   const setPlayMode = (value: string) => {
     playMode.value = value
   }
 
+  const placeXInRandomCoordinates = () => {
+    const initialXi = getRandomValueInRange(grid.value.length)
+    const initialXj = getRandomValueInRange(grid.value[0].length)
+
+    grid.value[initialXi][initialXj][0] = X
+    const newCounter = counter.value + 1
+
+    setGrid(grid.value)
+    setCounter(newCounter)
+    return true
+  }
+
+  const startAutoPlay = (playMode: any) => {
+    const detectedMode = getPlayMode(playMode.value)
+    if (!detectedMode.autoPlayer) {
+      return
+    }
+    let placedX = false
+    let emptyCells = findEmptyCells(grid.value)
+
+    // Define a function to perform the next iteration of the loop with a delay
+    const nextIteration = () => {
+      setTimeout(() => {
+        // Start auto game for two players
+        while (emptyCells !== 0) {
+          const detectedMode = getPlayMode(playMode.value)
+          if (!detectedMode.autoPlayer) {
+            handleReset()
+            emptyCells = 0
+            break
+          }
+          if (!placedX) {
+            placedX = placeXInRandomCoordinates()
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after placing X
+          }
+
+          if (isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), true)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+
+          if (!isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), false)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+        }
+
+        // Check if the loop should continue
+        if (emptyCells !== 0 && !gameEnded.value) {
+          nextIteration() // Call the function recursively to perform the next iteration
+        }
+        if (emptyCells === 0 || gameEnded.value) {
+          setTimeout(() => {
+            setFeedback(restartingGame)
+          }, RESTART_DELAY)
+          //restart auto play mode
+          setTimeout(() => {
+            handleReset()
+            startAutoPlay(playMode)
+          }, RESTART_DELAY * 2)
+        }
+      }, ROUND_DELAY) // Delay of 1 second
+    }
+
+    nextIteration() // Start the loop
+  }
   watch(
     () => playMode.value,
     () => {
+      const detectedMode = getPlayMode(playMode.value)
       handleReset()
-      if (playMode.value === playModes.SINGLE_PLAYER) {
+      if (detectedMode.singlePlayer) {
         isInSinglePlayerMode.value = true
         return
       }
-      isInSinglePlayerMode.value = false
-    }
-  )
-
-  watch(
-    () => playMode.value,
-    () => {
-      handleReset()
-      if (playMode.value === playModes.AUTO_PLAYER) {
+      if (detectedMode.twoPlayer) {
+        isInTwoPlayerMode.value = true
+        return
+      }
+      if (detectedMode.autoPlayer) {
         isInAutoPlayerMode.value = true
+        startAutoPlay(playMode)
         return
-      }
-      isInAutoPlayerMode.value = false
-    }
-  )
-
-  watch(
-    () => playMode.value,
-    () => {
-      handleReset()
-      if (playMode.value === playModes.TWO_PLAYER) {
-        isInTowPlayerMode.value = true
-        return
-      }
-      isInTowPlayerMode.value = false
-    }
-  )
-  watch(
-    () => isInAutoPlayerMode.value,
-    () => {
-      if (isInAutoPlayerMode.value) {
-        let placedX = false
-        let emptyCells = findEmptyCells(grid.value)
-
-        // Define a function to perform the next iteration of the loop with a delay
-        const nextIteration = () => {
-          setTimeout(() => {
-            // Start auto game for two players
-            while (emptyCells !== 0) {
-              if (!placedX) {
-                const initialXi = Math.floor(Math.random() * (grid.value.length - 1))
-                const initialXj = Math.floor(Math.random() * (grid.value[0].length - 1))
-
-                grid.value[initialXi][initialXj][0] = X
-                const newCounter = counter.value + 1
-
-                setGrid(grid.value)
-                setCounter(newCounter)
-                placedX = true
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after placing X
-              }
-
-              if (isXTurn.value) {
-                computerSelection(structuredClone(toRaw(grid.value)), true)
-
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after computer's selection
-              }
-
-              if (!isXTurn.value) {
-                computerSelection(structuredClone(toRaw(grid.value)), false)
-
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after computer's selection
-              }
-            }
-
-            // Check if the loop should continue
-            if (emptyCells !== 0 && !gameEnded.value) {
-              nextIteration() // Call the function recursively to perform the next iteration
-            }
-          }, 500) // Delay of 1 second
-        }
-
-        nextIteration() // Start the loop
       }
     }
   )

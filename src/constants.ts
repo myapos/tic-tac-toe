@@ -7,8 +7,12 @@ export const initialCellValue = ''
 export const itIsXturn = "It is X's turn!"
 export const itIsOturn = "It is O's turn!"
 export const itIsDraw = 'It is a draw. No one wins.'
+export const restartingGame = 'Restarting game...'
 export const playModes = {
   SINGLE_PLAYER: '1P',
   AUTO_PLAYER: 'Auto',
   TWO_PLAYER: '2P'
 }
+
+export const ROUND_DELAY = 500
+export const RESTART_DELAY = 500
