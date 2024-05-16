@@ -1,4 +1,5 @@
 import type { checkI } from './types'
+
 import { W } from '@/constants'
 
 const markWinningCellsUp = (

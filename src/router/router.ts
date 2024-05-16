@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteLocationNormalized } from 'vue-router'
+
 import TicTacToe from '@/components/TicTacToe.vue'
 
 const getProps = (route: RouteLocationNormalized) => ({

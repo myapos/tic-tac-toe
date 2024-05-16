@@ -1,7 +1,9 @@
 import type { Ref } from 'vue'
+
+import { minimax } from './minimax'
+
 import type { gridT } from '@/components/types'
 import { O, X, initialCellValue } from '@/constants'
-import { minimax } from './minimax'
 
 interface findBestMoveI {
   gridCopy: gridT

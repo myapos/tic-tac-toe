@@ -1,22 +1,31 @@
 import { ref, watch, toRaw } from 'vue'
-import { O, X, initialCellValue } from '@/constants'
-import type { gridT, cellCoordinatesT } from '@/components/types'
 
+import isDraw from './utils/checkUtils/isDraw'
 import { checkWinner } from './utils/checkWinner'
+import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
 import findEmptyCells from './utils/findEmptyCells'
-import isDraw from './utils/checkUtils/isDraw'
+import getPlayMode from './utils/getPlayMode'
+import getRandomValueInRange from './utils/getRandomValueInRange'
 
-const createInitialGrid = (N: number): gridT => {
-  return Array.from({ length: N }, () =>
-    Array.from({ length: N }, () => [initialCellValue, initialCellValue])
-  )
-}
+import type { gridT, cellCoordinatesT } from '@/components/types'
+import {
+  O,
+  X,
+  initialCellValue,
+  itIsXturn,
+  itIsOturn,
+  itIsDraw,
+  playModes,
+  restartingGame,
+  ROUND_DELAY,
+  RESTART_DELAY
+} from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
-  const grid = ref(createInitialGrid(props.N))
-  const feedback = ref("It is X's turn!")
+  const grid = ref(createEmptyGrid(props.N))
+  const feedback = ref(itIsXturn)
   const counter = ref(0)
   const isXTurn = ref(true)
   const showDetails = ref(false)
@@ -25,97 +34,101 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const filledCells = ref(0)
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
-  const isInTowPlayerMode = ref(false)
-  const playMode = ref('2P')
+  const isInTwoPlayerMode = ref(false)
+  const playMode = ref(playModes.TWO_PLAYER)
 
   const setPlayMode = (value: string) => {
     playMode.value = value
   }
 
+  const placeXInRandomCoordinates = () => {
+    const initialXi = getRandomValueInRange(grid.value.length)
+    const initialXj = getRandomValueInRange(grid.value[0].length)
+
+    grid.value[initialXi][initialXj][0] = X
+    const newCounter = counter.value + 1
+
+    setGrid(grid.value)
+    setCounter(newCounter)
+    return true
+  }
+
+  const startAutoPlay = (playMode: any) => {
+    const detectedMode = getPlayMode(playMode.value)
+    if (!detectedMode.autoPlayer) {
+      return
+    }
+    let placedX = false
+    let emptyCells = findEmptyCells(grid.value)
+
+    // Define a function to perform the next iteration of the loop with a delay
+    const nextIteration = () => {
+      setTimeout(() => {
+        // Start auto game for two players
+        while (emptyCells !== 0) {
+          const detectedMode = getPlayMode(playMode.value)
+          if (!detectedMode.autoPlayer) {
+            handleReset()
+            emptyCells = 0
+            break
+          }
+          if (!placedX) {
+            placedX = placeXInRandomCoordinates()
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after placing X
+          }
+
+          if (isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), true)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+
+          if (!isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), false)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+        }
+
+        // Check if the loop should continue
+        if (emptyCells !== 0 && !gameEnded.value) {
+          nextIteration() // Call the function recursively to perform the next iteration
+        }
+        if (emptyCells === 0 || gameEnded.value) {
+          setTimeout(() => {
+            setFeedback(restartingGame)
+          }, RESTART_DELAY)
+          //restart auto play mode
+          setTimeout(() => {
+            handleReset()
+            startAutoPlay(playMode)
+          }, RESTART_DELAY * 2)
+        }
+      }, ROUND_DELAY) // Delay of 1 second
+    }
+
+    nextIteration() // Start the loop
+  }
   watch(
     () => playMode.value,
     () => {
+      const detectedMode = getPlayMode(playMode.value)
       handleReset()
-      if (playMode.value === '1P') {
+      if (detectedMode.singlePlayer) {
         isInSinglePlayerMode.value = true
         return
       }
-      isInSinglePlayerMode.value = false
-    }
-  )
-
-  watch(
-    () => playMode.value,
-    () => {
-      handleReset()
-      if (playMode.value === 'Auto') {
+      if (detectedMode.twoPlayer) {
+        isInTwoPlayerMode.value = true
+        return
+      }
+      if (detectedMode.autoPlayer) {
         isInAutoPlayerMode.value = true
+        startAutoPlay(playMode)
         return
-      }
-      isInAutoPlayerMode.value = false
-    }
-  )
-
-  watch(
-    () => playMode.value,
-    () => {
-      handleReset()
-      if (playMode.value === '2P') {
-        isInTowPlayerMode.value = true
-        return
-      }
-      isInTowPlayerMode.value = false
-    }
-  )
-  watch(
-    () => isInAutoPlayerMode.value,
-    () => {
-      if (isInAutoPlayerMode.value) {
-        let placedX = false
-        let emptyCells = findEmptyCells(grid.value)
-
-        // Define a function to perform the next iteration of the loop with a delay
-        const nextIteration = () => {
-          setTimeout(() => {
-            // Start auto game for two players
-            while (emptyCells !== 0) {
-              if (!placedX) {
-                const initialXi = Math.floor(Math.random() * (grid.value.length - 1))
-                const initialXj = Math.floor(Math.random() * (grid.value[0].length - 1))
-
-                grid.value[initialXi][initialXj][0] = X
-                const newCounter = counter.value + 1
-
-                setGrid(grid.value)
-                setCounter(newCounter)
-                placedX = true
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after placing X
-              }
-
-              if (isXTurn.value) {
-                computerSelection(structuredClone(toRaw(grid.value)), true)
-
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after computer's selection
-              }
-
-              if (!isXTurn.value) {
-                computerSelection(structuredClone(toRaw(grid.value)), false)
-
-                emptyCells = findEmptyCells(grid.value)
-                break // Exit loop after computer's selection
-              }
-            }
-
-            // Check if the loop should continue
-            if (emptyCells !== 0 && !gameEnded.value) {
-              nextIteration() // Call the function recursively to perform the next iteration
-            }
-          }, 500) // Delay of 1 second
-        }
-
-        nextIteration() // Start the loop
       }
     }
   )
@@ -176,7 +189,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
     // check draw
     if (isDraw({ grid: grid.value, counter: newCounter })) {
-      setFeedback('It is a draw. No one wins.')
+      setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
@@ -241,14 +254,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   watch(isXTurn, (newVal, oldVal) => {
     if (!gameEnded.value) {
-      setFeedback(oldVal ? "It is O's turn!" : "It is X's turn!")
+      setFeedback(oldVal ? itIsOturn : itIsXturn)
     }
   })
 
   const handleReset = () => {
     setCounter(0)
-    setGrid(createInitialGrid(props.N))
-    setFeedback("It is X's turn!")
+    setGrid(createEmptyGrid(props.N))
+    setFeedback(itIsXturn)
     filledCells.value = 0
     setGameStarted(0)
     setGameEnded(0)

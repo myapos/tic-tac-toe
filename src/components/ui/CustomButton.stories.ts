@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+
 import CustomButton from './CustomButton.vue'
 
 // Define interface for component props

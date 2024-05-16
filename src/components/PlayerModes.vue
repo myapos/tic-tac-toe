@@ -18,6 +18,8 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 
+import { playModes } from '@/constants'
+
 export default {
   name: 'PlayerModes',
   props: {
@@ -32,10 +34,26 @@ export default {
   },
   data() {
     return {
+      radioGroup: 'play_mode',
       radioButtons: [
-        { value: '1P', label: '1P', id: '1P', name: 'play_mode' },
-        { value: '2P', label: '2P', id: '2P', name: 'play_mode' },
-        { value: 'Auto', label: 'Auto', id: 'Auto', name: 'play_mode' }
+        {
+          value: playModes.SINGLE_PLAYER,
+          label: playModes.SINGLE_PLAYER,
+          id: playModes.SINGLE_PLAYER,
+          name: this.radioGroup
+        },
+        {
+          value: playModes.TWO_PLAYER,
+          label: playModes.TWO_PLAYER,
+          id: playModes.TWO_PLAYER,
+          name: this.radioGroup
+        },
+        {
+          value: playModes.AUTO_PLAYER,
+          label: playModes.AUTO_PLAYER,
+          id: playModes.AUTO_PLAYER,
+          name: this.radioGroup
+        }
       ]
     }
   },

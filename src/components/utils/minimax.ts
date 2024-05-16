@@ -1,11 +1,13 @@
 import type { Ref } from 'vue'
+
+import checkAiWinner from './checkAiWinner'
+import isDraw from './checkUtils/isDraw'
+import { getBestScoreAndMove } from './findBestMove'
+import findEmptyCells from './findEmptyCells'
+import { getMaxDepth } from './getMaxDepth'
+
 import type { gridT } from '@/components/types'
 import { O, X } from '@/constants'
-import isDraw from './checkUtils/isDraw'
-import checkAiWinner from './checkAiWinner'
-import findEmptyCells from './findEmptyCells'
-import { getBestScoreAndMove } from './findBestMove'
-import { getMaxDepth } from './getMaxDepth'
 
 interface minimaxI {
   grid: gridT

@@ -1,6 +1,7 @@
 import { expect, test, describe } from 'vitest'
-import createInitialGrid from '../utils'
-import isDraw from '../isDraw.ts'
+
+import createGrid from '../createGrid'
+import isDraw from '../isDraw'
 
 describe('isDraw', () => {
   test('should check draw with false result', () => {
@@ -12,7 +13,7 @@ describe('isDraw', () => {
       mode: '',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(emptyGridOptions)
+    const grid = createGrid(emptyGridOptions)
     const result = isDraw({ grid, counter: 0 })
 
     expect(result).toEqual(false)
@@ -26,7 +27,7 @@ describe('isDraw', () => {
       mode: '',
       hasWinningMarks: false
     }
-    const grid = createInitialGrid(emptyGridOptions)
+    const grid = createGrid(emptyGridOptions)
     const result = isDraw({ grid, counter: Math.pow(emptyGridOptions.N, 2) })
 
     expect(result).toEqual(true)

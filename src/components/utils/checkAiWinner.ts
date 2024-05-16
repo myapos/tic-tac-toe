@@ -1,6 +1,8 @@
-import type { rowT, cellT } from '@/components/types'
 import type { Ref } from 'vue'
+
 import { checkWinner } from './checkWinner'
+
+import type { rowT, cellT } from '@/components/types'
 
 interface checkAiWinnerI {
   grid: any

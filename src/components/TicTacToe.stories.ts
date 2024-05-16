@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+
 import TicTacToe from './TicTacToe.vue'
 
 // Define interface for component props
