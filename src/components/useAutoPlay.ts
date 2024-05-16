@@ -1,0 +1,135 @@
+import { watch, toRaw } from 'vue'
+import type { Ref } from 'vue'
+
+import findEmptyCells from './utils/findEmptyCells'
+import getPlayMode from './utils/getPlayMode'
+import getRandomValueInRange from './utils/getRandomValueInRange'
+
+import type { gridT } from '@/components/types'
+import { X, restartingGame, ROUND_DELAY, RESTART_DELAY } from '@/constants'
+
+interface useAutoPlayI {
+  computerSelection: any
+  counter: Ref<number>
+  gameEnded: Ref<boolean>
+  grid: Ref<gridT>
+  handleReset: () => void
+  isInAutoPlayerMode: Ref<boolean>
+  isInSinglePlayerMode: Ref<boolean>
+  isInTwoPlayerMode: Ref<boolean>
+  isXTurn: Ref<boolean>
+  playMode: Ref<string>
+  setCounter: (val: number) => void
+  setFeedback: (val: string) => void
+  setGrid: (val: gridT) => void
+}
+export const useAutoPlay = ({
+  computerSelection,
+  counter,
+  gameEnded,
+  grid,
+  handleReset,
+  isInAutoPlayerMode,
+  isInSinglePlayerMode,
+  isInTwoPlayerMode,
+  isXTurn,
+  playMode,
+  setCounter,
+  setFeedback,
+  setGrid
+}: useAutoPlayI) => {
+  const placeXInRandomCoordinates = () => {
+    const initialXi = getRandomValueInRange(grid.value.length)
+    const initialXj = getRandomValueInRange(grid.value[0].length)
+
+    grid.value[initialXi][initialXj][0] = X
+    const newCounter = counter.value + 1
+
+    setGrid(grid.value)
+    setCounter(newCounter)
+    return true
+  }
+
+  const startAutoPlay = (playMode: any) => {
+    const detectedMode = getPlayMode(playMode.value)
+    if (!detectedMode.autoPlayer) {
+      return
+    }
+    let placedX = false
+    let emptyCells = findEmptyCells(grid.value)
+
+    // Define a function to perform the next iteration of the loop with a delay
+    const nextIteration = () => {
+      setTimeout(() => {
+        // Start auto game for two players
+        while (emptyCells !== 0) {
+          const detectedMode = getPlayMode(playMode.value)
+          if (!detectedMode.autoPlayer) {
+            handleReset()
+            emptyCells = 0
+            break
+          }
+          if (!placedX) {
+            placedX = placeXInRandomCoordinates()
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after placing X
+          }
+
+          if (isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), true)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+
+          if (!isXTurn.value) {
+            computerSelection(structuredClone(toRaw(grid.value)), false)
+
+            emptyCells = findEmptyCells(grid.value)
+            break // Exit loop after computer's selection
+          }
+        }
+
+        // Check if the loop should continue
+        if (emptyCells !== 0 && !gameEnded.value) {
+          nextIteration() // Call the function recursively to perform the next iteration
+        }
+        if (emptyCells === 0 || gameEnded.value) {
+          setTimeout(() => {
+            setFeedback(restartingGame)
+          }, RESTART_DELAY)
+          //restart auto play mode
+          setTimeout(() => {
+            handleReset()
+            startAutoPlay(playMode)
+          }, RESTART_DELAY * 2)
+        }
+      }, ROUND_DELAY) // Delay of 1 second
+    }
+
+    nextIteration() // Start the loop
+  }
+
+  watch(
+    () => playMode.value,
+    () => {
+      const detectedMode = getPlayMode(playMode.value)
+      handleReset()
+      if (detectedMode.singlePlayer) {
+        isInSinglePlayerMode.value = true
+        return
+      }
+      if (detectedMode.twoPlayer) {
+        isInTwoPlayerMode.value = true
+        return
+      }
+      if (detectedMode.autoPlayer) {
+        isInAutoPlayerMode.value = true
+        startAutoPlay(playMode)
+        return
+      }
+    }
+  )
+}
+
+export default useAutoPlay
