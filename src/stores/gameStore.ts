@@ -12,7 +12,9 @@ export const useGameStore = defineStore({
     isInSinglePlayerMode: false,
     isInAutoPlayerMode: false,
     isInTwoPlayerMode: false,
-    grid: [] as gridT
+    grid: [] as gridT,
+    filledCells: 0,
+    showDetails: false
   }),
   getters: {
     isXTurn(state) {
@@ -54,6 +56,22 @@ export const useGameStore = defineStore({
     },
     setGridCell(i: number, j: number, cellIdx: number, value: string) {
       this.grid[i][j][cellIdx] = value
+    },
+    setFilledCells(val: number) {
+      this.filledCells = val
+    },
+    countFilledCells(this) {
+      this.filledCells = this.grid.reduce((accRow, row) => {
+        return (
+          accRow +
+          row.reduce((accCell, cell) => {
+            return accCell + (cell[0] === '' ? 0 : 1)
+          }, 0)
+        )
+      }, 0)
+    },
+    toggleDetails() {
+      this.showDetails = !this.showDetails
     }
   }
 })

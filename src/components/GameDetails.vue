@@ -38,7 +38,10 @@
 </template>
 
 <script lang="ts">
+import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
+
+import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
   name: 'GameDetails',
@@ -50,11 +53,10 @@ export default defineComponent({
     M: {
       type: Number,
       required: true
-    },
-    showDetails: {
-      type: Boolean,
-      required: true
     }
+  },
+  computed: {
+    ...mapState(useGameStore, ['showDetails'])
   }
 })
 </script>

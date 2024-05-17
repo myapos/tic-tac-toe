@@ -4,10 +4,14 @@
   >
 </template>
 <script lang="ts">
+import { mapActions } from 'pinia'
+
+import { useGameStore } from '@/stores/gameStore'
+
 export default {
   name: 'ShowGameDetails',
-  props: {
-    toggleDetails: { type: Function, required: true }
+  methods: {
+    ...mapActions(useGameStore, ['toggleDetails'])
   }
 }
 </script>

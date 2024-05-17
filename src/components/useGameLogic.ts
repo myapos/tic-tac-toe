@@ -13,10 +13,8 @@ import { useGameStore } from '@/stores/gameStore'
 export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStore = useGameStore()
   const totalCells = props.N * props.M
-  const showDetails = ref(false)
   const gameStarted = ref(false)
   const gameEnded = ref(false)
-  const filledCells = ref(0)
 
   onMounted(() => {
     gameStore.setGrid(createEmptyGrid(props.N))
@@ -28,17 +26,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   const setGameEnded = (filledCells: number) => {
     gameEnded.value = filledCells === totalCells
-  }
-
-  const setFilledCells = () => {
-    filledCells.value = gameStore.grid.reduce((accRow, row) => {
-      return (
-        accRow +
-        row.reduce((accCell, cell) => {
-          return accCell + (cell[0] === '' ? 0 : 1)
-        }, 0)
-      )
-    }, 0)
   }
 
   /* O is minimizing I want to be the ai, X is maximizing  */
@@ -116,14 +103,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   watch(
     () => gameStore.grid,
     () => {
-      setFilledCells()
+      gameStore.countFilledCells()
 
-      if (filledCells.value > 0) {
-        setGameStarted(filledCells.value)
+      if (gameStore.filledCells > 0) {
+        setGameStarted(gameStore.filledCells)
       }
 
-      if (filledCells.value === props.N * props.M) {
-        setGameEnded(filledCells.value)
+      if (gameStore.filledCells === props.N * props.M) {
+        setGameEnded(gameStore.filledCells)
       }
     },
     {
@@ -145,13 +132,9 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     gameStore.setCounter(0)
     gameStore.setGrid(createEmptyGrid(props.N))
     gameStore.setFeedback(itIsXturn)
-    filledCells.value = 0
+    gameStore.setFilledCells(0)
     setGameStarted(0)
     setGameEnded(0)
-  }
-
-  const toggleDetails = () => {
-    showDetails.value = !showDetails.value
   }
 
   const hasValidDimensionProps = () => {
@@ -173,8 +156,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   return {
     handleClickCell,
     handleReset,
-    toggleDetails,
-    showDetails,
     hasValidDimensionProps,
     gameStarted,
     gameEnded

@@ -9,12 +9,12 @@
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
-        <show-game-details :toggleDetails="toggleDetails"></show-game-details>
+        <show-game-details />
         <load-default-grid />
         <player-modes />
       </div>
       <transition name="game-details">
-        <game-details :N="N" :M="M" :showDetails="showDetails"></game-details>
+        <game-details :N="N" :M="M" />
       </transition>
     </app-controls>
   </div>
@@ -40,15 +40,8 @@ const gridDimensions = defineProps({
   M: { type: Number, required: true }
 })
 
-const {
-  handleClickCell,
-  handleReset,
-  toggleDetails,
-  showDetails,
-  hasValidDimensionProps,
-  gameEnded,
-  gameStarted
-} = useGameLogic(gridDimensions)
+const { handleClickCell, handleReset, hasValidDimensionProps, gameEnded, gameStarted } =
+  useGameLogic(gridDimensions)
 
 usePreventRouteLeave({ gameEnded, gameStarted })
 </script>

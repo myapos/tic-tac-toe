@@ -15,18 +15,9 @@ export default defineComponent({
     }
   },
   name: 'GetFeedback',
-  data() {
-    return {
-      showDetails: false
-    }
-  },
+
   computed: {
     ...mapState(useGameStore, ['feedback'])
-  },
-  methods: {
-    toggleDetails() {
-      this.showDetails = !this.showDetails
-    }
   }
 })
 </script>
