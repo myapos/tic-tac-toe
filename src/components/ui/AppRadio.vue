@@ -1,6 +1,13 @@
 <template>
   <span class="radio">
-    <input :id="id" :name="name" type="radio" :checked="checked" @change="handleChange" />
+    <input
+      :id="id"
+      :name="name"
+      type="radio"
+      :checked="checked"
+      @change="handleChange"
+      :data-testid="id"
+    />
     <label :for="id">{{ labelText }}</label>
   </span>
 </template>

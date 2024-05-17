@@ -48,7 +48,7 @@ const createGrid = ({
           isWinningCell = i + j === N - 1 && i >= start && i <= end
           break
         case 'draw':
-          emptyString = `${i},{j}` // add a different cell value to cause a draw
+          emptyString = `${i},${j}` // add a different cell value to cause a draw
           break
       }
 
