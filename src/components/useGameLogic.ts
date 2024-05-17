@@ -83,7 +83,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       }
     }
     // check draw
-    if (isDraw({ grid: grid.value, counter: newCounter })) {
+    if (isDraw({ grid: grid.value })) {
       setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
@@ -117,7 +117,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setGrid(newGrid)
     setCounter(newCounter)
     // Check draw as last step if no one wins
-    if (isDraw({ grid: newGrid, counter: newCounter })) {
+    if (isDraw({ grid: newGrid })) {
       setFeedback('It is a draw. No one wins.')
       setGameEnded(totalCells)
       return

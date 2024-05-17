@@ -32,6 +32,7 @@ const createGrid = ({
 
     for (let j = 0; j < N; j++) {
       let isWinningCell = false
+      let cellValue = lookingFor
 
       switch (mode) {
         case 'col':
@@ -46,9 +47,12 @@ const createGrid = ({
         case 'secondary':
           isWinningCell = i + j === N - 1 && i >= start && i <= end
           break
+        case 'draw':
+          emptyString = `${i},{j}` // add a different cell value to cause a draw
+          break
       }
 
-      const cellValue = isWinningCell ? lookingFor : emptyString
+      cellValue = isWinningCell ? lookingFor : emptyString
       const markValue = isWinningCell && hasWinningMarks ? W : emptyString
 
       row.push([cellValue, markValue])

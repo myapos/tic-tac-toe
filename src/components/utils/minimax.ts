@@ -15,25 +15,13 @@ interface minimaxI {
   M: number
   isXTurn: Ref<boolean>
   isMaximizing: boolean
-  counter: Ref<number>
-  setCounter: (value: number) => void
   alpha: number
   beta: number
 }
-export const minimax = ({
-  grid,
-  depth,
-  isMaximizing,
-  counter,
-  setCounter,
-  M,
-  isXTurn,
-  alpha,
-  beta
-}: minimaxI) => {
+export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: minimaxI) => {
   const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn })
   // Check draw as last step if no one wins
-  if (isDraw({ grid, counter: counter.value })) {
+  if (isDraw({ grid })) {
     return 0
   }
 
@@ -47,8 +35,6 @@ export const minimax = ({
       grid,
       depth,
       isXTurn,
-      setCounter,
-      counter,
       M,
       player: X,
       isMaximizing,
@@ -62,8 +48,6 @@ export const minimax = ({
     grid,
     depth,
     isXTurn,
-    setCounter,
-    counter,
     M,
     player: O,
     isMaximizing,
