@@ -16,7 +16,18 @@ interface minimaxI {
   alpha: number
   beta: number
 }
+const memo = new Map<string, number>()
+
+const getBoardKey = (grid: gridT, depth: number) => {
+  return `${grid.flat().join('')}_${depth}`
+}
+
 export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: minimaxI) => {
+  const boardKey = getBoardKey(grid, depth)
+  if (memo.has(boardKey)) {
+    return memo.get(boardKey)!
+  }
+
   const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn: isMaximizing })
   // Check draw as last step if no one wins
   if (isDraw({ grid })) {
@@ -25,7 +36,9 @@ export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: 
 
   if (result.won || depth >= getMaxDepth({ grid })) {
     const emptyCells = findEmptyCells(grid)
-    return isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
+    const score = isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
+    memo.set(boardKey, score)
+    return score
   }
 
   if (isMaximizing) {
@@ -39,6 +52,7 @@ export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: 
       alpha,
       beta
     })
+    memo.set(boardKey, bestScore)
     return bestScore
   }
 
@@ -53,5 +67,6 @@ export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: 
     alpha,
     beta
   })
+  memo.set(boardKey, bestScore)
   return bestScore
 }
