@@ -18,9 +18,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStarted = ref(false)
   const gameEnded = ref(false)
   const filledCells = ref(0)
-  const isInSinglePlayerMode = ref(false)
-  const isInAutoPlayerMode = ref(false)
-  const isInTwoPlayerMode = ref(false)
 
   const setGrid = (gridVal: gridT) => {
     grid.value = gridVal
@@ -111,7 +108,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       return
     }
 
-    if (isInSinglePlayerMode.value && !gameStore.isXTurn) {
+    if (gameStore.isInSinglePlayerMode && !gameStore.isXTurn) {
       // run logic to select next player's move
       computerSelection(structuredClone(toRaw(grid.value)), false)
     }
@@ -169,9 +166,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   useAutoPlay({
     handleReset,
-    isInSinglePlayerMode,
-    isInTwoPlayerMode,
-    isInAutoPlayerMode,
     grid,
     setGrid,
     computerSelection,
@@ -186,7 +180,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     showDetails,
     hasValidDimensionProps,
     gameStarted,
-    gameEnded,
-    isInSinglePlayerMode
+    gameEnded
   }
 }

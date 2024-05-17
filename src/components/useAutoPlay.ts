@@ -14,9 +14,6 @@ interface useAutoPlayI {
   gameEnded: Ref<boolean>
   grid: Ref<gridT>
   handleReset: () => void
-  isInAutoPlayerMode: Ref<boolean>
-  isInSinglePlayerMode: Ref<boolean>
-  isInTwoPlayerMode: Ref<boolean>
   setGrid: (val: gridT) => void
 }
 export const useAutoPlay = ({
@@ -24,9 +21,6 @@ export const useAutoPlay = ({
   gameEnded,
   grid,
   handleReset,
-  isInAutoPlayerMode,
-  isInSinglePlayerMode,
-  isInTwoPlayerMode,
   setGrid
 }: useAutoPlayI) => {
   const gameStore = useGameStore()
@@ -111,21 +105,21 @@ export const useAutoPlay = ({
       const detectedMode = getPlayMode(newPlayMode)
       handleReset()
       if (detectedMode.singlePlayer) {
-        isInSinglePlayerMode.value = true
-        isInTwoPlayerMode.value = false
-        isInAutoPlayerMode.value = false
+        gameStore.setIsInSinglePlayerMode(true)
+        gameStore.setIsInAutoPlayerMode(false)
+        gameStore.setIsInTwoPlayerMode(false)
         return
       }
       if (detectedMode.twoPlayer) {
-        isInTwoPlayerMode.value = true
-        isInSinglePlayerMode.value = false
-        isInAutoPlayerMode.value = false
+        gameStore.setIsInSinglePlayerMode(false)
+        gameStore.setIsInAutoPlayerMode(false)
+        gameStore.setIsInTwoPlayerMode(true)
         return
       }
       if (detectedMode.autoPlayer) {
-        isInAutoPlayerMode.value = true
-        isInTwoPlayerMode.value = false
-        isInSinglePlayerMode.value = false
+        gameStore.setIsInSinglePlayerMode(false)
+        gameStore.setIsInAutoPlayerMode(true)
+        gameStore.setIsInTwoPlayerMode(false)
         startAutoPlay()
         return
       }

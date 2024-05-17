@@ -52,6 +52,10 @@ export default defineComponent({
     onClick: {
       type: Function,
       required: true
+    },
+    hasClickEnabled: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
@@ -59,7 +63,7 @@ export default defineComponent({
       return this.grid[rowIdx][colIdx][1].includes(W)
     },
     buildClassNames({ rowIdx, colIdx, length }: buildClassNamesI): string {
-      let classes = 'grid-cell'
+      let classes = !this.hasClickEnabled ? 'grid-cell disable-click' : 'grid-cell'
       const isFirstRow = rowIdx === 0
       const isLastRow = rowIdx === length - 1
       const isFirstCol = colIdx === 0
@@ -113,11 +117,16 @@ export default defineComponent({
   border-right: var(--border);
   font-size: 1.3rem;
   padding: 2rem;
+  background-color: var(--vt-c-black-soft);
 }
 
 .grid-cell:hover {
   background-color: var(--vt-c-text-light-1);
   cursor: pointer;
+}
+
+.disable-click {
+  pointer-events: none;
 }
 
 .grid-cell.last-row {

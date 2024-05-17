@@ -1,16 +1,25 @@
 <template>
   <div class="grid-container" :style="containerStyles" data-testid="tic-tac-toe-grid">
     <template v-for="(row, rowIdx) in grid" :key="rowIdx">
-      <grid-cell :row="row" :grid="grid" :rowIdx="rowIdx" :onClick="handleClickCell"></grid-cell>
+      <grid-cell
+        :row="row"
+        :grid="grid"
+        :rowIdx="rowIdx"
+        :onClick="handleClickCell"
+        :hasClickEnabled="!isInAutoPlayerMode"
+      />
     </template>
   </div>
 </template>
 
 <script lang="ts">
+import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
 
 import type { gridT } from './types'
 import GridCell from './ui/GridCell.vue'
+
+import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
   props: {
@@ -29,6 +38,9 @@ export default defineComponent({
         gridTemplateRows: '100px '.repeat(this.grid.length)
       }
     }
+  },
+  computed: {
+    ...mapState(useGameStore, ['isInAutoPlayerMode'])
   },
   methods: {
     handleClickCell(args: { rowIdx: number; colIdx: number }) {
