@@ -7,7 +7,7 @@ import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
-import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw, playModes } from '@/constants'
+import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw } from '@/constants'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
@@ -22,11 +22,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
   const isInTwoPlayerMode = ref(false)
-  const playMode = ref(playModes.TWO_PLAYER)
-
-  const setPlayMode = (value: string) => {
-    playMode.value = value
-  }
 
   const setFeedback = (feedbackVal: string) => {
     feedback.value = feedbackVal
@@ -176,7 +171,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   }
 
   useAutoPlay({
-    playMode,
     handleReset,
     isInSinglePlayerMode,
     isInTwoPlayerMode,
@@ -205,8 +199,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     hasValidDimensionProps,
     gameStarted,
     gameEnded,
-    isInSinglePlayerMode,
-    playMode,
-    setPlayMode
+    isInSinglePlayerMode
   }
 }

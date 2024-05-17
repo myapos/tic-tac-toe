@@ -11,7 +11,7 @@
         <reset-game :onReset="handleReset"></reset-game>
         <show-game-details :toggleDetails="toggleDetails"></show-game-details>
         <load-default-grid />
-        <player-modes :playMode="playMode" :setPlayMode="setPlayMode" />
+        <player-modes />
       </div>
       <transition name="game-details">
         <game-details :N="N" :M="M" :showDetails="showDetails"></game-details>
@@ -50,9 +50,7 @@ const {
   showDetails,
   hasValidDimensionProps,
   gameEnded,
-  gameStarted,
-  playMode,
-  setPlayMode
+  gameStarted
 } = useGameLogic(gridDimensions)
 
 usePreventRouteLeave({ gameEnded, gameStarted })

@@ -6,7 +6,8 @@ import getPlayMode from './utils/getPlayMode'
 import getRandomValueInRange from './utils/getRandomValueInRange'
 
 import type { gridT } from '@/components/types'
-import { X, restartingGame, ROUND_DELAY, RESTART_DELAY } from '@/constants'
+import { X, restartingGame, ROUND_DELAY, RESTART_DELAY, playModes } from '@/constants'
+import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
   computerSelection: any
@@ -18,7 +19,6 @@ interface useAutoPlayI {
   isInSinglePlayerMode: Ref<boolean>
   isInTwoPlayerMode: Ref<boolean>
   isXTurn: Ref<boolean>
-  playMode: Ref<string>
   setCounter: (val: number) => void
   setFeedback: (val: string) => void
   setGrid: (val: gridT) => void
@@ -33,11 +33,12 @@ export const useAutoPlay = ({
   isInSinglePlayerMode,
   isInTwoPlayerMode,
   isXTurn,
-  playMode,
   setCounter,
   setFeedback,
   setGrid
 }: useAutoPlayI) => {
+  const gameStore = useGameStore()
+
   const placeXInRandomCoordinates = () => {
     const initialXi = getRandomValueInRange(grid.value.length)
     const initialXj = getRandomValueInRange(grid.value[0].length)
@@ -50,8 +51,8 @@ export const useAutoPlay = ({
     return true
   }
 
-  const startAutoPlay = (playMode: any) => {
-    const detectedMode = getPlayMode(playMode.value)
+  const startAutoPlay = () => {
+    const detectedMode = getPlayMode(gameStore.playMode)
     if (!detectedMode.autoPlayer) {
       return
     }
@@ -63,7 +64,7 @@ export const useAutoPlay = ({
       setTimeout(() => {
         // Start auto game for two players
         while (emptyCells !== 0) {
-          const detectedMode = getPlayMode(playMode.value)
+          const detectedMode = getPlayMode(gameStore.playMode)
           if (!detectedMode.autoPlayer) {
             handleReset()
             emptyCells = 0
@@ -101,7 +102,7 @@ export const useAutoPlay = ({
           //restart auto play mode
           setTimeout(() => {
             handleReset()
-            startAutoPlay(playMode)
+            startAutoPlay()
           }, RESTART_DELAY * 2)
         }
       }, ROUND_DELAY) // Delay of 1 second
@@ -110,22 +111,30 @@ export const useAutoPlay = ({
     nextIteration() // Start the loop
   }
 
+  // Watch for changes in playMode and call a function
   watch(
-    () => playMode.value,
-    () => {
-      const detectedMode = getPlayMode(playMode.value)
+    () => gameStore.playMode,
+    (newPlayMode) => {
+      console.log('Play mode changed:', newPlayMode)
+      const detectedMode = getPlayMode(newPlayMode)
       handleReset()
       if (detectedMode.singlePlayer) {
         isInSinglePlayerMode.value = true
+        isInTwoPlayerMode.value = false
+        isInAutoPlayerMode.value = false
         return
       }
       if (detectedMode.twoPlayer) {
         isInTwoPlayerMode.value = true
+        isInSinglePlayerMode.value = false
+        isInAutoPlayerMode.value = false
         return
       }
       if (detectedMode.autoPlayer) {
         isInAutoPlayerMode.value = true
-        startAutoPlay(playMode)
+        isInTwoPlayerMode.value = false
+        isInSinglePlayerMode.value = false
+        startAutoPlay()
         return
       }
     }

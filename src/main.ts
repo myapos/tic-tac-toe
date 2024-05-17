@@ -1,6 +1,7 @@
-import './assets/main.css'
-
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+
+import './assets/main.css'
 
 import App from './App.vue'
 import AppCheckbox from './components/ui/AppCheckbox.vue'
@@ -9,7 +10,9 @@ import CustomButton from './components/ui/CustomButton.vue'
 import router from './router/router'
 
 const app = createApp(App)
+const pinia = createPinia()
 app.use(router)
+app.use(pinia)
 
 app.component('CustomButton', CustomButton)
 app.component('AppCheckbox', AppCheckbox)
