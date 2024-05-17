@@ -14,7 +14,10 @@ export const useGameStore = defineStore({
     isInTwoPlayerMode: false,
     grid: [] as gridT,
     filledCells: 0,
-    showDetails: false
+    showDetails: false,
+    totalCells: 0,
+    gameStarted: false,
+    gameEnded: false
   }),
   getters: {
     isXTurn(state) {
@@ -72,6 +75,15 @@ export const useGameStore = defineStore({
     },
     toggleDetails() {
       this.showDetails = !this.showDetails
+    },
+    setTotalCells(val: number) {
+      this.totalCells = val
+    },
+    setGameStarted(numOfCells: number) {
+      this.gameStarted = numOfCells > 0
+    },
+    setGameEnded(numOfCells: number) {
+      this.gameEnded = numOfCells === this.totalCells
     }
   }
 })
