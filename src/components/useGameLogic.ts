@@ -7,14 +7,13 @@ import createEmptyGrid from './utils/createEmptyGrid'
 import { findBestMove } from './utils/findBestMove'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
-import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw, playModes } from '@/constants'
+import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw } from '@/constants'
+import { useGameStore } from '@/stores/gameStore'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
+  const gameStore = useGameStore()
   const totalCells = props.N * props.M
   const grid = ref(createEmptyGrid(props.N))
-  const feedback = ref(itIsXturn)
-  const counter = ref(0)
-  const isXTurn = ref(true)
   const showDetails = ref(false)
   const gameStarted = ref(false)
   const gameEnded = ref(false)
@@ -22,27 +21,9 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
   const isInTwoPlayerMode = ref(false)
-  const playMode = ref(playModes.TWO_PLAYER)
-
-  const setPlayMode = (value: string) => {
-    playMode.value = value
-  }
-
-  const setFeedback = (feedbackVal: string) => {
-    feedback.value = feedbackVal
-  }
 
   const setGrid = (gridVal: gridT) => {
     grid.value = gridVal
-  }
-
-  const setIsXTurn = () => {
-    isXTurn.value = counter.value % 2 === 0
-  }
-
-  const setCounter = (counterVal: number) => {
-    counter.value = counterVal
-    setIsXTurn()
   }
 
   const setGameStarted = (filledCells: number) => {
@@ -66,25 +47,32 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
-    const move = findBestMove({ gridCopy, isXTurn, M: props.M, isMaximizing })
+    const move = findBestMove({ gridCopy, isXTurn: gameStore.isXTurn, M: props.M, isMaximizing })
 
     if (move) {
       grid.value[move.i][move.j][0] = isMaximizing ? X : O
     }
 
-    const newCounter = counter.value + 1
-    setCounter(newCounter)
+    const newCounter = gameStore.counter + 1
+    gameStore.setCounter(newCounter)
     if (move) {
-      const winnerMessage = checkWinner(grid.value, move.i, move.j, props.M, !isXTurn.value, true)
+      const winnerMessage = checkWinner(
+        grid.value,
+        move.i,
+        move.j,
+        props.M,
+        !gameStore.isXTurn,
+        true
+      )
       if (winnerMessage.feedback) {
-        setFeedback(winnerMessage.feedback)
+        gameStore.setFeedback(winnerMessage.feedback)
         setGameEnded(totalCells)
         return
       }
     }
     // check draw
     if (isDraw({ grid: grid.value })) {
-      setFeedback(itIsDraw)
+      gameStore.setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
@@ -100,30 +88,30 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
 
     const newGrid = grid.value
-    const newCounter = counter.value + 1
+    const newCounter = gameStore.counter + 1
 
-    const currentTurn = isXTurn.value ? X : O
+    const currentTurn = gameStore.isXTurn ? X : O
     if (grid.value[rowIdx][colIdx][0] === initialCellValue) {
       grid.value[rowIdx][colIdx][0] = currentTurn
     }
 
-    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, isXTurn.value, true)
+    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, gameStore.isXTurn, true)
     if (winnerMessage.feedback) {
-      setFeedback(winnerMessage.feedback)
+      gameStore.setFeedback(winnerMessage.feedback)
       setGameEnded(totalCells)
       return
     }
 
     setGrid(newGrid)
-    setCounter(newCounter)
+    gameStore.setCounter(newCounter)
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid })) {
-      setFeedback('It is a draw. No one wins.')
+      gameStore.setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
 
-    if (isInSinglePlayerMode.value && !isXTurn.value) {
+    if (isInSinglePlayerMode.value && !gameStore.isXTurn) {
       // run logic to select next player's move
       computerSelection(structuredClone(toRaw(grid.value)), false)
     }
@@ -147,16 +135,20 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
   )
 
-  watch(isXTurn, (newVal, oldVal) => {
-    if (!gameEnded.value) {
-      setFeedback(oldVal ? itIsOturn : itIsXturn)
+  watch(
+    () => gameStore.isXTurn,
+    (newVal, oldVal) => {
+      console.log('value', newVal, oldVal)
+      if (!gameEnded.value) {
+        gameStore.setFeedback(oldVal ? itIsOturn : itIsXturn)
+      }
     }
-  })
+  )
 
   const handleReset = () => {
-    setCounter(0)
+    gameStore.setCounter(0)
     setGrid(createEmptyGrid(props.N))
-    setFeedback(itIsXturn)
+    gameStore.setFeedback(itIsXturn)
     filledCells.value = 0
     setGameStarted(0)
     setGameEnded(0)
@@ -176,37 +168,25 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   }
 
   useAutoPlay({
-    playMode,
     handleReset,
     isInSinglePlayerMode,
     isInTwoPlayerMode,
     isInAutoPlayerMode,
     grid,
-    counter,
     setGrid,
-    setCounter,
-    isXTurn,
     computerSelection,
-    gameEnded,
-    setFeedback
+    gameEnded
   })
 
   return {
-    counter,
-    feedback,
     grid,
     handleClickCell,
     handleReset,
-    isXTurn,
-    setFeedback,
-    setIsXTurn,
     toggleDetails,
     showDetails,
     hasValidDimensionProps,
     gameStarted,
     gameEnded,
-    isInSinglePlayerMode,
-    playMode,
-    setPlayMode
+    isInSinglePlayerMode
   }
 }

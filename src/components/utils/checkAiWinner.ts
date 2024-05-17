@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 import { checkWinner } from './checkWinner'
 
 import type { rowT, cellT } from '@/components/types'

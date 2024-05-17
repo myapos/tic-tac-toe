@@ -3,14 +3,13 @@
 </template>
 
 <script lang="ts">
+import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
+
+import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
   props: {
-    feedback: {
-      type: String,
-      required: true
-    },
     M: {
       type: Number
     }
@@ -20,6 +19,9 @@ export default defineComponent({
     return {
       showDetails: false
     }
+  },
+  computed: {
+    ...mapState(useGameStore, ['feedback'])
   },
   methods: {
     toggleDetails() {

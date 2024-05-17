@@ -4,14 +4,14 @@
     class="tic-tac-toe-wrapper"
     data-testid="tic-tac-toe-wrapper"
   >
-    <get-feedback :feedback="feedback" :M="M"></get-feedback>
-    <display-grid :grid="grid" :isXTurn="isXTurn" @click-cell="handleClickCell"></display-grid>
+    <get-feedback :M="M"></get-feedback>
+    <display-grid :grid="grid" @click-cell="handleClickCell"></display-grid>
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
         <show-game-details :toggleDetails="toggleDetails"></show-game-details>
         <load-default-grid />
-        <player-modes :playMode="playMode" :setPlayMode="setPlayMode" />
+        <player-modes />
       </div>
       <transition name="game-details">
         <game-details :N="N" :M="M" :showDetails="showDetails"></game-details>
@@ -26,8 +26,8 @@
 <script setup lang="ts">
 import AppControls from './AppControls.vue'
 import DisplayGrid from './DisplayGrid.vue'
-import GetFeedback from './Feedback.vue'
 import GameDetails from './GameDetails.vue'
+import GetFeedback from './GetFeedback.vue'
 import LoadDefaultGrid from './LoadDefaultGrid.vue'
 import PlayerModes from './PlayerModes.vue'
 import ResetGame from './ResetGame.vue'
@@ -41,18 +41,14 @@ const gridDimensions = defineProps({
 })
 
 const {
-  feedback,
   grid,
   handleClickCell,
   handleReset,
-  isXTurn,
   toggleDetails,
   showDetails,
   hasValidDimensionProps,
   gameEnded,
-  gameStarted,
-  playMode,
-  setPlayMode
+  gameStarted
 } = useGameLogic(gridDimensions)
 
 usePreventRouteLeave({ gameEnded, gameStarted })

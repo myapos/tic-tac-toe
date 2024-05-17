@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 import checkAiWinner from './checkAiWinner'
 import isDraw from './checkUtils/isDraw'
 import { getBestScoreAndMove } from './findBestMove'
@@ -13,7 +11,7 @@ interface minimaxI {
   grid: gridT
   depth: number
   M: number
-  isXTurn: Ref<boolean>
+  isXTurn: boolean
   isMaximizing: boolean
   alpha: number
   beta: number

@@ -16,50 +16,50 @@
   </form>
 </template>
 <script lang="ts">
-import type { PropType } from 'vue'
+import { mapState, mapActions } from 'pinia'
 
 import { playModes } from '@/constants'
+import { useGameStore } from '@/stores/gameStore'
 
 export default {
   name: 'PlayerModes',
-  props: {
-    playMode: {
-      type: String,
-      required: true
-    },
-    setPlayMode: {
-      type: Function as PropType<(value: string) => void>,
-      required: true
-    }
+  computed: {
+    ...mapState(useGameStore, ['playMode'])
   },
   data() {
+    const radioGroup: string = 'play_mode'
+
     return {
-      radioGroup: 'play_mode',
       radioButtons: [
         {
           value: playModes.SINGLE_PLAYER,
           label: playModes.SINGLE_PLAYER,
           id: playModes.SINGLE_PLAYER,
-          name: this.radioGroup
+          name: radioGroup
         },
         {
           value: playModes.TWO_PLAYER,
           label: playModes.TWO_PLAYER,
           id: playModes.TWO_PLAYER,
-          name: this.radioGroup
+          name: radioGroup
         },
         {
           value: playModes.AUTO_PLAYER,
           label: playModes.AUTO_PLAYER,
           id: playModes.AUTO_PLAYER,
-          name: this.radioGroup
+          name: radioGroup
         }
-      ]
+      ] as Array<{
+        value: keyof typeof playModes
+        label: keyof typeof playModes
+        id: keyof typeof playModes
+        name: string
+      }>
     }
   },
   methods: {
-    onChange(id: string) {
-      console.log('id', id)
+    ...mapActions(useGameStore, ['setPlayMode']),
+    onChange(id: keyof typeof playModes) {
       this.setPlayMode(id)
     }
   }
