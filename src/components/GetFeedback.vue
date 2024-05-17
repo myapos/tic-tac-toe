@@ -1,5 +1,5 @@
 <template>
-  <div data-testid="feedback">{{ feedback }}</div>
+  <div data-testid="feedback" class="feeedback">{{ feedback }}</div>
 </template>
 
 <script lang="ts">
@@ -32,11 +32,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.info {
+.feeedback {
   font-size: 0.8rem;
-  color: lightgrey;
-  border: 1px solid green;
-  padding: 5px;
+  color: var(--vt-c-text-dark-2);
+  border: 0;
+  padding: 0.5rem;
   border-radius: 5px;
+  min-width: 250px;
+  text-align: center;
 }
 </style>
