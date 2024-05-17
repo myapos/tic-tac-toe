@@ -1,4 +1,4 @@
-import { ref, watch, toRaw } from 'vue'
+import { ref, watch, toRaw, onMounted } from 'vue'
 
 import useAutoPlay from './useAutoPlay'
 import isDraw from './utils/checkUtils/isDraw'
@@ -13,15 +13,14 @@ import { useGameStore } from '@/stores/gameStore'
 export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStore = useGameStore()
   const totalCells = props.N * props.M
-  const grid = ref(createEmptyGrid(props.N))
   const showDetails = ref(false)
   const gameStarted = ref(false)
   const gameEnded = ref(false)
   const filledCells = ref(0)
 
-  const setGrid = (gridVal: gridT) => {
-    grid.value = gridVal
-  }
+  onMounted(() => {
+    gameStore.setGrid(createEmptyGrid(props.N))
+  })
 
   const setGameStarted = (filledCells: number) => {
     gameStarted.value = filledCells > 0
@@ -32,7 +31,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   }
 
   const setFilledCells = () => {
-    filledCells.value = grid.value.reduce((accRow, row) => {
+    filledCells.value = gameStore.grid.reduce((accRow, row) => {
       return (
         accRow +
         row.reduce((accCell, cell) => {
@@ -47,14 +46,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     const move = findBestMove({ gridCopy, isXTurn: gameStore.isXTurn, M: props.M, isMaximizing })
 
     if (move) {
-      grid.value[move.i][move.j][0] = isMaximizing ? X : O
+      gameStore.setGridCell(move.i, move.j, 0, isMaximizing ? X : O)
     }
 
     const newCounter = gameStore.counter + 1
     gameStore.setCounter(newCounter)
     if (move) {
       const winnerMessage = checkWinner(
-        grid.value,
+        gameStore.grid,
         move.i,
         move.j,
         props.M,
@@ -68,7 +67,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       }
     }
     // check draw
-    if (isDraw({ grid: grid.value })) {
+    if (isDraw({ grid: gameStore.grid })) {
       gameStore.setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
@@ -77,19 +76,19 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   const handleClickCell = ({ rowIdx, colIdx }: cellCoordinatesT) => {
     // Check if the cell contains already content
-    const cellHasContent = grid.value[rowIdx][colIdx][0].length > 0
+    const cellHasContent = gameStore.grid[rowIdx][colIdx][0].length > 0
 
     if (gameEnded.value || cellHasContent) {
       // Don't do anything if the game ended
       return
     }
 
-    const newGrid = grid.value
+    const newGrid = gameStore.grid
     const newCounter = gameStore.counter + 1
 
     const currentTurn = gameStore.isXTurn ? X : O
-    if (grid.value[rowIdx][colIdx][0] === initialCellValue) {
-      grid.value[rowIdx][colIdx][0] = currentTurn
+    if (gameStore.grid[rowIdx][colIdx][0] === initialCellValue) {
+      gameStore.setGridCell(rowIdx, colIdx, 0, currentTurn)
     }
 
     const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, gameStore.isXTurn, true)
@@ -99,7 +98,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       return
     }
 
-    setGrid(newGrid)
+    gameStore.setGrid(newGrid)
     gameStore.setCounter(newCounter)
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid })) {
@@ -110,12 +109,12 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
     if (gameStore.isInSinglePlayerMode && !gameStore.isXTurn) {
       // run logic to select next player's move
-      computerSelection(structuredClone(toRaw(grid.value)), false)
+      computerSelection(structuredClone(toRaw(gameStore.grid)), false)
     }
   }
 
   watch(
-    () => grid.value,
+    () => gameStore.grid,
     () => {
       setFilledCells()
 
@@ -144,7 +143,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   const handleReset = () => {
     gameStore.setCounter(0)
-    setGrid(createEmptyGrid(props.N))
+    gameStore.setGrid(createEmptyGrid(props.N))
     gameStore.setFeedback(itIsXturn)
     filledCells.value = 0
     setGameStarted(0)
@@ -154,6 +153,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const toggleDetails = () => {
     showDetails.value = !showDetails.value
   }
+
   const hasValidDimensionProps = () => {
     return (
       props.N >= 0 &&
@@ -166,14 +166,11 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   useAutoPlay({
     handleReset,
-    grid,
-    setGrid,
     computerSelection,
     gameEnded
   })
 
   return {
-    grid,
     handleClickCell,
     handleReset,
     toggleDetails,

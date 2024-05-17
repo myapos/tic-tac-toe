@@ -9,13 +9,10 @@ interface findBestMoveI {
   M: number
   isMaximizing?: boolean
 }
-interface getBestScoreAndMoveI {
+interface getBestScoreAndMoveI extends Omit<findBestMoveI, 'gridCopy'> {
   grid: gridT
-  isXTurn: boolean
-  M: number
   depth: number
   player: string
-  isMaximizing: boolean
   alpha: number
   beta: number
 }

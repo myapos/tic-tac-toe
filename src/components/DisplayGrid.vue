@@ -16,31 +16,22 @@
 import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
 
-import type { gridT } from './types'
 import GridCell from './ui/GridCell.vue'
 
 import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
-  props: {
-    grid: {
-      type: Array as () => gridT,
-      required: true
-    }
-  },
   emits: ['click-cell'],
   components: { GridCell },
   name: 'DisplayGrid',
-  data() {
-    return {
-      containerStyles: {
+  computed: {
+    ...mapState(useGameStore, ['isInAutoPlayerMode', 'grid']),
+    containerStyles() {
+      return {
         gridTemplateColumns: '100px '.repeat(this.grid.length),
         gridTemplateRows: '100px '.repeat(this.grid.length)
       }
     }
-  },
-  computed: {
-    ...mapState(useGameStore, ['isInAutoPlayerMode'])
   },
   methods: {
     handleClickCell(args: { rowIdx: number; colIdx: number }) {

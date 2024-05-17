@@ -5,34 +5,24 @@ import findEmptyCells from './utils/findEmptyCells'
 import getPlayMode from './utils/getPlayMode'
 import getRandomValueInRange from './utils/getRandomValueInRange'
 
-import type { gridT } from '@/components/types'
 import { X, restartingGame, ROUND_DELAY, RESTART_DELAY } from '@/constants'
 import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
   computerSelection: any
   gameEnded: Ref<boolean>
-  grid: Ref<gridT>
   handleReset: () => void
-  setGrid: (val: gridT) => void
 }
-export const useAutoPlay = ({
-  computerSelection,
-  gameEnded,
-  grid,
-  handleReset,
-  setGrid
-}: useAutoPlayI) => {
+export const useAutoPlay = ({ computerSelection, gameEnded, handleReset }: useAutoPlayI) => {
   const gameStore = useGameStore()
 
   const placeXInRandomCoordinates = () => {
-    const initialXi = getRandomValueInRange(grid.value.length)
-    const initialXj = getRandomValueInRange(grid.value[0].length)
+    const initialXi = getRandomValueInRange(gameStore.grid.length)
+    const initialXj = getRandomValueInRange(gameStore.grid[0].length)
 
-    grid.value[initialXi][initialXj][0] = X
+    gameStore.setGridCell(initialXi, initialXj, 0, X)
     const newCounter = gameStore.counter + 1
 
-    setGrid(grid.value)
     gameStore.setCounter(newCounter)
     return true
   }
@@ -43,7 +33,7 @@ export const useAutoPlay = ({
       return
     }
     let placedX = false
-    let emptyCells = findEmptyCells(grid.value)
+    let emptyCells = findEmptyCells(gameStore.grid)
 
     // Define a function to perform the next iteration of the loop with a delay
     const nextIteration = () => {
@@ -58,21 +48,21 @@ export const useAutoPlay = ({
           }
           if (!placedX) {
             placedX = placeXInRandomCoordinates()
-            emptyCells = findEmptyCells(grid.value)
+            emptyCells = findEmptyCells(gameStore.grid)
             break // Exit loop after placing X
           }
 
           if (gameStore.isXTurn) {
-            computerSelection(structuredClone(toRaw(grid.value)), true)
+            computerSelection(structuredClone(toRaw(gameStore.grid)), true)
 
-            emptyCells = findEmptyCells(grid.value)
+            emptyCells = findEmptyCells(gameStore.grid)
             break // Exit loop after computer's selection
           }
 
           if (!gameStore.isXTurn) {
-            computerSelection(structuredClone(toRaw(grid.value)), false)
+            computerSelection(structuredClone(toRaw(gameStore.grid)), false)
 
-            emptyCells = findEmptyCells(grid.value)
+            emptyCells = findEmptyCells(gameStore.grid)
             break // Exit loop after computer's selection
           }
         }
@@ -101,7 +91,6 @@ export const useAutoPlay = ({
   watch(
     () => gameStore.playMode,
     (newPlayMode) => {
-      console.log('Play mode changed:', newPlayMode)
       const detectedMode = getPlayMode(newPlayMode)
       handleReset()
       if (detectedMode.singlePlayer) {

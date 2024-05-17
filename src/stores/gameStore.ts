@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 
+import type { gridT } from '@/components/types'
 import { playModes, itIsXturn } from '@/constants'
 
 export const useGameStore = defineStore({
@@ -10,7 +11,8 @@ export const useGameStore = defineStore({
     counter: 0,
     isInSinglePlayerMode: false,
     isInAutoPlayerMode: false,
-    isInTwoPlayerMode: false
+    isInTwoPlayerMode: false,
+    grid: [] as gridT
   }),
   getters: {
     isXTurn(state) {
@@ -46,6 +48,12 @@ export const useGameStore = defineStore({
     },
     setIsInTwoPlayerMode(val: boolean) {
       this.isInTwoPlayerMode = val
+    },
+    setGrid(gridVal: gridT) {
+      this.grid = gridVal
+    },
+    setGridCell(i: number, j: number, cellIdx: number, value: string) {
+      this.grid[i][j][cellIdx] = value
     }
   }
 })

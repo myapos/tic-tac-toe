@@ -5,7 +5,7 @@
     data-testid="tic-tac-toe-wrapper"
   >
     <get-feedback :M="M"></get-feedback>
-    <display-grid :grid="grid" @click-cell="handleClickCell"></display-grid>
+    <display-grid @click-cell="handleClickCell" />
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
@@ -41,7 +41,6 @@ const gridDimensions = defineProps({
 })
 
 const {
-  grid,
   handleClickCell,
   handleReset,
   toggleDetails,
