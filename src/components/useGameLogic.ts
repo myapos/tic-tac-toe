@@ -8,11 +8,12 @@ import { findBestMove } from './utils/findBestMove'
 
 import type { gridT, cellCoordinatesT } from '@/components/types'
 import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw } from '@/constants'
+import { useGameStore } from '@/stores/gameStore'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
+  const gameStore = useGameStore()
   const totalCells = props.N * props.M
   const grid = ref(createEmptyGrid(props.N))
-  const feedback = ref(itIsXturn)
   const counter = ref(0)
   const isXTurn = ref(true)
   const showDetails = ref(false)
@@ -22,10 +23,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const isInSinglePlayerMode = ref(false)
   const isInAutoPlayerMode = ref(false)
   const isInTwoPlayerMode = ref(false)
-
-  const setFeedback = (feedbackVal: string) => {
-    feedback.value = feedbackVal
-  }
 
   const setGrid = (gridVal: gridT) => {
     grid.value = gridVal
@@ -72,14 +69,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     if (move) {
       const winnerMessage = checkWinner(grid.value, move.i, move.j, props.M, !isXTurn.value, true)
       if (winnerMessage.feedback) {
-        setFeedback(winnerMessage.feedback)
+        gameStore.setFeedback(winnerMessage.feedback)
         setGameEnded(totalCells)
         return
       }
     }
     // check draw
     if (isDraw({ grid: grid.value })) {
-      setFeedback(itIsDraw)
+      gameStore.setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
@@ -104,7 +101,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
     const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, isXTurn.value, true)
     if (winnerMessage.feedback) {
-      setFeedback(winnerMessage.feedback)
+      gameStore.setFeedback(winnerMessage.feedback)
       setGameEnded(totalCells)
       return
     }
@@ -113,7 +110,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setCounter(newCounter)
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid })) {
-      setFeedback('It is a draw. No one wins.')
+      gameStore.setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
     }
@@ -144,14 +141,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   watch(isXTurn, (newVal, oldVal) => {
     if (!gameEnded.value) {
-      setFeedback(oldVal ? itIsOturn : itIsXturn)
+      gameStore.setFeedback(oldVal ? itIsOturn : itIsXturn)
     }
   })
 
   const handleReset = () => {
     setCounter(0)
     setGrid(createEmptyGrid(props.N))
-    setFeedback(itIsXturn)
+    gameStore.setFeedback(itIsXturn)
     filledCells.value = 0
     setGameStarted(0)
     setGameEnded(0)
@@ -181,18 +178,15 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setCounter,
     isXTurn,
     computerSelection,
-    gameEnded,
-    setFeedback
+    gameEnded
   })
 
   return {
     counter,
-    feedback,
     grid,
     handleClickCell,
     handleReset,
     isXTurn,
-    setFeedback,
     setIsXTurn,
     toggleDetails,
     showDetails,

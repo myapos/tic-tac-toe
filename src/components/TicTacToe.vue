@@ -4,7 +4,7 @@
     class="tic-tac-toe-wrapper"
     data-testid="tic-tac-toe-wrapper"
   >
-    <get-feedback :feedback="feedback" :M="M"></get-feedback>
+    <get-feedback :M="M"></get-feedback>
     <display-grid :grid="grid" :isXTurn="isXTurn" @click-cell="handleClickCell"></display-grid>
     <app-controls>
       <div class="row">
@@ -41,7 +41,6 @@ const gridDimensions = defineProps({
 })
 
 const {
-  feedback,
   grid,
   handleClickCell,
   handleReset,

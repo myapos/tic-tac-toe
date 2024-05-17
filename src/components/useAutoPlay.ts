@@ -6,7 +6,7 @@ import getPlayMode from './utils/getPlayMode'
 import getRandomValueInRange from './utils/getRandomValueInRange'
 
 import type { gridT } from '@/components/types'
-import { X, restartingGame, ROUND_DELAY, RESTART_DELAY, playModes } from '@/constants'
+import { X, restartingGame, ROUND_DELAY, RESTART_DELAY } from '@/constants'
 import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
@@ -20,7 +20,6 @@ interface useAutoPlayI {
   isInTwoPlayerMode: Ref<boolean>
   isXTurn: Ref<boolean>
   setCounter: (val: number) => void
-  setFeedback: (val: string) => void
   setGrid: (val: gridT) => void
 }
 export const useAutoPlay = ({
@@ -34,7 +33,6 @@ export const useAutoPlay = ({
   isInTwoPlayerMode,
   isXTurn,
   setCounter,
-  setFeedback,
   setGrid
 }: useAutoPlayI) => {
   const gameStore = useGameStore()
@@ -97,7 +95,7 @@ export const useAutoPlay = ({
         }
         if (emptyCells === 0 || gameEnded.value) {
           setTimeout(() => {
-            setFeedback(restartingGame)
+            gameStore.setFeedback(restartingGame)
           }, RESTART_DELAY)
           //restart auto play mode
           setTimeout(() => {
