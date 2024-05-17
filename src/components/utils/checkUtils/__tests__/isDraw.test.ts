@@ -10,11 +10,12 @@ describe('isDraw', () => {
       winIndex: 0,
       start: 0,
       end: 3,
-      mode: '',
+      mode: 'empty',
       hasWinningMarks: false
     }
     const grid = createGrid(emptyGridOptions)
-    const result = isDraw({ grid, counter: 0 })
+
+    const result = isDraw({ grid })
 
     expect(result).toEqual(false)
   })
@@ -24,11 +25,11 @@ describe('isDraw', () => {
       winIndex: 0,
       start: 0,
       end: 3,
-      mode: '',
+      mode: 'draw',
       hasWinningMarks: false
     }
     const grid = createGrid(emptyGridOptions)
-    const result = isDraw({ grid, counter: Math.pow(emptyGridOptions.N, 2) })
+    const result = isDraw({ grid })
 
     expect(result).toEqual(true)
   })

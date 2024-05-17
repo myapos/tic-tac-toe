@@ -7,7 +7,7 @@ import type { rowT, cellT } from '@/components/types'
 interface checkAiWinnerI {
   grid: any
   shouldMarkWinningCells: boolean
-  isXTurn: Ref<boolean>
+  isXTurn: boolean
   M: number
 }
 
@@ -30,7 +30,7 @@ const checkAiWinner = ({
   }
   grid.some((row: rowT, i: number) => {
     return row.some((cell: cellT, j: number) => {
-      result = checkWinner(grid, i, j, M, isXTurn.value, shouldMarkWinningCells)
+      result = checkWinner(grid, i, j, M, isXTurn, shouldMarkWinningCells)
       return result.won
     })
   })

@@ -98,6 +98,6 @@ export const checkWinner = (
   }
 }
 
-export const checkDraw = (grid: gridT, counter: number): boolean => {
-  return isDraw({ grid, counter })
+export const checkDraw = (grid: gridT): boolean => {
+  return isDraw({ grid })
 }

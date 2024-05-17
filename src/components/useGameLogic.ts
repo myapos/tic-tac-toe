@@ -66,7 +66,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
-    const move = findBestMove({ gridCopy, isXTurn, setCounter, counter, M: props.M, isMaximizing })
+    const move = findBestMove({ gridCopy, isXTurn, M: props.M, isMaximizing })
 
     if (move) {
       grid.value[move.i][move.j][0] = isMaximizing ? X : O
@@ -83,7 +83,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       }
     }
     // check draw
-    if (isDraw({ grid: grid.value, counter: newCounter })) {
+    if (isDraw({ grid: grid.value })) {
       setFeedback(itIsDraw)
       setGameEnded(totalCells)
       return
@@ -117,7 +117,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     setGrid(newGrid)
     setCounter(newCounter)
     // Check draw as last step if no one wins
-    if (isDraw({ grid: newGrid, counter: newCounter })) {
+    if (isDraw({ grid: newGrid })) {
       setFeedback('It is a draw. No one wins.')
       setGameEnded(totalCells)
       return

@@ -1,12 +1,10 @@
 import type { gridT } from '@/components/types.ts'
+import findEmptyCells from '@/components/utils/findEmptyCells'
 
-const isDraw = ({ grid, counter }: { grid: gridT; counter: number }) => {
-  if (counter === grid.length * grid.length) {
-    // all elements are set and no winner found so it is a draw
-    return true
-  }
+const isDraw = ({ grid }: { grid: gridT }) => {
+  const emptyCells = findEmptyCells(grid)
 
-  return false
+  return emptyCells === 0
 }
 
 export default isDraw
