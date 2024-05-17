@@ -1,4 +1,4 @@
-import { ref, watch, toRaw, onMounted } from 'vue'
+import { watch, toRaw, onMounted } from 'vue'
 
 import useAutoPlay from './useAutoPlay'
 import isDraw from './utils/checkUtils/isDraw'
@@ -12,21 +12,11 @@ import { useGameStore } from '@/stores/gameStore'
 
 export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStore = useGameStore()
-  const totalCells = props.N * props.M
-  const gameStarted = ref(false)
-  const gameEnded = ref(false)
 
   onMounted(() => {
     gameStore.setGrid(createEmptyGrid(props.N))
+    gameStore.setTotalCells(props.N * props.M)
   })
-
-  const setGameStarted = (filledCells: number) => {
-    gameStarted.value = filledCells > 0
-  }
-
-  const setGameEnded = (filledCells: number) => {
-    gameEnded.value = filledCells === totalCells
-  }
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
@@ -49,14 +39,15 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       )
       if (winnerMessage.feedback) {
         gameStore.setFeedback(winnerMessage.feedback)
-        setGameEnded(totalCells)
+        gameStore.setGameEnded(gameStore.totalCells)
         return
       }
     }
+
     // check draw
     if (isDraw({ grid: gameStore.grid })) {
       gameStore.setFeedback(itIsDraw)
-      setGameEnded(totalCells)
+      gameStore.setGameEnded(gameStore.totalCells)
       return
     }
   }
@@ -65,7 +56,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     // Check if the cell contains already content
     const cellHasContent = gameStore.grid[rowIdx][colIdx][0].length > 0
 
-    if (gameEnded.value || cellHasContent) {
+    if (gameStore.gameEnded || cellHasContent) {
       // Don't do anything if the game ended
       return
     }
@@ -81,7 +72,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, gameStore.isXTurn, true)
     if (winnerMessage.feedback) {
       gameStore.setFeedback(winnerMessage.feedback)
-      setGameEnded(totalCells)
+      gameStore.setGameEnded(gameStore.totalCells)
       return
     }
 
@@ -90,7 +81,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid })) {
       gameStore.setFeedback(itIsDraw)
-      setGameEnded(totalCells)
+      gameStore.setGameEnded(gameStore.filledCells)
       return
     }
 
@@ -106,11 +97,10 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       gameStore.countFilledCells()
 
       if (gameStore.filledCells > 0) {
-        setGameStarted(gameStore.filledCells)
+        gameStore.setGameStarted(gameStore.filledCells)
       }
-
-      if (gameStore.filledCells === props.N * props.M) {
-        setGameEnded(gameStore.filledCells)
+      if (gameStore.filledCells === gameStore.totalCells) {
+        gameStore.setGameEnded(gameStore.filledCells)
       }
     },
     {
@@ -121,8 +111,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   watch(
     () => gameStore.isXTurn,
     (newVal, oldVal) => {
-      console.log('value', newVal, oldVal)
-      if (!gameEnded.value) {
+      if (!gameStore.gameEnded) {
         gameStore.setFeedback(oldVal ? itIsOturn : itIsXturn)
       }
     }
@@ -133,8 +122,8 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     gameStore.setGrid(createEmptyGrid(props.N))
     gameStore.setFeedback(itIsXturn)
     gameStore.setFilledCells(0)
-    setGameStarted(0)
-    setGameEnded(0)
+    gameStore.setGameStarted(0)
+    gameStore.setGameEnded(0)
   }
 
   const hasValidDimensionProps = () => {
@@ -149,15 +138,12 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   useAutoPlay({
     handleReset,
-    computerSelection,
-    gameEnded
+    computerSelection
   })
 
   return {
     handleClickCell,
     handleReset,
-    hasValidDimensionProps,
-    gameStarted,
-    gameEnded
+    hasValidDimensionProps
   }
 }

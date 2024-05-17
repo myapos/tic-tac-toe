@@ -1,15 +1,13 @@
 import { onBeforeMount, onBeforeUnmount } from 'vue'
-import type { Ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 
-interface GameStatus {
-  gameStarted: Ref<boolean>
-  gameEnded: Ref<boolean>
-}
+import { useGameStore } from '@/stores/gameStore'
 
-export const usePreventRouteLeave = ({ gameStarted, gameEnded }: GameStatus) => {
+export const usePreventRouteLeave = () => {
+  const gameStore = useGameStore()
+
   function preventNav(event: BeforeUnloadEvent) {
-    if (gameStarted.value) {
+    if (gameStore.gameStarted) {
       event.preventDefault()
     }
   }
@@ -23,7 +21,7 @@ export const usePreventRouteLeave = ({ gameStarted, gameEnded }: GameStatus) => 
   })
 
   onBeforeRouteLeave((to, from, next) => {
-    if (gameStarted.value && !gameEnded.value) {
+    if (gameStore.gameStarted && !gameStore.gameEnded) {
       if (!window.confirm('Changes you made may not be saved.')) {
         return
       }

@@ -1,5 +1,4 @@
 import { watch, toRaw } from 'vue'
-import type { Ref } from 'vue'
 
 import findEmptyCells from './utils/findEmptyCells'
 import getPlayMode from './utils/getPlayMode'
@@ -10,10 +9,9 @@ import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
   computerSelection: any
-  gameEnded: Ref<boolean>
   handleReset: () => void
 }
-export const useAutoPlay = ({ computerSelection, gameEnded, handleReset }: useAutoPlayI) => {
+export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) => {
   const gameStore = useGameStore()
 
   const placeXInRandomCoordinates = () => {
@@ -68,10 +66,10 @@ export const useAutoPlay = ({ computerSelection, gameEnded, handleReset }: useAu
         }
 
         // Check if the loop should continue
-        if (emptyCells !== 0 && !gameEnded.value) {
+        if (emptyCells !== 0 && !gameStore.gameEnded) {
           nextIteration() // Call the function recursively to perform the next iteration
         }
-        if (emptyCells === 0 || gameEnded.value) {
+        if (emptyCells === 0 || gameStore.gameEnded) {
           setTimeout(() => {
             gameStore.setFeedback(restartingGame)
           }, RESTART_DELAY)

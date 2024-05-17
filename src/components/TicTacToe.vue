@@ -40,10 +40,9 @@ const gridDimensions = defineProps({
   M: { type: Number, required: true }
 })
 
-const { handleClickCell, handleReset, hasValidDimensionProps, gameEnded, gameStarted } =
-  useGameLogic(gridDimensions)
+const { handleClickCell, handleReset, hasValidDimensionProps } = useGameLogic(gridDimensions)
 
-usePreventRouteLeave({ gameEnded, gameStarted })
+usePreventRouteLeave()
 </script>
 
 <style scoped>
