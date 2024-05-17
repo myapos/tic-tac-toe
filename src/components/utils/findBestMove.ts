@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 import { minimax } from './minimax'
 
 import type { gridT } from '@/components/types'

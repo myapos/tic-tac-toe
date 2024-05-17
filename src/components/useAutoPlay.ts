@@ -11,7 +11,6 @@ import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
   computerSelection: any
-  counter: Ref<number>
   gameEnded: Ref<boolean>
   grid: Ref<gridT>
   handleReset: () => void
@@ -22,7 +21,6 @@ interface useAutoPlayI {
 }
 export const useAutoPlay = ({
   computerSelection,
-  counter,
   gameEnded,
   grid,
   handleReset,
@@ -38,7 +36,7 @@ export const useAutoPlay = ({
     const initialXj = getRandomValueInRange(grid.value[0].length)
 
     grid.value[initialXi][initialXj][0] = X
-    const newCounter = counter.value + 1
+    const newCounter = gameStore.counter + 1
 
     setGrid(grid.value)
     gameStore.setCounter(newCounter)

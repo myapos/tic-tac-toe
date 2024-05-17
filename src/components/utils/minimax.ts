@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 import checkAiWinner from './checkAiWinner'
 import isDraw from './checkUtils/isDraw'
 import { getBestScoreAndMove } from './findBestMove'

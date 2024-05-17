@@ -14,7 +14,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const gameStore = useGameStore()
   const totalCells = props.N * props.M
   const grid = ref(createEmptyGrid(props.N))
-  const counter = ref(0)
   const showDetails = ref(false)
   const gameStarted = ref(false)
   const gameEnded = ref(false)
@@ -174,14 +173,12 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     isInTwoPlayerMode,
     isInAutoPlayerMode,
     grid,
-    counter,
     setGrid,
     computerSelection,
     gameEnded
   })
 
   return {
-    counter,
     grid,
     handleClickCell,
     handleReset,
