@@ -26,8 +26,8 @@
 <script setup lang="ts">
 import AppControls from './AppControls.vue'
 import DisplayGrid from './DisplayGrid.vue'
-import GetFeedback from './Feedback.vue'
 import GameDetails from './GameDetails.vue'
+import GetFeedback from './GetFeedback.vue'
 import LoadDefaultGrid from './LoadDefaultGrid.vue'
 import PlayerModes from './PlayerModes.vue'
 import ResetGame from './ResetGame.vue'
