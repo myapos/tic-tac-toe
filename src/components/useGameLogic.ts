@@ -66,7 +66,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
-    const move = findBestMove({ gridCopy, isXTurn, setCounter, counter, M: props.M, isMaximizing })
+    const move = findBestMove({ gridCopy, isXTurn, M: props.M, isMaximizing })
 
     if (move) {
       grid.value[move.i][move.j][0] = isMaximizing ? X : O

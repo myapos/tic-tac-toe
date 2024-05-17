@@ -19,7 +19,7 @@ interface minimaxI {
   beta: number
 }
 export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: minimaxI) => {
-  const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn })
+  const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn: isMaximizing })
   // Check draw as last step if no one wins
   if (isDraw({ grid })) {
     return 0
@@ -48,6 +48,7 @@ export const minimax = ({ grid, depth, isMaximizing, M, isXTurn, alpha, beta }: 
     grid,
     depth,
     isXTurn,
+
     M,
     player: O,
     isMaximizing,

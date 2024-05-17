@@ -36,7 +36,7 @@ test.describe('search a 3x3 grid', () => {
     await page.goto(customGrid3X3)
   })
 
-  test.describe('check cell', () => {
+  test.describe('2P mode check cell', () => {
     test('should ignore clicking on already filled cell', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-0').click()
@@ -46,7 +46,7 @@ test.describe('search a 3x3 grid', () => {
     })
   })
 
-  test.describe('check row', () => {
+  test.describe('2P mode check row', () => {
     test('should win in first row starting from left to right', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-0').click()
@@ -82,7 +82,7 @@ test.describe('search a 3x3 grid', () => {
     })
   })
 
-  test.describe('check column', () => {
+  test.describe('2P mode check column', () => {
     test('should win in first column starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-0').click()
@@ -118,7 +118,7 @@ test.describe('search a 3x3 grid', () => {
     })
   })
 
-  test.describe('check primary', () => {
+  test.describe('2P mode check primary', () => {
     test('should win in primary starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-0').click()
@@ -156,7 +156,7 @@ test.describe('search a 3x3 grid', () => {
     })
   })
 
-  test.describe('check secondary', () => {
+  test.describe('2P mode check secondary', () => {
     test('should win in first column starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-2').click()
@@ -192,7 +192,7 @@ test.describe('search a 3x3 grid', () => {
     })
   })
 
-  test("it's a draw", async ({ page }) => {
+  test("2P mode it's a draw", async ({ page }) => {
     await page.getByTestId('cell-1-1').click()
     await page.getByTestId('cell-0-1').click()
     await page.getByTestId('cell-2-1').click()
@@ -204,6 +204,26 @@ test.describe('search a 3x3 grid', () => {
     await page.getByTestId('cell-2-2').click()
     await expect(page.getByTestId('feedback')).toHaveText('It is a draw. No one wins.')
   })
+
+  test('1P mode should loose', async ({ page }) => {
+    await page.getByTestId('1P').click()
+    await page.getByTestId('cell-0-0').click()
+    await page.getByTestId('cell-1-0').click()
+    await page.getByTestId('cell-0-1').click()
+
+    await expect(page.getByTestId('feedback')).toHaveText('Player O wins!')
+  })
+
+  test('1P mode should be a draw', async ({ page }) => {
+    await page.getByTestId('1P').click()
+    await page.getByTestId('cell-0-0').click()
+    await page.getByTestId('cell-1-0').click()
+    await page.getByTestId('cell-0-2').click()
+    await page.getByTestId('cell-2-1').click()
+    await page.getByTestId('cell-1-2').click()
+
+    await expect(page.getByTestId('feedback')).toHaveText('It is a draw. No one wins.')
+  })
 })
 
 test.describe('search a 4x3 grid', () => {
@@ -211,7 +231,7 @@ test.describe('search a 4x3 grid', () => {
     await page.goto(customGridUrl)
   })
 
-  test.describe('check row', () => {
+  test.describe('2P mode check row', () => {
     test('should win in first row starting from left to right', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-1').click()
@@ -247,7 +267,7 @@ test.describe('search a 4x3 grid', () => {
     })
   })
 
-  test.describe('check column', () => {
+  test.describe('2P mode check column', () => {
     test('should win in first column starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-1-0').click()
@@ -285,7 +305,7 @@ test.describe('search a 4x3 grid', () => {
     })
   })
 
-  test.describe('check primary', () => {
+  test.describe('2P mode check primary', () => {
     test('should win in primary starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-1-1').click()
@@ -321,7 +341,7 @@ test.describe('search a 4x3 grid', () => {
     })
   })
 
-  test.describe('check secondary', () => {
+  test.describe('2P mode check secondary', () => {
     test('should win in first column starting from top to bottom', async ({ page }) => {
       await expect(page.getByTestId('feedback')).toHaveText("It is X's turn!")
       await page.getByTestId('cell-0-3').click()

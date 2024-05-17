@@ -38,7 +38,6 @@ export const getBestScoreAndMove = ({
     for (let j = 0; j < grid[0].length; j++) {
       const cellValue = grid[i][j][0]
       if (cellValue === initialCellValue) {
-        // setCounter(counter.value + 1)
         grid[i][j][0] = player
         const score = minimax({
           grid,
@@ -50,7 +49,6 @@ export const getBestScoreAndMove = ({
           beta
         })
         grid[i][j][0] = initialCellValue
-        // setCounter(counter.value - 1)
 
         if (!isMaximizing && score <= bestScore) {
           bestScore = score
