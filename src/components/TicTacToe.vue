@@ -5,7 +5,7 @@
     data-testid="tic-tac-toe-wrapper"
   >
     <get-feedback :M="M"></get-feedback>
-    <display-grid :grid="grid" :isXTurn="isXTurn" @click-cell="handleClickCell"></display-grid>
+    <display-grid :grid="grid" @click-cell="handleClickCell"></display-grid>
     <app-controls>
       <div class="row">
         <reset-game :onReset="handleReset"></reset-game>
@@ -44,7 +44,6 @@ const {
   grid,
   handleClickCell,
   handleReset,
-  isXTurn,
   toggleDetails,
   showDetails,
   hasValidDimensionProps,

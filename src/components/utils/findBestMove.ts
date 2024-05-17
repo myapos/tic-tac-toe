@@ -7,13 +7,13 @@ import { O, X, initialCellValue } from '@/constants'
 
 interface findBestMoveI {
   gridCopy: gridT
-  isXTurn: Ref<boolean>
+  isXTurn: boolean
   M: number
   isMaximizing?: boolean
 }
 interface getBestScoreAndMoveI {
   grid: gridT
-  isXTurn: Ref<boolean>
+  isXTurn: boolean
   M: number
   depth: number
   player: string

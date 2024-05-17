@@ -13,7 +13,7 @@ interface minimaxI {
   grid: gridT
   depth: number
   M: number
-  isXTurn: Ref<boolean>
+  isXTurn: boolean
   isMaximizing: boolean
   alpha: number
   beta: number

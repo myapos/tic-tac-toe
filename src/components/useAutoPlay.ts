@@ -18,8 +18,6 @@ interface useAutoPlayI {
   isInAutoPlayerMode: Ref<boolean>
   isInSinglePlayerMode: Ref<boolean>
   isInTwoPlayerMode: Ref<boolean>
-  isXTurn: Ref<boolean>
-  setCounter: (val: number) => void
   setGrid: (val: gridT) => void
 }
 export const useAutoPlay = ({
@@ -31,8 +29,6 @@ export const useAutoPlay = ({
   isInAutoPlayerMode,
   isInSinglePlayerMode,
   isInTwoPlayerMode,
-  isXTurn,
-  setCounter,
   setGrid
 }: useAutoPlayI) => {
   const gameStore = useGameStore()
@@ -45,7 +41,7 @@ export const useAutoPlay = ({
     const newCounter = counter.value + 1
 
     setGrid(grid.value)
-    setCounter(newCounter)
+    gameStore.setCounter(newCounter)
     return true
   }
 
@@ -74,14 +70,14 @@ export const useAutoPlay = ({
             break // Exit loop after placing X
           }
 
-          if (isXTurn.value) {
+          if (gameStore.isXTurn) {
             computerSelection(structuredClone(toRaw(grid.value)), true)
 
             emptyCells = findEmptyCells(grid.value)
             break // Exit loop after computer's selection
           }
 
-          if (!isXTurn.value) {
+          if (!gameStore.isXTurn) {
             computerSelection(structuredClone(toRaw(grid.value)), false)
 
             emptyCells = findEmptyCells(grid.value)

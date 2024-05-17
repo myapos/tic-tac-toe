@@ -15,7 +15,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   const totalCells = props.N * props.M
   const grid = ref(createEmptyGrid(props.N))
   const counter = ref(0)
-  const isXTurn = ref(true)
   const showDetails = ref(false)
   const gameStarted = ref(false)
   const gameEnded = ref(false)
@@ -26,15 +25,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   const setGrid = (gridVal: gridT) => {
     grid.value = gridVal
-  }
-
-  const setIsXTurn = () => {
-    isXTurn.value = counter.value % 2 === 0
-  }
-
-  const setCounter = (counterVal: number) => {
-    counter.value = counterVal
-    setIsXTurn()
   }
 
   const setGameStarted = (filledCells: number) => {
@@ -58,16 +48,23 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
-    const move = findBestMove({ gridCopy, isXTurn, M: props.M, isMaximizing })
+    const move = findBestMove({ gridCopy, isXTurn: gameStore.isXTurn, M: props.M, isMaximizing })
 
     if (move) {
       grid.value[move.i][move.j][0] = isMaximizing ? X : O
     }
 
-    const newCounter = counter.value + 1
-    setCounter(newCounter)
+    const newCounter = gameStore.counter + 1
+    gameStore.setCounter(newCounter)
     if (move) {
-      const winnerMessage = checkWinner(grid.value, move.i, move.j, props.M, !isXTurn.value, true)
+      const winnerMessage = checkWinner(
+        grid.value,
+        move.i,
+        move.j,
+        props.M,
+        !gameStore.isXTurn,
+        true
+      )
       if (winnerMessage.feedback) {
         gameStore.setFeedback(winnerMessage.feedback)
         setGameEnded(totalCells)
@@ -92,14 +89,14 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
 
     const newGrid = grid.value
-    const newCounter = counter.value + 1
+    const newCounter = gameStore.counter + 1
 
-    const currentTurn = isXTurn.value ? X : O
+    const currentTurn = gameStore.isXTurn ? X : O
     if (grid.value[rowIdx][colIdx][0] === initialCellValue) {
       grid.value[rowIdx][colIdx][0] = currentTurn
     }
 
-    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, isXTurn.value, true)
+    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, gameStore.isXTurn, true)
     if (winnerMessage.feedback) {
       gameStore.setFeedback(winnerMessage.feedback)
       setGameEnded(totalCells)
@@ -107,7 +104,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
 
     setGrid(newGrid)
-    setCounter(newCounter)
+    gameStore.setCounter(newCounter)
     // Check draw as last step if no one wins
     if (isDraw({ grid: newGrid })) {
       gameStore.setFeedback(itIsDraw)
@@ -115,7 +112,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       return
     }
 
-    if (isInSinglePlayerMode.value && !isXTurn.value) {
+    if (isInSinglePlayerMode.value && !gameStore.isXTurn) {
       // run logic to select next player's move
       computerSelection(structuredClone(toRaw(grid.value)), false)
     }
@@ -139,14 +136,18 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
   )
 
-  watch(isXTurn, (newVal, oldVal) => {
-    if (!gameEnded.value) {
-      gameStore.setFeedback(oldVal ? itIsOturn : itIsXturn)
+  watch(
+    () => gameStore.isXTurn,
+    (newVal, oldVal) => {
+      console.log('value', newVal, oldVal)
+      if (!gameEnded.value) {
+        gameStore.setFeedback(oldVal ? itIsOturn : itIsXturn)
+      }
     }
-  })
+  )
 
   const handleReset = () => {
-    setCounter(0)
+    gameStore.setCounter(0)
     setGrid(createEmptyGrid(props.N))
     gameStore.setFeedback(itIsXturn)
     filledCells.value = 0
@@ -175,8 +176,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     grid,
     counter,
     setGrid,
-    setCounter,
-    isXTurn,
     computerSelection,
     gameEnded
   })
@@ -186,8 +185,6 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     grid,
     handleClickCell,
     handleReset,
-    isXTurn,
-    setIsXTurn,
     toggleDetails,
     showDetails,
     hasValidDimensionProps,
