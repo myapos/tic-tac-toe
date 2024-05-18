@@ -11,7 +11,7 @@ export const useGameStore = defineStore({
     counter: 0,
     isInSinglePlayerMode: false,
     isInAutoPlayerMode: false,
-    isInTwoPlayerMode: false,
+    isInTwoPlayerMode: true,
     grid: [] as gridT,
     filledCells: 0,
     showDetails: false,

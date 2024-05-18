@@ -1,20 +1,24 @@
 <template>
-  <custom-button @click="loadDefaultGrid" dataTestId="load-default-grid-btn" :disabled="!isEnabled"
-    >Load Default Grid</custom-button
-  >
+  <custom-button @click="toggleGrid" dataTestId="load-grid-btn">{{
+    isToggled ? 'Load Default Grid' : 'Load Large Grid'
+  }}</custom-button>
 </template>
 <script lang="ts">
 export default {
   name: 'LoadDefaultGrid',
   computed: {
-    isEnabled() {
+    isToggled() {
       const hasCustomGridDimensions = Boolean(Object.keys(this.$route.query).length)
       return hasCustomGridDimensions
     }
   },
   methods: {
-    loadDefaultGrid() {
-      this.$router.push('/')
+    toggleGrid() {
+      if (this.isToggled) {
+        this.$router.push('/')
+        return
+      }
+      this.$router.push('/reset-params?N=4&M=4')
     }
   }
 }

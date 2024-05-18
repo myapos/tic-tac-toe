@@ -12,9 +12,11 @@
         <show-game-details />
         <load-default-grid />
         <player-modes />
-        <algo-modes />
+        <transition name="fade-in-out">
+          <algo-modes />
+        </transition>
       </div>
-      <transition name="game-details">
+      <transition name="fade-in-out">
         <game-details :N="N" :M="M" />
       </transition>
     </app-controls>
@@ -63,13 +65,13 @@ usePreventRouteLeave()
   align-items: start;
   justify-items: stretch;
 }
-.game-details-enter-active,
-.game-details-leave-active {
+.fade-in-out-enter-active,
+.fade-in-out-leave-active {
   transition: opacity 1s ease;
 }
 
-.game-details-enter-from,
-.game-details-leave-to {
+.fade-in-out-enter-from,
+.fade-in-out-leave-to {
   opacity: 0;
 }
 

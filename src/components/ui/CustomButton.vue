@@ -1,5 +1,13 @@
 <template>
-  <button @click="onClick" :data-testid="dataTestId" :disabled="disabled"><slot></slot></button>
+  <button
+    ref="buttonRef"
+    @click="onClick"
+    :data-testid="dataTestId"
+    :disabled="disabled"
+    :class="{ highlight: shouldFocus }"
+  >
+    <slot></slot>
+  </button>
 </template>
 <script lang="ts">
 import type { PropType } from 'vue'
@@ -17,6 +25,10 @@ export default defineComponent({
       default: 'custom-button'
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    shouldFocus: {
       type: Boolean,
       default: false
     }
@@ -50,5 +62,9 @@ button:disabled:hover {
 button[disabled] {
   border: 1px solid black;
   background-color: var(--vt-c-divider-dark-1);
+}
+
+.highlight {
+  border-color: var(--highlight-color);
 }
 </style>
