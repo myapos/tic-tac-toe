@@ -12,6 +12,13 @@ Traditionally, tic-tac-toe uses a 3 x 3 grid. In this problem, an advanced versi
 
 You can change these parameters by adding to the URL parameters `?N=4&M=3` where `N >= M`. [Try it!](https://tic-tac-toe-snowy-sigma.vercel.app/?N=4&M=4)
 
+#### Player modes
+
+Three player modes are supported: 
+- Single player mode (1P) where a human player plays against an AI player. For this mode there are two available selections where the user can select between [minimax](https://en.wikipedia.org/wiki/Minimax) and [negamax](https://en.wikipedia.org/wiki/Minimax) algorithms.
+- Two players mode (2P) where two human players can play against other.
+- Auto mode (Auto) where two AI players can play against other.
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
