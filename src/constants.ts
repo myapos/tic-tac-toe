@@ -13,6 +13,10 @@ export const playModes = {
   AUTO_PLAYER: 'Auto',
   TWO_PLAYER: '2P'
 }
+export const algorithms = {
+  MINIMAX: 'minimax',
+  NEGAMAX: 'negamax'
+}
 
 export const ROUND_DELAY = 500
 export const RESTART_DELAY = 500

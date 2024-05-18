@@ -7,12 +7,11 @@ import { getMaxDepth } from './getMaxDepth'
 import type { gridT } from '@/components/types'
 import { O, X } from '@/constants'
 
-interface minimaxI {
+interface negamaxI {
   grid: gridT
   depth: number
   M: number
   isXTurn: boolean
-  isMaximizing: boolean
   alpha: number
   beta: number
   activeAlgorithm: any
@@ -23,22 +22,13 @@ const getBoardKey = (grid: gridT, depth: number) => {
   return `${JSON.stringify(grid)}_${depth}`
 }
 
-export const minimax = ({
-  grid,
-  depth,
-  isMaximizing,
-  M,
-  isXTurn,
-  alpha,
-  beta,
-  activeAlgorithm
-}: minimaxI): number => {
+export const negamax = ({ grid, depth, M, isXTurn, alpha, beta, activeAlgorithm }: negamaxI) => {
   const boardKey = getBoardKey(grid, depth)
   if (memo.has(boardKey)) {
     return memo.get(boardKey)!
   }
 
-  const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn: isMaximizing })
+  const result = checkAiWinner({ grid, shouldMarkWinningCells: false, M, isXTurn })
   // Check draw as last step if no one wins
   if (isDraw({ grid })) {
     return 0
@@ -46,25 +36,9 @@ export const minimax = ({
 
   if (result.won || depth >= getMaxDepth({ grid })) {
     const emptyCells = findEmptyCells(grid)
-    const score = isMaximizing ? 1 * (emptyCells + 1) : -1 * (emptyCells + 1)
+    const score = emptyCells + 1
     memo.set(boardKey, score)
     return score
-  }
-
-  if (isMaximizing) {
-    const { bestScore } = getBestScoreAndMove({
-      grid,
-      depth,
-      isXTurn,
-      M,
-      player: X,
-      isMaximizing,
-      alpha,
-      beta,
-      activeAlgorithm
-    })
-    memo.set(boardKey, bestScore)
-    return bestScore
   }
 
   const { bestScore } = getBestScoreAndMove({
@@ -72,8 +46,7 @@ export const minimax = ({
     depth,
     isXTurn,
     M,
-    player: O,
-    isMaximizing,
+    player: isXTurn ? X : O,
     alpha,
     beta,
     activeAlgorithm
