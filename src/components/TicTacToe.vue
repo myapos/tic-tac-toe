@@ -20,6 +20,10 @@
         <game-details :N="N" :M="M" />
       </transition>
     </app-controls>
+    <footer>
+      Implemented with <a href="https://vuejs.org/" target="_blank">Vue 3</a> by
+      <a href="https://github.com/myapos" target="_blank">Myron Apostolakis</a>
+    </footer>
   </div>
   <div v-else data-testid="not-valid-params" class="not-valid-params">
     Not valid N,M parameters <load-default-grid />
@@ -80,5 +84,11 @@ usePreventRouteLeave()
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+}
+
+footer {
+  font-size: 0.9rem;
+  position: fixed;
+  bottom: 0;
 }
 </style>
