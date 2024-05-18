@@ -71,6 +71,7 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-size: 1rem;
   .row {
     display: flex;
     flex-direction: column;

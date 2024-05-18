@@ -65,7 +65,7 @@ export default defineComponent({
 .gameDetails {
   font-size: 0.8rem;
   color: var(--vt-c-text-dark-2);
-  padding: 5px;
+  margin-top: 1rem;
   text-align: center;
   max-width: 500px;
   text-align: left;

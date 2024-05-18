@@ -57,10 +57,11 @@ usePreventRouteLeave()
 }
 
 .row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
   gap: 1rem;
-  flex-wrap: wrap;
+  align-items: start;
+  justify-items: stretch;
 }
 .game-details-enter-active,
 .game-details-leave-active {

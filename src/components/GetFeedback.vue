@@ -24,8 +24,8 @@ export default defineComponent({
 
 <style scoped>
 .feeedback {
-  font-size: 0.8rem;
-  color: var(--vt-c-text-dark-2);
+  font-size: 1rem;
+  color: var(--vt-c-text-dark-1);
   border: 0;
   padding: 0.5rem;
   border-radius: 5px;

@@ -115,6 +115,16 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   )
 
   watch(
+    () => gameStore.activeAlgorithm,
+    () => {
+      handleReset()
+    },
+    {
+      deep: true
+    }
+  )
+
+  watch(
     () => gameStore.isXTurn,
     (newVal, oldVal) => {
       if (!gameStore.gameEnded) {
