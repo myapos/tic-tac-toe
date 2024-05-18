@@ -22,7 +22,7 @@
     </app-controls>
     <footer>
       Implemented with <a href="https://vuejs.org/" target="_blank">Vue 3</a> by
-      <a href="https://github.com/myapos" target="_blank">Myron Apostolakis</a>
+      <a href="https://github.com/myapos" target="_blank">Myron Apostolakis</a>@2024
     </footer>
   </div>
   <div v-else data-testid="not-valid-params" class="not-valid-params">
