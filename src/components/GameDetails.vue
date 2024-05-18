@@ -25,6 +25,17 @@
       <span class="highlight-text">?N=4&M=3</span> where <span class="highlight-text">N >= M</span>.
       <router-link to="/reset-params?N=4&M=4">Try it!</router-link>
     </p>
+    <p>Three player modes are supported:</p>
+    <ul>
+      <li>
+        Single player mode (1P) where a human player plays against an AI player. For this mode there
+        are two available selections where the user can select between
+        <a href="https://en.wikipedia.org/wiki/Minimax">minimax</a> and
+        <a href="https://en.wikipedia.org/wiki/Minimax">negamax</a> algorithms.
+      </li>
+      <li>Two players mode (2P) where two human players can play against other.</li>
+      <li>Auto mode (Auto) where two AI players can play against other.</li>
+    </ul>
     <p>
       The code is available
       <a
@@ -63,7 +74,7 @@ export default defineComponent({
 
 <style scoped>
 .gameDetails {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--vt-c-text-dark-2);
   margin-top: 1rem;
   text-align: center;

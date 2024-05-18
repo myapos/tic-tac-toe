@@ -1,20 +1,22 @@
 <template>
-  <form>
-    <div class="row">
-      <fieldset id="algo_modes">
-        <legend>Select algorithm</legend>
-        <app-radio
-          v-for="(radio, index) in radioButtons"
-          :key="index"
-          :id="radio.id"
-          :labelText="radio.label"
-          :name="radio.name"
-          @change="onChange(radio.id)"
-          :checked="activeAlgorithm === radio.id"
-        />
-      </fieldset>
-    </div>
-  </form>
+  <template v-if="shouldShowAlgoSelection">
+    <form>
+      <div class="row">
+        <fieldset id="algo_modes">
+          <legend>Select algorithm</legend>
+          <app-radio
+            v-for="(radio, index) in radioButtons"
+            :key="index"
+            :id="radio.id"
+            :labelText="radio.label"
+            :name="radio.name"
+            @change="onChange(radio.id)"
+            :checked="activeAlgorithm === radio.id"
+          />
+        </fieldset>
+      </div>
+    </form>
+  </template>
 </template>
 <script lang="ts">
 import { mapState, mapActions } from 'pinia'
@@ -25,7 +27,15 @@ import { useGameStore } from '@/stores/gameStore'
 export default {
   name: 'AlgoModes',
   computed: {
-    ...mapState(useGameStore, ['activeAlgorithm'])
+    ...mapState(useGameStore, [
+      'activeAlgorithm',
+      'isInSinglePlayerMode',
+      'isInAutoPlayerMode',
+      'isInTwoPlayerMode'
+    ]),
+    shouldShowAlgoSelection() {
+      return this.isInAutoPlayerMode || this.isInSinglePlayerMode
+    }
   },
   data() {
     const radioGroup: string = 'algo_mode'

@@ -405,27 +405,32 @@ test.describe('load default grid', () => {
   })
 
   test('should be visible', async ({ page }) => {
-    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    const loadDefaultBtn = page.getByTestId('load-grid-btn')
     await expect(loadDefaultBtn).toBeVisible()
-  })
-
-  test('should be disabled with default grid', async ({ page }) => {
-    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
-    await expect(loadDefaultBtn).toBeDisabled()
+    await expect(loadDefaultBtn).toHaveText('Load Large Grid')
   })
 
   test('should be enabled with custom grid', async ({ page }) => {
     await page.goto(customGridUrl)
-    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
-    await expect(loadDefaultBtn).not.toBeDisabled()
+    const loadDefaultBtn = page.getByTestId('load-grid-btn')
+    await expect(loadDefaultBtn).toHaveText('Load Default Grid')
   })
 
   test('should load default grid', async ({ page }) => {
     await page.goto(customGridUrl)
-    const loadDefaultBtn = page.getByTestId('load-default-grid-btn')
+    const loadDefaultBtn = page.getByTestId('load-grid-btn')
     await loadDefaultBtn.click()
     const gridCells = await page.$$('.grid-cell')
     const numOfCells = gridCells.length
     expect(numOfCells).toBe(9)
+  })
+
+  test('should load large grid', async ({ page }) => {
+    await page.goto(defaultGridUrl)
+    const loadDefaultBtn = page.getByTestId('load-grid-btn')
+    await loadDefaultBtn.click()
+    const gridCells = await page.$$('.grid-cell')
+    const numOfCells = gridCells.length
+    expect(numOfCells).toBe(16)
   })
 })
