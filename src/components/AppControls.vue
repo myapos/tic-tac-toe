@@ -10,8 +10,12 @@ export default defineComponent({
 </script>
 <style scoped>
 .controls {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .controls {
+    max-width: 300px;
+  }
 }
 </style>

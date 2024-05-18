@@ -220,7 +220,7 @@ test.describe('search a 3x3 grid', () => {
     await page.getByTestId('cell-1-0').click()
     await page.getByTestId('cell-0-2').click()
     await page.getByTestId('cell-2-1').click()
-    await page.getByTestId('cell-1-2').click()
+    await page.getByTestId('cell-2-2').click()
 
     await expect(page.getByTestId('feedback')).toHaveText('It is a draw. No one wins.')
   })

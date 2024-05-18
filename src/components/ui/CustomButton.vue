@@ -25,13 +25,15 @@ export default defineComponent({
 </script>
 <style scoped>
 button {
-  width: 100px;
-  height: 50px;
+  width: 10rem;
+  height: 4rem;
   display: block;
   background: none;
   border: 1px solid var(--vt-c-indigo);
   color: var(--color-background-soft);
   border-radius: 5px;
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 
 button:hover {

@@ -1,8 +1,8 @@
 <template>
   <form>
     <div class="row">
-      <fieldset id="play_modes">
-        <legend>Select player mode</legend>
+      <fieldset id="algo_modes">
+        <legend>Select algorithm</legend>
         <app-radio
           v-for="(radio, index) in radioButtons"
           :key="index"
@@ -10,7 +10,7 @@
           :labelText="radio.label"
           :name="radio.name"
           @change="onChange(radio.id)"
-          :checked="playMode === radio.id"
+          :checked="activeAlgorithm === radio.id"
         />
       </fieldset>
     </div>
@@ -19,49 +19,43 @@
 <script lang="ts">
 import { mapState, mapActions } from 'pinia'
 
-import { playModes } from '@/constants'
+import { algorithms } from '@/constants'
 import { useGameStore } from '@/stores/gameStore'
 
 export default {
-  name: 'PlayerModes',
+  name: 'AlgoModes',
   computed: {
-    ...mapState(useGameStore, ['playMode'])
+    ...mapState(useGameStore, ['activeAlgorithm'])
   },
   data() {
-    const radioGroup: string = 'play_mode'
+    const radioGroup: string = 'algo_mode'
 
     return {
       radioButtons: [
         {
-          value: playModes.SINGLE_PLAYER,
-          label: playModes.SINGLE_PLAYER,
-          id: playModes.SINGLE_PLAYER,
+          value: algorithms.MINIMAX,
+          label: algorithms.MINIMAX,
+          id: algorithms.MINIMAX,
           name: radioGroup
         },
         {
-          value: playModes.TWO_PLAYER,
-          label: playModes.TWO_PLAYER,
-          id: playModes.TWO_PLAYER,
-          name: radioGroup
-        },
-        {
-          value: playModes.AUTO_PLAYER,
-          label: playModes.AUTO_PLAYER,
-          id: playModes.AUTO_PLAYER,
+          value: algorithms.NEGAMAX,
+          label: algorithms.NEGAMAX,
+          id: algorithms.NEGAMAX,
           name: radioGroup
         }
       ] as Array<{
-        value: keyof typeof playModes
-        label: keyof typeof playModes
-        id: keyof typeof playModes
+        value: keyof typeof algorithms
+        label: keyof typeof algorithms
+        id: keyof typeof algorithms
         name: string
       }>
     }
   },
   methods: {
-    ...mapActions(useGameStore, ['setPlayMode']),
-    onChange(id: keyof typeof playModes) {
-      this.setPlayMode(id)
+    ...mapActions(useGameStore, ['setAlgorithm']),
+    onChange(id: keyof typeof algorithms) {
+      this.setAlgorithm(id)
     }
   }
 }

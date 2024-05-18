@@ -12,6 +12,7 @@
         <show-game-details />
         <load-default-grid />
         <player-modes />
+        <algo-modes />
       </div>
       <transition name="game-details">
         <game-details :N="N" :M="M" />
@@ -24,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import AlgoModes from './AlgoModes.vue'
 import AppControls from './AppControls.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import GameDetails from './GameDetails.vue'
@@ -55,9 +57,11 @@ usePreventRouteLeave()
 }
 
 .row {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
   gap: 1rem;
+  align-items: start;
+  justify-items: stretch;
 }
 .game-details-enter-active,
 .game-details-leave-active {

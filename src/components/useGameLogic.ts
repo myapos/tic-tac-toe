@@ -20,7 +20,13 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
   /* O is minimizing I want to be the ai, X is maximizing  */
   const computerSelection = (gridCopy: gridT, isMaximizing: boolean) => {
-    const move = findBestMove({ gridCopy, isXTurn: gameStore.isXTurn, M: props.M, isMaximizing })
+    const move = findBestMove({
+      gridCopy,
+      isXTurn: gameStore.isXTurn,
+      M: props.M,
+      isMaximizing,
+      activeAlgorithm: gameStore.activeAlgorithm
+    })
 
     if (move) {
       gameStore.setGridCell(move.i, move.j, 0, isMaximizing ? X : O)
@@ -102,6 +108,16 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       if (gameStore.filledCells === gameStore.totalCells) {
         gameStore.setGameEnded(gameStore.filledCells)
       }
+    },
+    {
+      deep: true
+    }
+  )
+
+  watch(
+    () => gameStore.activeAlgorithm,
+    () => {
+      handleReset()
     },
     {
       deep: true

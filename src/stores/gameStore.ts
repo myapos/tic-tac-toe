@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 import type { gridT } from '@/components/types'
-import { playModes, itIsXturn } from '@/constants'
+import { playModes, itIsXturn, algorithms } from '@/constants'
 
 export const useGameStore = defineStore({
   id: 'gameStore',
@@ -17,7 +17,9 @@ export const useGameStore = defineStore({
     showDetails: false,
     totalCells: 0,
     gameStarted: false,
-    gameEnded: false
+    gameEnded: false,
+    activeAlgorithm: algorithms.MINIMAX as keyof typeof algorithms,
+    isNegamax: false
   }),
   getters: {
     isXTurn(state) {
@@ -84,6 +86,9 @@ export const useGameStore = defineStore({
     },
     setGameEnded(numOfCells: number) {
       this.gameEnded = numOfCells === this.totalCells
+    },
+    setAlgorithm(algo: keyof typeof algorithms) {
+      this.activeAlgorithm = algo
     }
   }
 })
