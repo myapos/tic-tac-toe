@@ -17,7 +17,6 @@ describe('findEmptyCells', () => {
     const grid = createGrid(gridOptions)
 
     const emptyCells = findEmptyCells(grid)
-    console.log('grid', grid, emptyCells)
     expect(emptyCells).toEqual(6)
   })
 
@@ -25,7 +24,6 @@ describe('findEmptyCells', () => {
     const grid = createEmptyGrid(4)
 
     const emptyCells = findEmptyCells(grid)
-    console.log('grid', grid, emptyCells)
     expect(emptyCells).toEqual(16)
   })
 })
