@@ -75,7 +75,23 @@ form {
   .row {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .row > *:not(:last-child) {
+    margin-bottom: 0.5rem; /* Fallback spacing */
+  }
+
+  /* Apply gap if supported */
+  @supports (gap: 0.5rem) {
+    .row {
+      gap: 0.5rem;
+    }
+
+    /* Remove fallback spacing when gap is supported */
+    .row > *:not(:last-child) {
+      margin-bottom: 0;
+    }
   }
 
   input[type='checkbox'] {
