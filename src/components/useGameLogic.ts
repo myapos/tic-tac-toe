@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash'
 import { watch, toRaw, onMounted } from 'vue'
 
 import useAutoPlay from './useAutoPlay'
@@ -93,7 +94,12 @@ export const useGameLogic = (props: { N: number; M: number }) => {
 
     if (gameStore.isInSinglePlayerMode && !gameStore.isXTurn) {
       // run logic to select next player's move
-      computerSelection(structuredClone(toRaw(gameStore.grid)), false)
+      computerSelection(
+        gameStore.supportsStructuredClone
+          ? structuredClone(toRaw(gameStore.grid))
+          : cloneDeep(toRaw(gameStore.grid)),
+        false
+      )
     }
   }
 

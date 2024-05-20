@@ -51,9 +51,12 @@ usePreventRouteLeave()
 .tic-tac-toe-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   justify-content: center;
   align-items: center;
+}
+
+.tic-tac-toe-wrapper > * {
+  margin-bottom: 2rem;
 }
 
 .fade-in-out-enter-active,

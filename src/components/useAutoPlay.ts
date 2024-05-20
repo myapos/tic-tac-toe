@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash'
 import { watch, toRaw } from 'vue'
 
 import findEmptyCells from './utils/findEmptyCells'
@@ -51,14 +52,24 @@ export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) =>
           }
 
           if (gameStore.isXTurn) {
-            computerSelection(structuredClone(toRaw(gameStore.grid)), true)
+            computerSelection(
+              gameStore.supportsStructuredClone
+                ? structuredClone(toRaw(gameStore.grid))
+                : cloneDeep(toRaw(gameStore.grid)),
+              true
+            )
 
             emptyCells = findEmptyCells(gameStore.grid)
             break // Exit loop after computer's selection
           }
 
           if (!gameStore.isXTurn) {
-            computerSelection(structuredClone(toRaw(gameStore.grid)), false)
+            computerSelection(
+              gameStore.supportsStructuredClone
+                ? structuredClone(toRaw(gameStore.grid))
+                : cloneDeep(toRaw(gameStore.grid)),
+              false
+            )
 
             emptyCells = findEmptyCells(gameStore.grid)
             break // Exit loop after computer's selection

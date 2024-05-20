@@ -1,8 +1,8 @@
 <template>
   <form>
-    <div class="row">
-      <fieldset id="play_modes">
-        <legend>Select player mode</legend>
+    <fieldset id="play_modes">
+      <legend>Select player mode</legend>
+      <div class="play_modes">
         <app-radio
           v-for="(radio, index) in radioButtons"
           :key="index"
@@ -12,8 +12,8 @@
           @change="onChange(radio.id)"
           :checked="playMode === radio.id"
         />
-      </fieldset>
-    </div>
+      </div>
+    </fieldset>
   </form>
 </template>
 <script lang="ts">
@@ -67,36 +67,22 @@ export default {
 }
 </script>
 <style scoped>
+.play_modes {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1rem 1rem 1rem;
+  gap: 0.5rem;
+}
+
 form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: 1rem;
-  .row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+}
 
-  .row > *:not(:last-child) {
-    margin-bottom: 0.5rem; /* Fallback spacing */
-  }
-
-  /* Apply gap if supported */
-  @supports (gap: 0.5rem) {
-    .row {
-      gap: 0.5rem;
-    }
-
-    /* Remove fallback spacing when gap is supported */
-    .row > *:not(:last-child) {
-      margin-bottom: 0;
-    }
-  }
-
-  input[type='checkbox'] {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
+input[type='checkbox'] {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 </style>

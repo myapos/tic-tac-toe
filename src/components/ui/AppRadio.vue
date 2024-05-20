@@ -46,8 +46,10 @@ export default {
 </script>
 <style scoped>
 .radio {
-  display: flex;
-  gap: 0.5rem;
+  align-self: center;
+}
+.radio label {
+  margin-left: 0.5rem;
 }
 input[type='checkbox'] {
   width: 1.2rem;

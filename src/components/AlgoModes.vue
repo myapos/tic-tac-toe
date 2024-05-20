@@ -1,9 +1,9 @@
 <template>
   <template v-if="shouldShowAlgoSelection">
     <form>
-      <div class="row">
-        <fieldset id="algo_modes">
-          <legend>Select algorithm</legend>
+      <fieldset id="algo_modes">
+        <legend>Select algorithm</legend>
+        <div class="algo_modes">
           <app-radio
             v-for="(radio, index) in radioButtons"
             :key="index"
@@ -13,8 +13,8 @@
             @change="onChange(radio.id)"
             :checked="activeAlgorithm === radio.id"
           />
-        </fieldset>
-      </div>
+        </div>
+      </fieldset>
     </form>
   </template>
 </template>
@@ -71,20 +71,21 @@ export default {
 }
 </script>
 <style scoped>
+.algo_modes {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1rem 1rem;
+  gap: 0.5rem;
+}
 form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-size: 1rem;
-  .row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+}
 
-  input[type='checkbox'] {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
+input[type='checkbox'] {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 </style>
