@@ -20,7 +20,8 @@ export const useGameStore = defineStore({
     gameEnded: false,
     activeAlgorithm: algorithms.MINIMAX as keyof typeof algorithms,
     isNegamax: false,
-    memo: new Map<string, number>()
+    memo: new Map<string, number>(),
+    supportsStructuredClone: typeof structuredClone !== 'undefined'
   }),
   getters: {
     isXTurn(state) {
