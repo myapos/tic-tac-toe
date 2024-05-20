@@ -42,7 +42,7 @@ button {
   display: block;
   background: none;
   border: 1px solid var(--vt-c-indigo);
-  color: var(--color-background-soft);
+  color: var(--vt-c-white-mute);
   border-radius: 5px;
   font-size: 1rem;
   padding: 0.5rem;

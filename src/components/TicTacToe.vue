@@ -7,23 +7,17 @@
     <get-feedback :M="M"></get-feedback>
     <display-grid @click-cell="handleClickCell" />
     <app-controls>
-      <div class="row">
-        <reset-game :onReset="handleReset"></reset-game>
-        <show-game-details />
-        <load-default-grid />
-        <player-modes />
-        <transition name="fade-in-out">
-          <algo-modes />
-        </transition>
-      </div>
+      <player-modes />
+      <show-game-details />
+      <transition name="fade-in-out">
+        <algo-modes />
+      </transition>
       <transition name="fade-in-out">
         <game-details :N="N" :M="M" />
       </transition>
+      <load-default-grid />
+      <reset-game :onReset="handleReset"></reset-game>
     </app-controls>
-    <footer>
-      Implemented with <a href="https://vuejs.org/" target="_blank">Vue 3</a> by
-      <a href="https://github.com/myapos" target="_blank">Myron Apostolakis</a>@2024
-    </footer>
   </div>
   <div v-else data-testid="not-valid-params" class="not-valid-params">
     Not valid N,M parameters <load-default-grid />
@@ -62,13 +56,6 @@ usePreventRouteLeave()
   align-items: center;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 100px;
-  gap: 1rem;
-  align-items: start;
-  justify-items: stretch;
-}
 .fade-in-out-enter-active,
 .fade-in-out-leave-active {
   transition: opacity 1s ease;
@@ -84,11 +71,5 @@ usePreventRouteLeave()
   flex-direction: column;
   gap: 1rem;
   align-items: center;
-}
-
-footer {
-  font-size: 0.9rem;
-  position: fixed;
-  bottom: 0;
 }
 </style>
