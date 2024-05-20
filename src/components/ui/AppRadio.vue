@@ -46,13 +46,22 @@ export default {
 </script>
 <style scoped>
 .radio {
-  align-self: center;
+  height: 15px;
+  position: relative;
+  padding: 0.5rem;
 }
-.radio label {
-  margin-left: 0.5rem;
-}
-input[type='checkbox'] {
+.radio > input {
+  position: absolute;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 1.2rem;
   height: 1.2rem;
+}
+.radio > label {
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  transform: translate(-50%, -50%);
 }
 </style>
