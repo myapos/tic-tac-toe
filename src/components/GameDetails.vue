@@ -80,6 +80,7 @@ export default defineComponent({
   text-align: center;
   max-width: 500px;
   text-align: left;
+  grid-column: 1/-1;
 }
 
 .gameDetails p {

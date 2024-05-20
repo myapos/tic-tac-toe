@@ -11,6 +11,11 @@ export default defineComponent({
 <style scoped>
 .controls {
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+  justify-items: stretch;
 }
 
 @media screen and (max-width: 1200px) {

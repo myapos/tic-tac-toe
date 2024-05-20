@@ -140,6 +140,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     gameStore.setFilledCells(0)
     gameStore.setGameStarted(0)
     gameStore.setGameEnded(0)
+    gameStore.resetMemo()
   }
 
   const hasValidDimensionProps = () => {

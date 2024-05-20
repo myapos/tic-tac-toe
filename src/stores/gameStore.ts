@@ -19,7 +19,8 @@ export const useGameStore = defineStore({
     gameStarted: false,
     gameEnded: false,
     activeAlgorithm: algorithms.MINIMAX as keyof typeof algorithms,
-    isNegamax: false
+    isNegamax: false,
+    memo: new Map<string, number>()
   }),
   getters: {
     isXTurn(state) {
@@ -89,6 +90,12 @@ export const useGameStore = defineStore({
     },
     setAlgorithm(algo: keyof typeof algorithms) {
       this.activeAlgorithm = algo
+    },
+    setMemo(boardKey: string, bestScore: number) {
+      this.memo.set(boardKey, bestScore)
+    },
+    resetMemo() {
+      this.memo = new Map<string, number>()
     }
   }
 })

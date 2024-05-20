@@ -27,9 +27,11 @@ export default defineComponent({
   computed: {
     ...mapState(useGameStore, ['isInAutoPlayerMode', 'grid']),
     containerStyles() {
+      const size = getComputedStyle(document.documentElement).getPropertyValue('--grid-cell-size')
+
       return {
-        gridTemplateColumns: '100px '.repeat(this.grid.length),
-        gridTemplateRows: '100px '.repeat(this.grid.length)
+        gridTemplateColumns: `${size} `.repeat(this.grid.length),
+        gridTemplateRows: `${size} `.repeat(this.grid.length)
       }
     }
   },

@@ -112,7 +112,9 @@ export default defineComponent({
 </script>
 <style scoped>
 .grid-cell {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-bottom: var(--border);
   border-right: var(--border);
   font-size: 1.3rem;
@@ -139,5 +141,11 @@ export default defineComponent({
 
 .grid-cell-winning {
   background-color: var(--vt-c-text-light-1);
+}
+
+@media (max-width: 600px) {
+  .grid-cell {
+    padding: 0;
+  }
 }
 </style>
