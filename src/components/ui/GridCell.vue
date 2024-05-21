@@ -7,12 +7,13 @@
     @keydown.enter="onClick({ rowIdx, colIdx })"
     :data-testid="`cell-${rowIdx}-${colIdx}`"
     role="button"
-    :aria-label="mark[0] || ''"
+    :aria-label="getAriaLabel({ rowIdx, colIdx, mark })"
     tabindex="0"
   >
     {{ mark[0] || '' }}
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue'
 
@@ -109,10 +110,14 @@ export default defineComponent({
       }
 
       return classes
+    },
+    getAriaLabel({ rowIdx, colIdx, mark }: { rowIdx: number; colIdx: number; mark: any }): string {
+      return `Row ${rowIdx + 1}, Column ${colIdx + 1}, ${mark[0] ? mark[0] : 'empty'}`
     }
   }
 })
 </script>
+
 <style scoped>
 .grid-cell {
   display: flex;

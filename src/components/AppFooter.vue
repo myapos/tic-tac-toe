@@ -4,10 +4,8 @@
     <external-link to="https://vuejs.org/" aria-label="Visit Vue documentation" class="vue-icon"
       ><icon-vue
     /></external-link>
-    by
-    <external-link to="https://github.com/myapos" aria-label="Go to developer's Github profile"
-      >Myron Apostolakis</external-link
-    >
+
+    The code is available on<external-link to="https://github.com/myapos"> GitHub </external-link>
   </footer>
 </template>
 <script>
