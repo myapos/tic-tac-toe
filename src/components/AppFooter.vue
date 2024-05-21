@@ -5,7 +5,7 @@
       ><icon-vue /></external-link
     >. The code is available on<external-link
       to="https://github.com/myapos"
-      aria-label="Go to Github repo"
+      aria-label="Go to Myron Apostolakis Github repo"
     >
       GitHub
     </external-link>
