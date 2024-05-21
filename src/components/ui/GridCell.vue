@@ -4,7 +4,10 @@
     :key="colIdx"
     :class="buildClassNames({ rowIdx, colIdx, length: grid.length })"
     @click="onClick({ rowIdx, colIdx })"
+    @keydown.enter="onClick({ rowIdx, colIdx })"
     :data-testid="`cell-${rowIdx}-${colIdx}`"
+    role="button"
+    tabindex="0"
   >
     {{ mark[0] || '' }}
   </div>
@@ -24,7 +27,6 @@ interface buildClassNamesI {
 
 export default defineComponent({
   name: 'GridCell',
-  emits: ['click-cell'],
   data() {
     return {
       winningRange: {

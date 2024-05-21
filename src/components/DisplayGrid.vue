@@ -1,5 +1,10 @@
 <template>
-  <div class="grid-container" :style="containerStyles" data-testid="tic-tac-toe-grid">
+  <div
+    class="grid-container"
+    :style="containerStyles"
+    data-testid="tic-tac-toe-grid"
+    aria-live="polite"
+  >
     <template v-for="(row, rowIdx) in grid" :key="rowIdx">
       <grid-cell
         :row="row"
@@ -37,7 +42,9 @@ export default defineComponent({
   },
   methods: {
     handleClickCell(args: { rowIdx: number; colIdx: number }) {
-      this.$emit('click-cell', args)
+      if (!this.isInAutoPlayerMode) {
+        this.$emit('click-cell', args)
+      }
     }
   }
 })

@@ -3,16 +3,19 @@
     <p>
       <strong>Note</strong>: This is an advanced version of Tic-tac-toe. The description of this
       assignment was published in
-      <a href="https://www.greatfrontend.com/" target="_blank" rel="noopener noreferrer">
-        Greatfrontend </a
-      >platform.
+      <external-link to="https://www.greatfrontend.com/" aria-label="Visit Great frontend website"
+        >Greatfrontend</external-link
+      >
+      platform.
     </p>
     <p>
       Tic-tac-toe is a game for two players who take turns making space in a three-by-three grid
       with X or O. The player who succeeds in playing three of their marks in a horizontal,
       vertical, or diagonal row is the winner. Source:
-      <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank" rel="noopener noreferrer"
-        >Wikipedia</a
+      <external-link
+        to="https://en.wikipedia.org/wiki/Tic-tac-toe"
+        aria-label="Visit Wikipedia website"
+        >Wikipedia</external-link
       >
     </p>
     <p>
@@ -23,27 +26,36 @@
     <p>
       You can change these parameters by adding to the url parameters
       <span class="highlight-text">?N=4&M=3</span> where <span class="highlight-text">N >= M</span>.
-      <router-link to="/reset-params?N=4&M=4">Try it!</router-link>
+      <router-link
+        to="/reset-params?N=4&M=4"
+        aria-label="Load larger grid with 4 rows and 4 marks to match"
+        >Try it!</router-link
+      >
     </p>
     <p>Three player modes are supported:</p>
     <ul>
       <li>
         Single player mode (1P) where a human player plays against an AI player. For this mode there
         are two available selections where the user can select between
-        <a href="https://en.wikipedia.org/wiki/Minimax">minimax</a> and
-        <a href="https://en.wikipedia.org/wiki/Minimax">negamax</a> algorithms.
+        <external-link
+          to="https://en.wikipedia.org/wiki/Minimax"
+          aria-label="Visit minimax website in Wikipedia"
+          >minimax</external-link
+        >
+        and
+        <external-link
+          to="https://en.wikipedia.org/wiki/Minimax"
+          aria-label="Visit negamax website in Wikipedia"
+          >negamax</external-link
+        >
+        algorithms.
       </li>
       <li>Two players mode (2P) where two human players can play against other.</li>
       <li>Auto mode (Auto) where two AI players can play against other.</li>
     </ul>
     <p>
       The code is available
-      <a
-        href="https://github.com/myapos/tic-tac-toe/tree/master"
-        target="_blank"
-        rel="noopener noreferrer"
-        >here</a
-      >.
+      <external-link to="https://github.com/myapos/tic-tac-toe/tree/master" text="here" />.
     </p>
   </div>
 </template>
