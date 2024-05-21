@@ -85,4 +85,10 @@ input[type='checkbox'] {
   width: 1.2rem;
   height: 1.2rem;
 }
+
+@media screen and (max-width: 600px) {
+  .play_modes {
+    gap: 1.5rem;
+  }
+}
 </style>

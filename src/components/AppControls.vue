@@ -23,4 +23,10 @@ export default defineComponent({
     max-width: 300px;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .controls {
+    gap: 2rem;
+  }
+}
 </style>
