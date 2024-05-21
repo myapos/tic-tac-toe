@@ -1,8 +1,13 @@
 <template>
   <footer>
     @2024 - version {{ version }}. Coded with
-    <a href="https://vuejs.org/" target="_blank" class="vue-icon"><icon-vue /></a>
-    by <a href="https://github.com/myapos" target="_blank">Myron Apostolakis</a>
+    <external-link to="https://vuejs.org/" aria-label="Visit Vue documentation" class="vue-icon"
+      ><icon-vue
+    /></external-link>
+    by
+    <external-link to="https://github.com/myapos" aria-label="Go to developer's Github profile"
+      >Myron Apostolakis</external-link
+    >
   </footer>
 </template>
 <script>
