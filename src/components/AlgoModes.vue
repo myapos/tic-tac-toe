@@ -11,6 +11,7 @@
             :labelText="radio.label"
             :name="radio.name"
             @change="onChange(radio.id)"
+            @keydown.enter="onChange(radio.id)"
             :checked="activeAlgorithm === radio.id"
           />
         </div>
