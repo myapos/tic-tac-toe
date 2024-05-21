@@ -7,6 +7,7 @@
     @keydown.enter="onClick({ rowIdx, colIdx })"
     :data-testid="`cell-${rowIdx}-${colIdx}`"
     role="button"
+    :aria-label="mark[0] || ''"
     tabindex="0"
   >
     {{ mark[0] || '' }}
