@@ -1,5 +1,5 @@
 <template>
-  <div class="gameDetails" v-show="showDetails" data-testid="details">
+  <div class="gameDetails" v-show="showDetails" data-testid="details" aria-live="polite">
     <p>
       <strong>Note</strong>: This is an advanced version of Tic-tac-toe. The description of this
       assignment was published in
