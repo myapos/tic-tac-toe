@@ -8,10 +8,10 @@
     <display-grid @click-cell="handleClickCell" />
     <app-controls>
       <player-modes />
+      <reset-game :onReset="handleReset"></reset-game>
       <transition name="fade-in-out">
         <algo-modes />
       </transition>
-      <reset-game :onReset="handleReset"></reset-game>
       <load-default-grid />
       <show-game-details />
       <transition name="fade-in-out">
