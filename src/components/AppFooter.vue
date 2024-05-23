@@ -1,14 +1,18 @@
 <template>
   <footer>
-    @2024 - version {{ version }}. Coded with
-    <external-link to="https://vuejs.org/" aria-label="Visit Vue documentation" class="vue-icon"
-      ><icon-vue /></external-link
-    >. The code is available on<external-link
-      to="https://github.com/myapos"
-      aria-label="Go to Myron Apostolakis Github repo"
-    >
-      GitHub
-    </external-link>
+    <span class="footer-row"
+      >@2024 - version {{ version }}. Coded with
+      <external-link to="https://vuejs.org/" aria-label="Visit Vue documentation" class="vue-icon"
+        ><icon-vue /></external-link
+    ></span>
+    <span class="footer-row">
+      The code is available on<external-link
+        to="https://github.com/myapos"
+        aria-label="Go to Myron Apostolakis Github repo"
+      >
+        GitHub
+      </external-link>
+    </span>
   </footer>
 </template>
 <script>
@@ -33,6 +37,12 @@ footer {
   align-items: center;
   font-size: 0.9rem;
 }
+
+.footer-row {
+  display: flex;
+  align-items: center;
+}
+
 .vue-icon svg {
   height: 25px;
   width: 25px;
@@ -43,7 +53,8 @@ footer {
 
 @media (max-width: 600px) {
   footer {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    flex-direction: column;
   }
 }
 </style>

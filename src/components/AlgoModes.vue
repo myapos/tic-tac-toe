@@ -1,8 +1,7 @@
 <template>
   <template v-if="shouldShowAlgoSelection">
     <form>
-      <fieldset id="algo_modes">
-        <legend>Select algorithm</legend>
+      <app-fieldset id="algo_modes_selection" legendText="Select algorithm">
         <div class="algo_modes">
           <app-radio
             v-for="(radio, index) in radioButtons"
@@ -15,7 +14,7 @@
             :checked="activeAlgorithm === radio.id"
           />
         </div>
-      </fieldset>
+      </app-fieldset>
     </form>
   </template>
 </template>
@@ -92,7 +91,11 @@ input[type='checkbox'] {
 
 @media screen and (max-width: 600px) {
   .algo_modes {
-    gap: 1.5rem;
+    gap: 2.5rem;
+  }
+
+  form {
+    font-size: 1.2rem;
   }
 }
 </style>

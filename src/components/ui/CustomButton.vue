@@ -67,4 +67,13 @@ button[disabled] {
 .highlight {
   border-color: var(--highlight-color);
 }
+
+@media (max-width: 600px) {
+  button {
+    font-size: 1.2rem;
+    padding: 1.2rem;
+    width: 10rem;
+    height: 5rem;
+  }
+}
 </style>

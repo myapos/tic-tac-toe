@@ -1,7 +1,6 @@
 <template>
   <form>
-    <fieldset id="play_modes">
-      <legend>Select player mode</legend>
+    <app-fieldset id="play_modes_selection" legendText="Select player mode">
       <div class="play_modes">
         <app-radio
           v-for="(radio, index) in radioButtons"
@@ -14,7 +13,7 @@
           :checked="playMode === radio.id"
         />
       </div>
-    </fieldset>
+    </app-fieldset>
   </form>
 </template>
 <script lang="ts">
@@ -82,14 +81,17 @@ form {
   font-size: 1rem;
 }
 
-input[type='checkbox'] {
-  width: 1.2rem;
-  height: 1.2rem;
+fieldset {
+  padding-bottom: 1.2rem;
 }
 
 @media screen and (max-width: 600px) {
   .play_modes {
-    gap: 1.5rem;
+    gap: 2.5rem;
+  }
+
+  form {
+    font-size: 1.2rem;
   }
 }
 </style>

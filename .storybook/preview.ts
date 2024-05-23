@@ -8,6 +8,7 @@ import CustomButton from '../src/components/ui/CustomButton.vue'
 import AppCheckbox from '../src/components/ui/AppCheckbox.vue'
 import AppRadio from '../src/components/ui/AppRadio.vue'
 import ExternalLink from '../src/components/ui/ExternalLink.vue'
+import AppFieldset from '../src/components/ui/AppFieldset.vue'
 
 import '../src/assets/main.css'
 
@@ -27,6 +28,7 @@ setup((app) => {
   app.component('AppCheckbox', AppCheckbox)
   app.component('AppRadio', AppRadio)
   app.component('ExternalLink', ExternalLink)
+  app.component('AppFieldset', AppFieldset)
   app.use(pinia)
 })
 

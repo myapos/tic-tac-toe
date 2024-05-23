@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { mapState } from 'pinia'
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 
 import GridCell from './ui/GridCell.vue'
 
@@ -29,23 +29,34 @@ export default defineComponent({
   emits: ['click-cell'],
   components: { GridCell },
   name: 'DisplayGrid',
-  computed: {
-    ...mapState(useGameStore, ['isInAutoPlayerMode', 'grid']),
-    containerStyles() {
-      const size = getComputedStyle(document.documentElement).getPropertyValue('--grid-cell-size')
-
-      return {
-        gridTemplateColumns: `${size} `.repeat(this.grid.length),
-        gridTemplateRows: `${size} `.repeat(this.grid.length)
-      }
+  data() {
+    return {
+      containerStyles: {}
     }
+  },
+  computed: {
+    ...mapState(useGameStore, ['isInAutoPlayerMode', 'grid'])
   },
   methods: {
     handleClickCell(args: { rowIdx: number; colIdx: number }) {
       if (!this.isInAutoPlayerMode) {
         this.$emit('click-cell', args)
       }
+    },
+    updateContainerStyles() {
+      const size = getComputedStyle(document.documentElement).getPropertyValue('--grid-cell-size')
+      this.containerStyles = {
+        gridTemplateColumns: `${size} `.repeat(this.grid.length),
+        gridTemplateRows: `${size} `.repeat(this.grid.length)
+      }
     }
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateContainerStyles)
+    nextTick(this.updateContainerStyles)
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.updateContainerStyles)
   }
 })
 </script>
