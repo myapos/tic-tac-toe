@@ -32,4 +32,10 @@ export default defineComponent({
   min-width: 250px;
   text-align: center;
 }
+
+@media (max-width: 600px) {
+  .feeedback {
+    font-size: 1.2rem;
+  }
+}
 </style>

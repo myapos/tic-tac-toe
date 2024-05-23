@@ -51,19 +51,13 @@ html {
 
 @media (max-width: 600px) {
   :root {
-    --grid-cell-size: 50px;
-  }
-  html {
-    font-size: 14px;
+    --grid-cell-size: 90px;
   }
 }
 
 @media (max-width: 484px) {
   :root {
-    --grid-cell-size: 40px;
-  }
-  html {
-    font-size: 10px;
+    --grid-cell-size: 80px;
   }
 }
 

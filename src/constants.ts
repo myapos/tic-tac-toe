@@ -14,8 +14,8 @@ export const playModes = {
   TWO_PLAYER: '2P'
 }
 export const algorithms = {
-  MINIMAX: 'minimax',
-  NEGAMAX: 'negamax'
+  MINIMAX: 'Minimax',
+  NEGAMAX: 'Negamax'
 }
 
 export const ROUND_DELAY = 500

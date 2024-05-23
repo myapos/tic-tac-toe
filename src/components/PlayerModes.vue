@@ -1,6 +1,6 @@
 <template>
   <form>
-    <fieldset id="play_modes">
+    <fieldset id="play_modes_selection">
       <legend>Select player mode</legend>
       <div class="play_modes">
         <app-radio
@@ -82,14 +82,25 @@ form {
   font-size: 1rem;
 }
 
-input[type='checkbox'] {
-  width: 1.2rem;
-  height: 1.2rem;
+fieldset {
+  padding-bottom: 1.2rem;
 }
 
 @media screen and (max-width: 600px) {
   .play_modes {
-    gap: 1.5rem;
+    gap: 2.5rem;
+  }
+
+  form {
+    font-size: 1.2rem;
+  }
+
+  legend {
+    font-size: 1rem;
+  }
+
+  fieldset {
+    padding-bottom: 2rem;
   }
 }
 </style>

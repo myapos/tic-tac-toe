@@ -154,6 +154,7 @@ export default defineComponent({
 @media (max-width: 600px) {
   .grid-cell {
     padding: 0;
+    font-size: 1.5rem;
   }
 }
 </style>
