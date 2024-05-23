@@ -1,7 +1,6 @@
 <template>
   <form>
-    <fieldset id="play_modes_selection">
-      <legend>Select player mode</legend>
+    <app-fieldset id="play_modes_selection" legendText="Select player mode">
       <div class="play_modes">
         <app-radio
           v-for="(radio, index) in radioButtons"
@@ -14,7 +13,7 @@
           :checked="playMode === radio.id"
         />
       </div>
-    </fieldset>
+    </app-fieldset>
   </form>
 </template>
 <script lang="ts">
@@ -93,14 +92,6 @@ fieldset {
 
   form {
     font-size: 1.2rem;
-  }
-
-  legend {
-    font-size: 1rem;
-  }
-
-  fieldset {
-    padding-bottom: 2rem;
   }
 }
 </style>
