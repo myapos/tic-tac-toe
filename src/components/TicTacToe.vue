@@ -8,15 +8,15 @@
     <display-grid @click-cell="handleClickCell" />
     <app-controls>
       <player-modes />
-      <show-game-details />
+      <reset-game :onReset="handleReset"></reset-game>
+      <load-default-grid />
       <transition name="fade-in-out">
         <algo-modes />
       </transition>
+      <show-game-details />
       <transition name="fade-in-out">
         <game-details :N="N" :M="M" />
       </transition>
-      <load-default-grid />
-      <reset-game :onReset="handleReset"></reset-game>
     </app-controls>
   </div>
   <div v-else data-testid="not-valid-params" class="not-valid-params">
