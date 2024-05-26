@@ -9,6 +9,7 @@ interface checkInstantMovesI {
   isXTurn: boolean
   M: number
 }
+
 const checkInstantMoves = ({ grid, M, isXTurn }: checkInstantMovesI): moveI => {
   const player = isXTurn ? X : O
   const moves = []

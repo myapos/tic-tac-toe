@@ -1,4 +1,7 @@
+import { cloneDeep } from 'lodash'
+
 import checkInstantMoves from './checkInstantMoves'
+import lookAheadMoves from './lookAheadMoves'
 import { minimax } from './minimax'
 import { negamax } from './negamax'
 
@@ -172,6 +175,20 @@ export const findBestMove = ({
 
   if (shouldDefend) {
     return opponentsMove
+  }
+
+  // check look ahead move combinations
+  const promisingMove = lookAheadMoves({
+    grid: cloneDeep(gridCopy),
+    player: !isXTurn ? X : O,
+    M,
+    isXTurn: !isXTurn
+  })
+
+  const shouldDefendPromising = promisingMove.i >= 0 && promisingMove.j >= 0
+
+  if (shouldDefendPromising) {
+    return promisingMove
   }
 
   const { move } = getBestScoreAndMove({
