@@ -224,6 +224,27 @@ test.describe('search a 3x3 grid', () => {
 
     await expect(page.getByTestId('feedback')).toHaveText('It is a draw. No one wins.')
   })
+
+  test('1P mode O should win', async ({ page }) => {
+    await page.getByTestId('1P').click()
+    await page.getByTestId('cell-0-1').click()
+    await page.getByTestId('cell-2-1').click()
+    await page.getByTestId('cell-1-2').click()
+    await page.getByTestId('cell-2-2').click()
+
+    await expect(page.getByTestId('feedback')).toHaveText('Player O wins!')
+  })
+
+  test('1P mode O should should defend', async ({ page }) => {
+    await page.getByTestId('1P').click()
+    await page.getByTestId('cell-0-0').click()
+    await page.getByTestId('cell-0-1').click()
+    await page.getByTestId('cell-2-0').click()
+    await page.getByTestId('cell-1-2').click()
+    await page.getByTestId('cell-2-2').click()
+
+    await expect(page.getByTestId('feedback')).toHaveText('It is a draw. No one wins.')
+  })
 })
 
 test.describe('search a 4x3 grid', () => {

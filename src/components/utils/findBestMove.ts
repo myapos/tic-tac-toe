@@ -1,3 +1,4 @@
+import checkInstantMoves from './checkInstantMoves'
 import { minimax } from './minimax'
 import { negamax } from './negamax'
 
@@ -19,7 +20,7 @@ interface getBestScoreAndMoveI extends Omit<findBestMoveI, 'gridCopy'> {
   beta: number
 }
 
-interface moveI {
+export interface moveI {
   i: number
   j: number
 }
@@ -63,7 +64,7 @@ export const getBestScoreAndMove = ({
 
   let bestScore: number = getInitialBestScore({ isMinimax, isNegamax, isMaximizing })
 
-  const moves = []
+  const moves: moveI[] = []
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[0].length; j++) {
       if (grid[i][j][0] === initialCellValue) {
@@ -147,6 +148,32 @@ export const findBestMove = ({
   isMaximizing = false,
   activeAlgorithm
 }: findBestMoveI): { i: number; j: number } | undefined => {
+  // check if the current player wins with a single move
+  const singlePlayerMove = checkInstantMoves({
+    grid: gridCopy,
+    isXTurn,
+    M
+  })
+
+  const shouldWinInstantly = singlePlayerMove.i >= 0 && singlePlayerMove.j >= 0
+
+  if (shouldWinInstantly) {
+    return singlePlayerMove
+  }
+
+  // check if the oponent will win with just one move and block it
+  const opponentsMove = checkInstantMoves({
+    grid: gridCopy,
+    isXTurn: !isXTurn,
+    M
+  })
+
+  const shouldDefend = opponentsMove.i >= 0 && opponentsMove.j >= 0
+
+  if (shouldDefend) {
+    return opponentsMove
+  }
+
   const { move } = getBestScoreAndMove({
     grid: gridCopy,
     depth: 0,
@@ -158,5 +185,6 @@ export const findBestMove = ({
     beta: Infinity,
     activeAlgorithm
   })
+
   return move
 }
