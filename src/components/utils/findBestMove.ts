@@ -1,4 +1,4 @@
-import checkOpponentsMove from './checkOpponentsMove'
+import checkInstantMoves from './checkInstantMoves'
 import { minimax } from './minimax'
 import { negamax } from './negamax'
 
@@ -149,7 +149,7 @@ export const findBestMove = ({
   activeAlgorithm
 }: findBestMoveI): { i: number; j: number } | undefined => {
   // check if the current player wins with a single move
-  const singlePlayerMove = checkOpponentsMove({
+  const singlePlayerMove = checkInstantMoves({
     grid: gridCopy,
     isXTurn,
     M
@@ -162,7 +162,7 @@ export const findBestMove = ({
   }
 
   // check if the oponent will win with just one move and block it
-  const opponentsMove = checkOpponentsMove({
+  const opponentsMove = checkInstantMoves({
     grid: gridCopy,
     isXTurn: !isXTurn,
     M

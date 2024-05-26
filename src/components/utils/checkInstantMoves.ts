@@ -4,12 +4,12 @@ import type { moveI } from './findBestMove'
 import type { gridT } from '@/components/types'
 import { initialCellValue, X, O } from '@/constants'
 
-interface checkOpponentsMoveI {
+interface checkInstantMovesI {
   grid: gridT
   isXTurn: boolean
   M: number
 }
-const checkOpponentsMove = ({ grid, M, isXTurn }: checkOpponentsMoveI): moveI => {
+const checkInstantMoves = ({ grid, M, isXTurn }: checkInstantMovesI): moveI => {
   const player = isXTurn ? X : O
   const moves = []
   for (let i = 0; i < grid.length; i++) {
@@ -22,7 +22,7 @@ const checkOpponentsMove = ({ grid, M, isXTurn }: checkOpponentsMoveI): moveI =>
 
   let result
   // initialize to negative i,j values
-  let opponentsMove = { i: -1, j: -1 }
+  let instantMove = { i: -1, j: -1 }
   for (const { i, j } of moves) {
     if (grid[i][j][0] === initialCellValue) {
       // set
@@ -31,13 +31,13 @@ const checkOpponentsMove = ({ grid, M, isXTurn }: checkOpponentsMoveI): moveI =>
       // reset
       grid[i][j][0] = initialCellValue
       if (result.won) {
-        opponentsMove = { i, j }
+        instantMove = { i, j }
         break
       }
     }
   }
 
-  return opponentsMove
+  return instantMove
 }
 
-export default checkOpponentsMove
+export default checkInstantMoves
