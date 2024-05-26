@@ -2,25 +2,20 @@ import checkColumns from './checkUtils/checkColumns'
 import checkPrimaryDiagonal from './checkUtils/checkPrimaryDiagonal'
 import checkRow from './checkUtils/checkRow'
 import checkSecondaryDiagonal from './checkUtils/checkSecondaryDiagonal'
-import isDraw from './checkUtils/isDraw'
 
 import type { gridT } from '@/components/types.ts'
 import { O, X } from '@/constants'
 
-export interface checkWinnerI {
-  feedback: string
-  winner: string
-  won: boolean
-}
-export const checkWinner = (
+export const checkWinningCombinations = (
   grid: gridT,
   rowIdx: number,
   colIdx: number,
   M: number,
   isXTurn: boolean,
   shouldMarkWinningCells: boolean
-): checkWinnerI => {
+): number => {
   const lookingFor = isXTurn ? X : O
+  let winningCombinations = 0
 
   const rowResult = checkRow({
     grid,
@@ -32,11 +27,7 @@ export const checkWinner = (
   })
 
   if (rowResult.won) {
-    return {
-      feedback: `Player ${rowResult.winner} wins!`,
-      winner: rowResult.winner,
-      won: rowResult.won
-    }
+    winningCombinations++
   }
 
   const colResult = checkColumns({
@@ -49,11 +40,7 @@ export const checkWinner = (
   })
 
   if (colResult.won) {
-    return {
-      feedback: `Player ${colResult.winner} wins!`,
-      winner: colResult.winner,
-      won: colResult.won
-    }
+    winningCombinations++
   }
 
   const primaryDiagonalResult = checkPrimaryDiagonal({
@@ -66,11 +53,7 @@ export const checkWinner = (
   })
 
   if (primaryDiagonalResult.won) {
-    return {
-      feedback: `Player ${primaryDiagonalResult.winner} wins!`,
-      winner: primaryDiagonalResult.winner,
-      won: primaryDiagonalResult.won
-    }
+    winningCombinations++
   }
 
   const secondaryDiagonalResult = checkSecondaryDiagonal({
@@ -83,20 +66,8 @@ export const checkWinner = (
   })
 
   if (secondaryDiagonalResult.won) {
-    return {
-      feedback: `Player ${secondaryDiagonalResult.winner} wins!`,
-      winner: secondaryDiagonalResult.winner,
-      won: secondaryDiagonalResult.won
-    }
+    winningCombinations++
   }
 
-  return {
-    feedback: '',
-    winner: '',
-    won: false
-  }
-}
-
-export const checkDraw = (grid: gridT): boolean => {
-  return isDraw({ grid })
+  return winningCombinations
 }
