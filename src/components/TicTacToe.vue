@@ -4,18 +4,18 @@
     class="tic-tac-toe-wrapper"
     data-testid="tic-tac-toe-wrapper"
   >
-    <get-feedback :M="M"></get-feedback>
+    <get-feedback />
     <display-grid @click-cell="handleClickCell" />
     <app-controls>
       <player-modes />
-      <reset-game :onReset="handleReset"></reset-game>
+      <reset-game />
       <transition name="fade-in-out">
         <algo-modes />
       </transition>
       <load-default-grid />
       <show-game-details />
       <transition name="fade-in-out">
-        <game-details :N="N" :M="M" />
+        <game-details />
       </transition>
     </app-controls>
   </div>
@@ -37,12 +37,7 @@ import ShowGameDetails from './ShowGameDetails.vue'
 import { useGameLogic } from './useGameLogic'
 import { usePreventRouteLeave } from './usePreventRouteLeave'
 
-const gridDimensions = defineProps({
-  N: { type: Number, required: true },
-  M: { type: Number, required: true }
-})
-
-const { handleClickCell, handleReset, hasValidDimensionProps } = useGameLogic(gridDimensions)
+const { handleClickCell, hasValidDimensionProps } = useGameLogic()
 
 usePreventRouteLeave()
 </script>

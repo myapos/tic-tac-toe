@@ -10,9 +10,8 @@ import { useGameStore } from '@/stores/gameStore'
 
 interface useAutoPlayI {
   computerSelection: any
-  handleReset: () => void
 }
-export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) => {
+export const useAutoPlay = ({ computerSelection }: useAutoPlayI) => {
   const gameStore = useGameStore()
 
   const placeXInRandomCoordinates = () => {
@@ -41,7 +40,7 @@ export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) =>
         while (emptyCells !== 0) {
           const detectedMode = getPlayMode(gameStore.playMode)
           if (!detectedMode.autoPlayer) {
-            handleReset()
+            gameStore.handleReset()
             emptyCells = 0
             break
           }
@@ -86,7 +85,7 @@ export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) =>
           }, RESTART_DELAY)
           //restart auto play mode
           setTimeout(() => {
-            handleReset()
+            gameStore.handleReset()
             startAutoPlay()
           }, RESTART_DELAY * 2)
         }
@@ -101,7 +100,7 @@ export const useAutoPlay = ({ computerSelection, handleReset }: useAutoPlayI) =>
     () => gameStore.playMode,
     (newPlayMode) => {
       const detectedMode = getPlayMode(newPlayMode)
-      handleReset()
+      gameStore.handleReset()
       if (detectedMode.singlePlayer) {
         gameStore.setIsInSinglePlayerMode(true)
         gameStore.setIsInAutoPlayerMode(false)

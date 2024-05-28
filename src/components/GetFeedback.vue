@@ -9,13 +9,7 @@ import { defineComponent } from 'vue'
 import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
-  props: {
-    M: {
-      type: Number
-    }
-  },
   name: 'GetFeedback',
-
   computed: {
     ...mapState(useGameStore, ['feedback'])
   }
