@@ -9,6 +9,7 @@
     <app-controls>
       <player-modes />
       <reset-game />
+      <difficulty-level />
       <transition name="fade-in-out">
         <algo-modes />
       </transition>
@@ -27,6 +28,7 @@
 <script setup lang="ts">
 import AlgoModes from './AlgoModes.vue'
 import AppControls from './AppControls.vue'
+import DifficultyLevel from './DifficultyLevel.vue'
 import DisplayGrid from './DisplayGrid.vue'
 import GameDetails from './GameDetails.vue'
 import GetFeedback from './GetFeedback.vue'

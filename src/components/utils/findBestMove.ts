@@ -6,7 +6,9 @@ import { minimax } from './minimax'
 import { negamax } from './negamax'
 
 import type { gridT } from '@/components/types'
+import { difficultyLevels } from '@/constants'
 import { O, X, initialCellValue, algorithms } from '@/constants'
+import { useGameStore } from '@/stores/gameStore'
 
 interface findBestMoveI {
   gridCopy: gridT
@@ -144,13 +146,15 @@ export const getBestScoreAndMove = ({
   return { bestScore, move }
 }
 
-export const findBestMove = ({
+const checkSingleMoveWinning = ({
   gridCopy,
   isXTurn,
-  M,
-  isMaximizing = false,
-  activeAlgorithm
-}: findBestMoveI): { i: number; j: number } | undefined => {
+  M
+}: {
+  gridCopy: gridT
+  isXTurn: boolean
+  M: number
+}) => {
   // check if the current player wins with a single move
   const singlePlayerMove = checkInstantMoves({
     grid: gridCopy,
@@ -177,18 +181,44 @@ export const findBestMove = ({
     return opponentsMove
   }
 
-  // check look ahead move combinations
-  const promisingMove = lookAheadMoves({
-    grid: cloneDeep(gridCopy),
-    player: !isXTurn ? X : O,
-    M,
-    isXTurn: !isXTurn
-  })
+  return undefined
+}
+export const findBestMove = ({
+  gridCopy,
+  isXTurn,
+  M,
+  isMaximizing = false,
+  activeAlgorithm
+}: findBestMoveI): { i: number; j: number } | undefined => {
+  const gameStore = useGameStore()
+  if (gameStore.difficultyLevel === difficultyLevels.MEDIUM) {
+    const singleMoveWin = checkSingleMoveWinning({ gridCopy, M, isXTurn })
 
-  const shouldDefendPromising = promisingMove.i >= 0 && promisingMove.j >= 0
+    if (singleMoveWin) {
+      return singleMoveWin
+    }
+  }
 
-  if (shouldDefendPromising) {
-    return promisingMove
+  if (gameStore.difficultyLevel === difficultyLevels.HARD) {
+    const singleMoveWin = checkSingleMoveWinning({ gridCopy, M, isXTurn })
+
+    if (singleMoveWin) {
+      return singleMoveWin
+    }
+
+    // check look ahead move combinations
+    const promisingMove = lookAheadMoves({
+      grid: cloneDeep(gridCopy),
+      player: !isXTurn ? X : O,
+      M,
+      isXTurn: !isXTurn
+    })
+
+    const shouldDefendPromising = promisingMove.i >= 0 && promisingMove.j >= 0
+
+    if (shouldDefendPromising) {
+      return promisingMove
+    }
   }
 
   const { move } = getBestScoreAndMove({

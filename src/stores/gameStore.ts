@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 
 import type { gridT } from '@/components/types'
 import createEmptyGrid from '@/components/utils/createEmptyGrid'
-import { playModes, itIsXturn, algorithms } from '@/constants'
+import isPlaywright from '@/components/utils/isPlaywright'
+import { playModes, itIsXturn, algorithms, difficultyLevels } from '@/constants'
 
 export const useGameStore = defineStore({
   id: 'gameStore',
@@ -24,7 +25,8 @@ export const useGameStore = defineStore({
     memo: new Map<string, number>(),
     supportsStructuredClone: typeof structuredClone !== 'undefined',
     N: 0,
-    M: 0
+    M: 0,
+    difficultyLevel: isPlaywright() ? difficultyLevels.HARD : difficultyLevels.EASY
   }),
   getters: {
     isXTurn(state) {
@@ -51,6 +53,9 @@ export const useGameStore = defineStore({
       this.setGameStarted(0)
       this.setGameEnded(0)
       this.resetMemo()
+    },
+    setDifficultyLevel(level: string) {
+      this.difficultyLevel = level
     },
     setGridDimensions(gridDimensions: { N: number; M: number }) {
       this.N = gridDimensions.N
