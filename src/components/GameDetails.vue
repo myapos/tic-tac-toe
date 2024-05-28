@@ -53,17 +53,6 @@
       <li>Two players mode (2P) where two human players can play against other.</li>
       <li>Auto mode (Auto) where two AI players can play against other.</li>
     </ul>
-    <p>
-      The code is available in
-      <external-link to="https://vuejs.org/" aria-label="Visit Vue documentation" class="vue-icon"
-        ><icon-vue /></external-link
-      >. The code is available on<external-link
-        to="https://github.com/myapos"
-        aria-label="Go to Myron Apostolakis Github repo"
-      >
-        GitHub
-      </external-link>
-    </p>
   </div>
 </template>
 
