@@ -7,6 +7,7 @@ import App from './App.vue'
 import AppCheckbox from './components/ui/AppCheckbox.vue'
 import AppFieldset from './components/ui/AppFieldset.vue'
 import AppRadio from './components/ui/AppRadio.vue'
+import AppSelect from './components/ui/AppSelect.vue'
 import CustomButton from './components/ui/CustomButton.vue'
 import ExternalLink from './components/ui/ExternalLink.vue'
 import router from './router/router'
@@ -21,5 +22,6 @@ app.component('AppCheckbox', AppCheckbox)
 app.component('AppRadio', AppRadio)
 app.component('ExternalLink', ExternalLink)
 app.component('AppFieldset', AppFieldset)
+app.component('AppSelect', AppSelect)
 
 app.mount('#app')
