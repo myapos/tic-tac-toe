@@ -1,9 +1,9 @@
 import { checkWinningCombinations } from './checkWinningCombinations'
-import type { moveI } from './findBestMove'
 import findEmptyCells from './findEmptyCells'
+import type { moveI } from './findEmptyMoves'
+import findEmptyMoves from './findEmptyMoves'
 
 import type { gridT } from '@/components/types'
-import { initialCellValue } from '@/constants'
 
 interface lookAheadMovesI {
   grid: gridT
@@ -17,14 +17,7 @@ interface lookAheadMovesI {
  * then prioritize that move
  **/
 const lookAheadMoves = ({ grid, player, M, isXTurn }: lookAheadMovesI): moveI => {
-  const moves = []
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j][0] === initialCellValue) {
-        moves.push({ i, j })
-      }
-    }
-  }
+  const moves = findEmptyMoves(grid)
 
   let promisingMove = {
     i: -1,
