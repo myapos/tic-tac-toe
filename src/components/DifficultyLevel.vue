@@ -1,11 +1,7 @@
 <template>
   <form>
     <label for="difficulty_level_selection">Select Difficulty level</label>
-    <select
-      id="difficulty_level_selection"
-      v-model="gameStore.difficultyLevel"
-      class="custom-select"
-    >
+    <select id="difficulty_level_selection" v-model="gameStore.difficultyLevel">
       <option v-for="level in difficultyLevels" :key="level" :value="level">
         {{ level }}
       </option>
