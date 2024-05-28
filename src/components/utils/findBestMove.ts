@@ -1,6 +1,8 @@
 import { cloneDeep } from 'lodash'
 
 import checkInstantMoves from './checkInstantMoves'
+import type { moveI } from './findEmptyMoves'
+import findEmptyMoves from './findEmptyMoves'
 import lookAheadMoves from './lookAheadMoves'
 import { minimax } from './minimax'
 import { negamax } from './negamax'
@@ -23,11 +25,6 @@ interface getBestScoreAndMoveI extends Omit<findBestMoveI, 'gridCopy'> {
   player: string
   alpha: number
   beta: number
-}
-
-export interface moveI {
-  i: number
-  j: number
 }
 
 interface getInitialBestScoreI {
@@ -69,14 +66,7 @@ export const getBestScoreAndMove = ({
 
   let bestScore: number = getInitialBestScore({ isMinimax, isNegamax, isMaximizing })
 
-  const moves: moveI[] = []
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j][0] === initialCellValue) {
-        moves.push({ i, j })
-      }
-    }
-  }
+  const moves: moveI[] = findEmptyMoves(grid)
 
   // Sort moves to prioritize the most promising ones
   moves.sort((a, b) => {

@@ -1,5 +1,6 @@
 import { checkWinner } from './checkWinner'
-import type { moveI } from './findBestMove'
+import type { moveI } from './findEmptyMoves'
+import findEmptyMoves from './findEmptyMoves'
 
 import type { gridT } from '@/components/types'
 import { initialCellValue, X, O } from '@/constants'
@@ -12,14 +13,7 @@ interface checkInstantMovesI {
 
 const checkInstantMoves = ({ grid, M, isXTurn }: checkInstantMovesI): moveI => {
   const player = isXTurn ? X : O
-  const moves = []
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j][0] === initialCellValue) {
-        moves.push({ i, j })
-      }
-    }
-  }
+  const moves = findEmptyMoves(grid)
 
   let result
   // initialize to negative i,j values
