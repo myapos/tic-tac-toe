@@ -13,6 +13,11 @@ export const playModes = {
   AUTO_PLAYER: 'Auto',
   TWO_PLAYER: '2P'
 }
+export const difficultyLevels = {
+  EASY: 'Easy',
+  MEDIUM: 'Medium',
+  HARD: 'Hard'
+}
 export const algorithms = {
   MINIMAX: 'Minimax',
   NEGAMAX: 'Negamax'
