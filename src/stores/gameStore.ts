@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import type { gridT } from '@/components/types'
+import createEmptyGrid from '@/components/utils/createEmptyGrid'
 import { playModes, itIsXturn, algorithms } from '@/constants'
 
 export const useGameStore = defineStore({
@@ -21,7 +22,9 @@ export const useGameStore = defineStore({
     activeAlgorithm: algorithms.MINIMAX as keyof typeof algorithms,
     isNegamax: false,
     memo: new Map<string, number>(),
-    supportsStructuredClone: typeof structuredClone !== 'undefined'
+    supportsStructuredClone: typeof structuredClone !== 'undefined',
+    N: 0,
+    M: 0
   }),
   getters: {
     isXTurn(state) {
@@ -40,6 +43,19 @@ export const useGameStore = defineStore({
     }
   },
   actions: {
+    handleReset() {
+      this.setCounter(0)
+      this.setGrid(createEmptyGrid(this.N))
+      this.setFeedback(itIsXturn)
+      this.setFilledCells(0)
+      this.setGameStarted(0)
+      this.setGameEnded(0)
+      this.resetMemo()
+    },
+    setGridDimensions(gridDimensions: { N: number; M: number }) {
+      this.N = gridDimensions.N
+      this.M = gridDimensions.M
+    },
     setPlayMode(newMode: keyof typeof playModes) {
       this.playMode = newMode
     },

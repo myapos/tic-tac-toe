@@ -1,5 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { watch, toRaw, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 
 import useAutoPlay from './useAutoPlay'
 import isDraw from './utils/checkUtils/isDraw'
@@ -11,12 +13,22 @@ import type { gridT, cellCoordinatesT } from '@/components/types'
 import { O, X, initialCellValue, itIsXturn, itIsOturn, itIsDraw } from '@/constants'
 import { useGameStore } from '@/stores/gameStore'
 
-export const useGameLogic = (props: { N: number; M: number }) => {
+export const useGameLogic = () => {
   const gameStore = useGameStore()
+  const route = useRoute()
+
+  const getProps = (route: RouteLocationNormalized) => ({
+    N: parseInt((route.query.N as string) || '3'), // Parse N from the query, default to 3 if not present
+    M: parseInt((route.query.M as string) || '3') // Parse M from the query, default to 3 if not present
+  })
 
   onMounted(() => {
-    gameStore.setGrid(createEmptyGrid(props.N))
-    gameStore.setTotalCells(props.N * props.M)
+    const gridDimensions = getProps(route)
+
+    gameStore.setGrid(createEmptyGrid(gridDimensions.N))
+    gameStore.setTotalCells(gridDimensions.N * gridDimensions.M)
+
+    gameStore.setGridDimensions(gridDimensions)
   })
 
   /* O is minimizing I want to be the ai, X is maximizing  */
@@ -24,7 +36,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     const move = findBestMove({
       gridCopy,
       isXTurn: gameStore.isXTurn,
-      M: props.M,
+      M: gameStore.M,
       isMaximizing,
       activeAlgorithm: gameStore.activeAlgorithm
     })
@@ -40,7 +52,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
         gameStore.grid,
         move.i,
         move.j,
-        props.M,
+        gameStore.M,
         !gameStore.isXTurn,
         true
       )
@@ -76,7 +88,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
       gameStore.setGridCell(rowIdx, colIdx, 0, currentTurn)
     }
 
-    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, props.M, gameStore.isXTurn, true)
+    const winnerMessage = checkWinner(newGrid, rowIdx, colIdx, gameStore.M, gameStore.isXTurn, true)
     if (winnerMessage.feedback) {
       gameStore.setFeedback(winnerMessage.feedback)
       gameStore.setGameEnded(gameStore.totalCells)
@@ -123,7 +135,7 @@ export const useGameLogic = (props: { N: number; M: number }) => {
   watch(
     () => gameStore.activeAlgorithm,
     () => {
-      handleReset()
+      gameStore.handleReset()
     },
     {
       deep: true
@@ -139,34 +151,22 @@ export const useGameLogic = (props: { N: number; M: number }) => {
     }
   )
 
-  const handleReset = () => {
-    gameStore.setCounter(0)
-    gameStore.setGrid(createEmptyGrid(props.N))
-    gameStore.setFeedback(itIsXturn)
-    gameStore.setFilledCells(0)
-    gameStore.setGameStarted(0)
-    gameStore.setGameEnded(0)
-    gameStore.resetMemo()
-  }
-
   const hasValidDimensionProps = () => {
     return (
-      props.N >= 0 &&
-      props.M >= 0 &&
-      typeof props.N === 'number' &&
-      typeof props.M === 'number' &&
-      props.N >= props.M
+      gameStore.N >= 0 &&
+      gameStore.M >= 0 &&
+      typeof gameStore.N === 'number' &&
+      typeof gameStore.M === 'number' &&
+      gameStore.N >= gameStore.M
     )
   }
 
   useAutoPlay({
-    handleReset,
     computerSelection
   })
 
   return {
     handleClickCell,
-    handleReset,
     hasValidDimensionProps
   }
 }

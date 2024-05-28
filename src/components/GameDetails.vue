@@ -60,27 +60,12 @@
 import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
 
-import IconVue from './icons/IconVue.vue'
-
 import { useGameStore } from '@/stores/gameStore'
 
 export default defineComponent({
   name: 'GameDetails',
-  components: {
-    IconVue
-  },
-  props: {
-    N: {
-      type: Number,
-      required: true
-    },
-    M: {
-      type: Number,
-      required: true
-    }
-  },
   computed: {
-    ...mapState(useGameStore, ['showDetails'])
+    ...mapState(useGameStore, ['showDetails', 'N', 'M'])
   }
 })
 </script>
