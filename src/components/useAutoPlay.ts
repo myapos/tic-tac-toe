@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { watch, toRaw } from 'vue'
+import { watch, toRaw, computed } from 'vue'
 
 import findEmptyCells from './utils/findEmptyCells'
 import getPlayMode from './utils/getPlayMode'
@@ -122,6 +122,11 @@ export const useAutoPlay = ({ computerSelection }: useAutoPlayI) => {
       }
     }
   )
+
+  const dimensionWatcher = computed(() => [gameStore.N, gameStore.M])
+  watch(dimensionWatcher, () => {
+    gameStore.handleReset()
+  })
 }
 
 export default useAutoPlay
