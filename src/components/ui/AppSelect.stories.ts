@@ -10,6 +10,12 @@ interface AppSelectProps {
   options: Object
 }
 
+const options = {
+  EASY: 'Easy',
+  MEDIUM: 'Medium',
+  HARD: 'Hard'
+}
+
 const meta: Meta<typeof AppSelect> = {
   component: AppSelect
 }
@@ -28,11 +34,7 @@ export const WithLabel: StoryObj<AppSelectProps> = {
     name: 'my_select',
     id: 'my_select',
     labelText: 'My label',
-    options: {
-      EASY: 'Easy',
-      MEDIUM: 'Medium',
-      HARD: 'Hard'
-    }
+    options
   }
 }
 
@@ -47,10 +49,6 @@ export const WithoutLabel: StoryObj<AppSelectProps> = {
   args: {
     name: 'my_select',
     id: 'my_select',
-    options: {
-      EASY: 'Easy',
-      MEDIUM: 'Medium',
-      HARD: 'Hard'
-    }
+    options
   }
 }
